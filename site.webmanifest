@@ -1,0 +1,17 @@
+{
+    "description": "Beycome: All-in-One to Sell by Owner and Buy Your Home",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "/apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        }
+    ],
+    "lang": "en",
+    "name": "Beycome",
+    "short_name": "beycome",
+    "start_url": "/",
+    "theme_color": "#7d8ff7"
+}

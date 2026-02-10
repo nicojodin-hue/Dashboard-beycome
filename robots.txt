@@ -1,0 +1,8 @@
+# robots.txt for beycome.com
+User-agent: *
+Disallow: /submit-property/
+Disallow: /dashboard/
+Disallow: /flyer/
+Allow: /
+
+Sitemap: https://www.beycome.com/sitemap.xml
