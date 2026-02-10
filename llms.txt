@@ -1,0 +1,18 @@
+# Beycome
+
+> This is the agent-friendly navigation document (llms.txt) for all public Beycome content. This is a markdown file that provides brief background information and guidance, along with links to markdown files providing more detailed information.
+
+## Main Website
+
+- [beycome - The one-stop shop to sell and buy your property](https://www.beycome.com/): Beycome offers a flat-fee MLS listing service, helping users save up to 6% when selling and 2% when buying homes. It provides hassle-free property transactions with significant commission savings.
+- [Home Value Estimator: How Much is My House Worth. beycome](https://www.beycome.com/tools-cma-property-value-calculator): Free tool to instantly estimate your home's value. Enter your address for a quick valuation. No commissions, provided by beycome.
+- [For Sale By Owner blog, Tips and info for Homeowners and Buyers](https://www.beycome.com/blog/): Provides homeowners and buyers with practical advice on For Sale By Owner (fsbo) processes, home value boosts, tax IDs, and rental strategies. Features guides on lawn care, basement upgrades, and mold remediation.
+- [Knowledge Base Real Estate Terms Archives | Real estate FAQ](https://www.beycome.com/faq/): Comprehensive guide on real estate terms, credit essentials, mortgages, and home buying FAQs. Learn about FICO scores, down payments, lender comparisons, and effective marketing strategies for selling properties.
+- [beycome Reviews | beycome Testimonials](https://www.beycome.com/reviews): Read testimonials from Beycome users sharing their real estate experiences. Learn how customers saved millions with flat-fee MLS services and commission-free transactions.
+- [Press Inquiries | News & Media by beycome](https://www.beycome.com/media-press-inquiries): Beycome's press contact page for media inquiries. Provides email (press@beycome.com) and highlights their disruption in real estate with AO and Direct to consumer flat-fee MLS services. Includes news mentions and company info.
+- [Terms & Conditions of Use](https://www.beycome.com/terms-and-conditions): The Terms & Conditions outline the legal agreements for using Beycome's services, including user responsibilities, account management, and contact information. It details the rules and obligations for buyers, sellers, and agents on the platform.
+- [Privacy Policy & Security Policy](https://www.beycome.com/privacy-policy): Outlines how user data is collected, used, and protected. Details privacy practices and security measures effective from January 2025. Includes terms for account creation and communication preferences.
+- [Interested to discover more about beycome?  Contact us now](https://www.beycome.com/contact): Contact Beycome for assistance with FSBO property sales. Access tools for maximum home exposure and connect via email, phone, or chat for quick support without commissions.
+- [beycome: Discover a new way to do real estate](https://www.beycome.com/about-us): Beycome offers a For Sale by Owner (FSBO) platform enabling homeowners to list properties without commissions. Features include flat fee MLS services, direct communication, and tools for buying/selling homes independently.
+- [Discover the new way to buy, rent or sell your home with beycome](https://www.beycome.com/how-it-works): Learn How to Buy/Sell a Home For Sale by Owner (FSBO) with no commission.
+- [What is For Sale By Owner (FSBO)?](https://www.beycome.com/yard-sign): Learn how For Sale By Owner (FSBO) helps you list and sell your home without commissions. Access smart tools, free webpages, and proven results to market your property effectively.
