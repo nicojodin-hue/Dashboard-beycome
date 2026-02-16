@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Test</title>
+</head>
+<body>
+    <h1>Step by step test</h1>
+    <div id="log"></div>
+
+    <script type="module">
+        const log = document.getElementById('log');
+
+        function addLog(msg, color = 'black') {
+            const p = document.createElement('p');
+            p.textContent = msg;
+            p.style.color = color;
+            log.appendChild(p);
+        }
+
+        addLog('1. Script started', 'green');
+
+        try {
+            addLog('2. Importing store...');
+            const { default: store } = await import('./src/js/store.js');
+            addLog('3. Store imported successfully!', 'green');
+
+            addLog('4. Importing utils...');
+            const utils = await import('./src/js/utils.js');
+            addLog('5. Utils imported successfully!', 'green');
+
+            addLog('6. Importing properties page...');
+            const props = await import('./src/js/pages/properties.js');
+            addLog('7. Properties imported successfully!', 'green');
+
+            addLog('8. Importing main.js...');
+            const main = await import('./src/js/main.js');
+            addLog('9. Main.js imported successfully!', 'green');
+
+        } catch (err) {
+            addLog('ERROR: ' + err.message, 'red');
+            addLog('Stack: ' + err.stack, 'red');
+            console.error('Full error:', err);
+        }
+    </script>
+</body>
+</html>

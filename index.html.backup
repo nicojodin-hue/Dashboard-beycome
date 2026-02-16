@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offer Dashboard</title>
+</head>
+<body>
+    <div id="icons-sprite"></div>
+    <header id="main-header"></header>
+    <nav id="top-nav"></nav>
+
+    <div class="main-layout">
+        <div class="content-area">
+            <div id="page-content"></div>
+        </div>
+        <div id="chat-widget-container"></div>
+    </div>
+
+    <nav id="mobile-bottom-nav-container" class="mobile-bottom-nav"></nav>
+    <div id="modals-container"></div>
+    <div id="submit-property-container"></div>
+
+    <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>

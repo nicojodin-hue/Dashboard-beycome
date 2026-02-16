@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug</title>
+</head>
+<body>
+    <h1>Diagnostic Test</h1>
+    <div id="status">Loading...</div>
+
+    <script type="module">
+        const status = document.getElementById('status');
+        status.textContent = 'JavaScript works!';
+
+        try {
+            // Test importing main.js
+            import('./src/js/main.js')
+                .then(() => {
+                    status.textContent = 'Main.js loaded successfully!';
+                    status.style.color = 'green';
+                })
+                .catch(err => {
+                    status.textContent = 'ERROR: ' + err.message;
+                    status.style.color = 'red';
+                    console.error('Full error:', err);
+                });
+        } catch (e) {
+            status.textContent = 'CATCH ERROR: ' + e.message;
+            status.style.color = 'red';
+        }
+    </script>
+</body>
+</html>
