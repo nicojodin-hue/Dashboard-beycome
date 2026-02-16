@@ -43,7 +43,8 @@ const pageModules = {
     messages: messagesPage,
     calendar: calendarPage,
     account: accountPage,
-    contracts: contractsPage
+    contracts: contractsPage,
+    addProperty: submitPropertyPage
 };
 
 // Expose app globals for cross-component communication

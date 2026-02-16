@@ -49,7 +49,12 @@ const pkgIncludes = {
     ]
 };
 
-export function render() {
+export function render(propertyId = null) {
+    // If propertyId is passed, we're editing an existing property
+    const isEditing = !!propertyId;
+    const step1Display = isEditing ? 'none' : 'flex';
+    const step2Display = isEditing ? 'block' : 'none';
+
     return `
     <header style="background:var(--c-bg); padding:20px 0; border-bottom:1px solid var(--c-border);">
         <div style="max-width:1400px; margin:0 auto; padding:0 20px; display:flex; align-items:center; justify-content:space-between;">
@@ -58,7 +63,7 @@ export function render() {
             <div></div>
         </div>
     </header>
-    <div id="submitStep1" style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:calc(100vh - 80px); text-align:center; padding:40px 20px;">
+    <div id="submitStep1" style="display:${step1Display}; flex-direction:column; align-items:center; justify-content:center; min-height:calc(100vh - 80px); text-align:center; padding:40px 20px;">
         <h1 class="submit-title">Your Savings Journey<br>Starts Here</h1>
         <p class="submit-subtitle">Full control. Maximum exposure. One flat fee. Zero BS</p>
         <div class="submit-search-bar">
@@ -81,7 +86,7 @@ export function render() {
         </div>
     </div>
 
-    <div id="submitStep2" style="display:none; max-width:1000px; margin:0 auto; padding:40px 20px 80px;">
+    <div id="submitStep2" style="display:${step2Display}; max-width:1000px; margin:0 auto; padding:40px 20px 80px;">
         <div style="display:flex; gap:32px; align-items:flex-start;">
             <div style="flex:1; min-width:0;">
                 <h2 style="font-size:24px; font-weight:700; color:var(--c-primary); margin-bottom:4px;"><span id="step2PropertyAddress"></span></h2>
@@ -102,7 +107,7 @@ export function render() {
         </div>
 
         <div style="margin-bottom:32px;">
-            <label style="display:block; font-size:15px; font-weight:600; color:var(--c-primary); margin-bottom:12px;">Which of these best describes your property?<span class="required-mark">*</span></label>
+            <label style="display:block; font-size:15px; font-weight:600; color:var(--c-primary); margin-bottom:12px;">Which of these best describes your property?<span class="required-mark">*</span><span class="info-bubble" id="propertyTypeInfo">?<span class="info-tooltip">Select the type that matches your property deed. If unsure, check your property tax records.</span></span></label>
             <div style="display:flex; flex-wrap:wrap; gap:10px;" id="propertyTypeGrid">
                 <button class="btn submit-prop-type">🏠 House</button>
                 <button class="btn submit-prop-type">🏢 Apartment</button>
@@ -134,7 +139,7 @@ export function render() {
 
         <div style="display:flex; gap:12px; margin-bottom:32px;" id="bedsRow">
             <div class="form-group" id="fieldBeds">
-                <label>Beds<span class="required-mark">*</span></label>
+                <label>Beds<span class="required-mark">*</span><span class="info-bubble" id="bedsInfo">?<span class="info-tooltip">Count only rooms that can legally be used as bedrooms (with closet and window).</span></span></label>
                 <div class="stepper-pill">
                     <button class="stepper-btn disabled" id="submitBeds_minus">−</button>
                     <span class="stepper-num" id="submitBeds" contenteditable="true">0</span>
@@ -160,7 +165,7 @@ export function render() {
         </div>
         <div style="display:flex; gap:12px; margin-bottom:32px; align-items:flex-end;" id="propertyDetailsGrid">
             <div class="form-group" id="fieldLivingArea" style="margin-bottom:0;">
-                <label>Living Area Sqft<span class="required-mark">*</span></label>
+                <label>Living Area Sqft<span class="required-mark">*</span><span class="info-bubble" id="livingAreaInfo">?<span class="info-tooltip">Include only heated/cooled interior space. Garages, porches, and unfinished areas don't count!</span></span></label>
                 <input type="text" id="submitLivingArea" class="input" placeholder="0" maxlength="9" style="width:120px; height:37px; padding:8px 12px;">
             </div>
             <div class="form-group" id="fieldLotSize" style="margin-bottom:0;">
@@ -176,7 +181,7 @@ export function render() {
         </div>
 
         <div class="form-group sp-section">
-            <label>Set your price<span class="required-mark">*</span></label>
+            <label>Set your price<span class="required-mark">*</span><span class="info-bubble" id="priceInfo">?<span class="info-tooltip">Price competitively! Homes priced within 5% of market value sell 3x faster and get more offers.</span></span></label>
             <div class="sp-row">
                 <div class="sp-price-input"><span class="sp-price-symbol">$</span><input type="text" id="submitPrice" class="input" placeholder="0" value="0" style="padding-left:28px;width:120px;"></div>
                 <span class="sp-savings">💰 Your potential commission savings: $<span id="savingsAmount">0</span></span>
@@ -412,8 +417,137 @@ export function render() {
     </div>`;
 }
 
-export function init() {
+// Save property data to localStorage
+function savePropertyData(propertyId = null) {
+    const properties = store.get('properties') || [];
+
+    // Collect all form data
+    const propertyData = {
+        id: propertyId || 'prop_' + Date.now(),
+        address: document.getElementById('submitPropertyAddress').value.trim(),
+        propertyType: document.querySelector('.submit-prop-type.selected')?.textContent.trim() || '',
+        listingType: document.getElementById('saleTab').classList.contains('active') ? 'sale' : 'rent',
+        unitNumber: document.getElementById('submitUnitNumber')?.value.trim() || '',
+        beds: parseInt(document.getElementById('submitBeds').textContent) || 0,
+        baths: parseInt(document.getElementById('submitBaths').textContent) || 0,
+        halfBaths: parseInt(document.getElementById('submitHalfBaths').textContent) || 0,
+        livingArea: document.getElementById('submitLivingArea')?.value.replace(/,/g, '').trim() || '',
+        lotSize: document.getElementById('submitLotSize')?.value.replace(/,/g, '').trim() || '',
+        price: document.getElementById('submitPrice')?.value.replace(/,/g, '').trim() || '',
+        description: document.getElementById('submitDescription')?.value.trim() || '',
+        ownerName: document.getElementById('submitOwnerName')?.value.trim() || '',
+        ownerEmail: document.getElementById('submitOwnerEmail')?.value.trim() || '',
+        ownerPhone: document.getElementById('submitOwnerPhone')?.value.trim() || '',
+        status: 'draft',
+        updatedAt: new Date().toISOString()
+    };
+
+    if (propertyId) {
+        // Update existing property
+        const index = properties.findIndex(p => p.id === propertyId);
+        if (index !== -1) {
+            properties[index] = { ...properties[index], ...propertyData };
+        }
+    } else {
+        // Add new property
+        propertyData.createdAt = new Date().toISOString();
+        properties.push(propertyData);
+    }
+
+    store.set('properties', properties);
+    return propertyData.id;
+}
+
+// Load property data for editing
+function loadPropertyForEdit(propertyId) {
+    const properties = store.get('properties') || [];
+    const property = properties.find(p => p.id === propertyId);
+
+    if (!property) {
+        console.log('Property not found:', propertyId);
+        return;
+    }
+
+    // Pre-fill address
+    if (property.address) {
+        document.getElementById('step2PropertyAddress').textContent = property.address;
+        document.getElementById('legalHeaderAddress').textContent = property.address;
+    }
+
+    // Pre-select property type
+    if (property.propertyType) {
+        document.querySelectorAll('.submit-prop-type').forEach(btn => {
+            if (btn.textContent.trim() === property.propertyType) {
+                selectPropertyType(btn);
+            }
+        });
+    }
+
+    // Pre-select listing type (sale/rent)
+    if (property.listingType === 'rent') {
+        document.getElementById('rentTab2').classList.add('active');
+        document.getElementById('saleTab').classList.remove('active');
+    }
+
+    // Pre-fill unit number
+    if (property.unitNumber) {
+        document.getElementById('submitUnitNumber').value = property.unitNumber;
+    }
+
+    // Pre-fill beds, baths, half baths
+    if (property.beds) {
+        document.getElementById('submitBeds').textContent = property.beds;
+        updateStepperBtns('submitBeds');
+    }
+    if (property.baths) {
+        document.getElementById('submitBaths').textContent = property.baths;
+        updateStepperBtns('submitBaths');
+    }
+    if (property.halfBaths) {
+        document.getElementById('submitHalfBaths').textContent = property.halfBaths;
+        updateStepperBtns('submitHalfBaths');
+    }
+
+    // Pre-fill living area and lot size
+    if (property.livingArea && document.getElementById('submitLivingArea')) {
+        document.getElementById('submitLivingArea').value = parseFloat(property.livingArea).toLocaleString();
+    }
+    if (property.lotSize && document.getElementById('submitLotSize')) {
+        document.getElementById('submitLotSize').value = parseFloat(property.lotSize).toLocaleString();
+    }
+
+    // Pre-fill price
+    if (property.price && document.getElementById('submitPrice')) {
+        document.getElementById('submitPrice').value = parseFloat(property.price).toLocaleString();
+        calculateSavings();
+    }
+
+    // Pre-fill description
+    if (property.description && document.getElementById('submitDescription')) {
+        document.getElementById('submitDescription').value = property.description;
+    }
+
+    // Pre-fill owner info
+    if (property.ownerName && document.getElementById('submitOwnerName')) {
+        document.getElementById('submitOwnerName').value = property.ownerName;
+    }
+    if (property.ownerEmail && document.getElementById('submitOwnerEmail')) {
+        document.getElementById('submitOwnerEmail').value = property.ownerEmail;
+    }
+    if (property.ownerPhone && document.getElementById('submitOwnerPhone')) {
+        document.getElementById('submitOwnerPhone').value = property.ownerPhone;
+    }
+
+    console.log('Loaded property data:', property);
+}
+
+export function init(propertyId = null) {
     const products = store.get('products');
+
+    // If propertyId is provided, load the property data for editing
+    if (propertyId) {
+        loadPropertyForEdit(propertyId);
+    }
 
     // Back button
     document.getElementById('submitBackBtn')?.addEventListener('click', (e) => {
@@ -542,12 +676,41 @@ export function init() {
 
     // Save & exit
     document.getElementById('saveExitBtn')?.addEventListener('click', () => {
+        const savedId = savePropertyData(propertyId);
         showMobileToast('💾 Progress saved!');
         setTimeout(() => { window.location.hash = '/your-listing'; }, 1200);
     });
 
     // Continue with payment
-    document.getElementById('continuePaymentBtn')?.addEventListener('click', () => submitPropertyForm(products));
+    document.getElementById('continuePaymentBtn')?.addEventListener('click', () => {
+        savePropertyData(propertyId);
+        submitPropertyForm(products);
+    });
+
+    // Auto-save when key fields change
+    const autoSaveFields = [
+        'submitPrice', 'submitDescription',
+        'submitOwnerName', 'submitOwnerEmail', 'submitOwnerPhone',
+        'submitLivingArea', 'submitLotSize', 'submitUnitNumber'
+    ];
+
+    autoSaveFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field && propertyId) {
+            field.addEventListener('blur', () => {
+                savePropertyData(propertyId);
+            });
+        }
+    });
+
+    // Auto-save when property type is selected
+    document.querySelectorAll('.submit-prop-type').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (propertyId) {
+                setTimeout(() => savePropertyData(propertyId), 100);
+            }
+        });
+    });
 
     // Animate counters on visibility
     const statsEl = document.querySelector('.submit-stats');

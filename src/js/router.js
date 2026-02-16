@@ -37,8 +37,13 @@ export function initRouter(modules, callback) {
     window.addEventListener('hashchange', handleHash);
 
     // Handle initial hash
-    if (window.location.hash && routeMap[window.location.hash.slice(1)]) {
-        handleHash();
+    if (window.location.hash) {
+        const hashPath = window.location.hash.slice(1).split('?')[0];
+        if (routeMap[hashPath]) {
+            handleHash();
+        } else {
+            window.location.hash = '/offers';
+        }
     } else {
         window.location.hash = '/offers';
     }
@@ -47,7 +52,10 @@ export function initRouter(modules, callback) {
 function handleHash() {
     if (routing) { routing = false; return; }
     const hash = window.location.hash.slice(1);
-    const page = routeMap[hash];
+
+    // Check if it's a submit-property route with ID (e.g., /submit-property/123)
+    const submitPropertyMatch = hash.match(/^\/submit-property\/(.+)$/);
+    const isSubmitPropertyRoute = hash === '/submit-property' || submitPropertyMatch;
 
     // Hide submit property page when navigating away
     const submitContainer = document.getElementById('submit-property-container');
@@ -56,18 +64,29 @@ function handleHash() {
         document.body.style.overflow = '';
     }
 
-    if (page === 'addProperty') {
+    if (isSubmitPropertyRoute) {
         if (submitContainer) {
+            // Re-render the submit property page
+            if (pageModules.addProperty) {
+                // Pass the property ID if editing
+                const propertyId = submitPropertyMatch ? submitPropertyMatch[1] : null;
+                submitContainer.innerHTML = pageModules.addProperty.render(propertyId);
+                pageModules.addProperty.init(propertyId);
+            }
             submitContainer.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
-        updateActiveNav(hash);
+        updateActiveNav('/submit-property');
         return;
     }
 
+    // Split hash to handle query parameters
+    const hashPath = hash.split('?')[0];
+    const page = routeMap[hashPath];
+
     if (page && onPageChange) {
-        onPageChange(page, hash);
-        updateActiveNav(hash);
+        onPageChange(page, hashPath);
+        updateActiveNav(hashPath);
         updateMobileActiveNav(page);
     }
 }
