@@ -15,7 +15,7 @@ export function render() {
             <input type="text" id="messageSearchInput" placeholder="Search">
         </div>
         <div class="filter-dropdown">
-            <button class="filter-btn" id="messageFilterBtn"><span id="messageFilterText">All</span><span class="filter-count" id="messageFilterCount">4</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <button class="filter-btn" id="messageFilterBtn"><span id="messageFilterText">All</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
             <div class="menu" id="messageFilterMenu">
                 <button class="menu-item active" data-filter="all">All <span class="filter-count">4</span></button>
                 <button class="menu-item" data-filter="unread">Unread <span class="filter-count">2</span></button>

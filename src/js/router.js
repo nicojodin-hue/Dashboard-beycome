@@ -39,7 +39,8 @@ export function initRouter(modules, callback) {
     // Handle initial hash
     if (window.location.hash) {
         const hashPath = window.location.hash.slice(1).split('?')[0];
-        if (routeMap[hashPath]) {
+        // Check for known routes or dynamic routes (offer detail, mls-form, submit-property)
+        if (routeMap[hashPath] || hashPath.match(/^\/offers\/.+$/) || hashPath.match(/^\/mls-form\/.+$/) || hashPath.match(/^\/submit-property(\/.*)?$/) || hashPath.match(/^\/listing\/.+$/)) {
             handleHash();
         } else {
             window.location.hash = '/offers';
@@ -57,10 +58,96 @@ function handleHash() {
     const submitPropertyMatch = hash.match(/^\/submit-property\/(.+)$/);
     const isSubmitPropertyRoute = hash === '/submit-property' || submitPropertyMatch;
 
+    // Check if it's an offer detail route (e.g., /offers/offer_1)
+    const offerDetailMatch = hash.match(/^\/offers\/(.+)$/);
+
+    // Check if it's a listing detail route (e.g., /listing/prop_123)
+    const listingDetailMatch = hash.match(/^\/listing\/(.+)$/);
+
+    // Check if it's an MLS form route (e.g., /mls-form/prop_123)
+    const mlsFormMatch = hash.match(/^\/mls-form\/(.+)$/);
+
     // Hide submit property page when navigating away
     const submitContainer = document.getElementById('submit-property-container');
     if (submitContainer) {
         submitContainer.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    // Hide listing detail page when navigating away
+    const listingContainer = document.getElementById('listing-detail-container');
+    if (listingContainer) {
+        listingContainer.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    // Clean up listing-detail state (IntersectionObservers etc.)
+    if (pageModules.listingDetail && pageModules.listingDetail.cleanup) {
+        pageModules.listingDetail.cleanup();
+    }
+
+    // Clean up offer-detail state (action bar moved to chat, resize listener)
+    if (pageModules.offerDetail && pageModules.offerDetail.cleanup) {
+        pageModules.offerDetail.cleanup();
+    }
+
+    // Handle listing detail route — full-screen overlay
+    if (listingDetailMatch) {
+        // Hide MLS form if open
+        const mlsContainer = document.getElementById('mls-form-container');
+        if (mlsContainer) { mlsContainer.style.display = 'none'; document.body.style.overflow = ''; }
+
+        const propertyId = listingDetailMatch[1];
+        const ldContainer = document.getElementById('listing-detail-container');
+        if (ldContainer && pageModules.listingDetail) {
+            ldContainer.innerHTML = pageModules.listingDetail.render(propertyId);
+            pageModules.listingDetail.init(propertyId);
+            ldContainer.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            ldContainer.scrollTop = 0;
+        }
+        updateActiveNav('/your-listing');
+        updateMobileActiveNav('properties');
+        return;
+    }
+
+    // Handle offer detail route — render inside main layout like other pages
+    if (offerDetailMatch) {
+        // Hide MLS form if open
+        const mlsContainer = document.getElementById('mls-form-container');
+        if (mlsContainer) { mlsContainer.style.display = 'none'; document.body.style.overflow = ''; }
+
+        const offerId = offerDetailMatch[1];
+        if (pageModules.offerDetail) {
+            const contentArea = document.getElementById('page-content');
+            if (contentArea) {
+                contentArea.innerHTML = pageModules.offerDetail.render(offerId);
+                pageModules.offerDetail.init(offerId);
+            }
+        }
+        updateActiveNav('/offers');
+        updateMobileActiveNav('offers');
+        return;
+    }
+
+    // Handle MLS form route
+    if (mlsFormMatch) {
+        const mlsContainer = document.getElementById('mls-form-container');
+        if (mlsContainer && pageModules.mlsForm) {
+            const propertyId = mlsFormMatch[1];
+            mlsContainer.innerHTML = pageModules.mlsForm.render(propertyId);
+            pageModules.mlsForm.init(propertyId);
+            mlsContainer.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        updateActiveNav('/your-listing');
+        return;
+    }
+
+    // Hide MLS form when navigating away
+    const mlsContainer = document.getElementById('mls-form-container');
+    if (mlsContainer) {
+        mlsContainer.style.display = 'none';
         document.body.style.overflow = '';
     }
 

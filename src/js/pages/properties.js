@@ -2,19 +2,20 @@ import store from '../store.js';
 import { isDesktopView } from '../utils.js';
 import { addChatMessage } from '../components/chat.js';
 
-// Show cancel confirmation modal
-function showCancelModal(propertyId, propertyName) {
+// Show cancel/delete confirmation modal
+function showCancelModal(propertyId, propertyName, propertyStatus) {
+    const isDraft = propertyStatus === 'draft';
     const modalOverlay = document.createElement('div');
     modalOverlay.className = 'modal-overlay show';
     modalOverlay.innerHTML = `
         <div class="modal">
-            <h2>Cancel Property Listing</h2>
-            <p style="margin-bottom: 20px;">Are you sure you want to cancel this listing?</p>
+            <h2>${isDraft ? 'Delete Draft' : 'Cancel Property Listing'}</h2>
+            <p style="margin-bottom: 20px;">${isDraft ? 'Are you sure you want to delete this draft?' : 'Are you sure you want to cancel this listing?'}</p>
             <p style="font-weight: 600; margin-bottom: 20px;">${propertyName}</p>
-            <p style="color: var(--c-text-secondary); margin-bottom: 24px;">This action cannot be undone. The property will be marked as cancelled.</p>
+            <p style="color: var(--c-text-secondary); margin-bottom: 24px;">${isDraft ? 'This action cannot be undone. The draft will be permanently removed.' : 'This action cannot be undone. The property will be marked as cancelled.'}</p>
             <div class="modal-actions">
-                <button class="btn btn-s modal-btn" id="cancelModalNo">Keep Listing</button>
-                <button class="btn btn-danger modal-btn" id="cancelModalYes">Cancel Listing</button>
+                <button class="btn btn-s modal-btn" id="cancelModalNo">${isDraft ? 'Keep Draft' : 'Keep Listing'}</button>
+                <button class="btn btn-danger modal-btn" id="cancelModalYes">${isDraft ? 'Delete Draft' : 'Cancel Listing'}</button>
             </div>
         </div>
     `;
@@ -35,23 +36,24 @@ function showCancelModal(propertyId, propertyName) {
 
     // Yes button
     document.getElementById('cancelModalYes').addEventListener('click', () => {
-        // For now with demo data, just remove the card
-        const card = document.querySelector(`[data-property-id="${propertyId}"]`).closest('.property-card');
-        if (card) {
-            card.remove();
-            if (isDesktopView()) {
-                addChatMessage('Property <strong>' + propertyName + '</strong> has been cancelled.');
-            }
+        if (isDraft) {
+            // Delete draft: remove from store entirely
+            const properties = store.get('properties') || [];
+            const updated = properties.filter(p => p.id !== propertyId);
+            store.set('properties', updated);
         }
 
-        // When using real store data, uncomment this:
-        // const properties = store.get('properties') || [];
-        // const property = properties.find(p => p.id === propertyId);
-        // if (property) {
-        //     property.status = 'cancelled';
-        //     store.set('properties', properties);
-        //     window.location.reload();
-        // }
+        // Remove the card from the grid
+        const card = document.querySelector(`[data-property-id="${propertyId}"]`);
+        const cardEl = card ? card.closest('.property-card') || card : null;
+        if (cardEl) {
+            cardEl.remove();
+            if (isDesktopView()) {
+                addChatMessage(isDraft
+                    ? 'Draft <strong>' + propertyName + '</strong> has been deleted.'
+                    : 'Property <strong>' + propertyName + '</strong> has been cancelled.');
+            }
+        }
 
         modalOverlay.remove();
     });
@@ -73,12 +75,12 @@ function getActionButtons(propertyId, status, name) {
     // For Live & Active properties, show Status dropdown instead of Cancel button
     if (status === 'live-active') {
         return `
-            <div class="property-actions" style="display: flex; gap: 8px; margin-top: 12px;">
-                <button class="btn btn-p property-edit-btn" data-property-id="${propertyId}" style="flex: 1;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                    </svg>
+            <a href="#/listing/${propertyId}" class="btn btn-s property-view-listing-btn" data-property-id="${propertyId}" style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; text-decoration:none; margin-top:12px; background:var(--c-accent-bg); color:var(--c-accent); border:1px solid var(--c-accent); font-weight:600;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                View Listing
+            </a>
+            <div class="property-actions" style="display: flex; gap: 8px; padding-top: 8px;">
+                <button class="btn property-edit-btn" data-property-id="${propertyId}" style="flex: 1;">
                     Edit
                 </button>
                 <div class="filter-dropdown" style="flex: 1; position: relative;">
@@ -89,28 +91,9 @@ function getActionButtons(propertyId, status, name) {
                         </svg>
                     </button>
                     <div class="menu right" id="statusMenu-${propertyId}">
-                        <button class="menu-item status-menu-item" data-action="temporary-off" data-property-id="${propertyId}" data-property-name="${name}">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
-                            </svg>
-                            Temporary Off Market
-                        </button>
-                        <button class="menu-item status-menu-item" data-action="under-contract" data-property-id="${propertyId}" data-property-name="${name}">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                                <line x1="9" y1="15" x2="15" y2="15"></line>
-                            </svg>
-                            Under Contract
-                        </button>
-                        <button class="menu-item status-menu-item danger" data-action="cancel" data-property-id="${propertyId}" data-property-name="${name}">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="3 6 5 6 21 6"></polyline>
-                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                            </svg>
-                            Cancel Listing
-                        </button>
+                        <button class="menu-item status-menu-item" data-action="temporary-off" data-property-id="${propertyId}" data-property-name="${name}">Temporary Off Market</button>
+                        <button class="menu-item status-menu-item" data-action="under-contract" data-property-id="${propertyId}" data-property-name="${name}">Under Contract</button>
+                        <button class="menu-item status-menu-item danger" data-action="cancel" data-property-id="${propertyId}" data-property-name="${name}">Cancel Listing</button>
                     </div>
                 </div>
             </div>
@@ -120,12 +103,8 @@ function getActionButtons(propertyId, status, name) {
     // For Under Contract properties, show Edit button and Status dropdown (can change to Active or Closed)
     if (status === 'under-contract') {
         return `
-            <div class="property-actions" style="display: flex; gap: 8px; margin-top: 12px;">
-                <button class="btn btn-p property-edit-btn" data-property-id="${propertyId}" style="flex: 1;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                    </svg>
+            <div class="property-actions" style="display: flex; gap: 8px; padding-top: 12px;">
+                <button class="btn property-edit-btn" data-property-id="${propertyId}" style="flex: 1;">
                     Edit
                 </button>
                 <div class="filter-dropdown" style="flex: 1; position: relative;">
@@ -136,18 +115,8 @@ function getActionButtons(propertyId, status, name) {
                         </svg>
                     </button>
                     <div class="menu right" id="statusMenu-${propertyId}">
-                        <button class="menu-item status-menu-item" data-action="live-active" data-property-id="${propertyId}" data-property-name="${name}">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                            </svg>
-                            Live & Active
-                        </button>
-                        <button class="menu-item status-menu-item" data-action="closed" data-property-id="${propertyId}" data-property-name="${name}">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Closed
-                        </button>
+                        <button class="menu-item status-menu-item" data-action="live-active" data-property-id="${propertyId}" data-property-name="${name}">Live & Active</button>
+                        <button class="menu-item status-menu-item" data-action="closed" data-property-id="${propertyId}" data-property-name="${name}">Closed</button>
                     </div>
                 </div>
             </div>
@@ -156,21 +125,13 @@ function getActionButtons(propertyId, status, name) {
 
     // For other statuses, show Edit and Cancel buttons
     return `
-        <div class="property-actions" style="display: flex; gap: 8px; margin-top: 12px;">
-            <button class="btn btn-p property-edit-btn" data-property-id="${propertyId}" style="flex: 1;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                </svg>
+        <div class="property-actions" style="display: flex; gap: 8px; padding-top: 12px;">
+            <button class="btn property-edit-btn" data-property-id="${propertyId}" style="flex: 1;">
                 Edit
             </button>
             ${canDelete ? `
-                <button class="btn property-delete-btn" data-property-id="${propertyId}" data-property-name="${name}" data-property-status="${status}" style="flex: 1; background: var(--c-bg-white); border: 1px solid var(--c-border); color: var(--c-error);">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                    </svg>
-                    Cancel
+                <button class="btn btn-danger property-delete-btn" data-property-id="${propertyId}" data-property-name="${name}" data-property-status="${status}" style="flex: 1;">
+                    ${status === 'draft' ? 'Delete' : 'Cancel'}
                 </button>
             ` : ''}
         </div>
@@ -193,19 +154,68 @@ function getStatusLabel(status) {
     return labels[status] || 'Draft';
 }
 
+// Helper function to get short property type label
+function getShortPropertyType(type) {
+    const map = {
+        'Single Family Home': 'House',
+        'Condo': 'Condo',
+        'Townhouse': 'Townhouse',
+        'Multi-Family': 'Multi-Family',
+        'Land': 'Land',
+        'Commercial': 'Commercial'
+    };
+    return map[type] || type || 'House';
+}
+
+// Helper function to get transaction type label
+function getTransactionLabel(listingType) {
+    if (!listingType) return 'Sale';
+    return listingType.toLowerCase().includes('rent') ? 'Rent' : 'Sale';
+}
+
+// Helper function to get time ago label
+function getTimeAgo(dateStr) {
+    if (!dateStr) return '';
+    const now = Date.now();
+    const then = new Date(dateStr).getTime();
+    const diff = now - then;
+    const mins = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+    if (mins < 1) return 'Just now';
+    if (mins < 60) return mins + (mins === 1 ? ' minute ago' : ' minutes ago');
+    if (hours < 24) return hours + (hours === 1 ? ' hour ago' : ' hours ago');
+    if (days < 30) return days + (days === 1 ? ' day ago' : ' days ago');
+    const months = Math.floor(days / 30);
+    if (months < 12) return months + (months === 1 ? ' month ago' : ' months ago');
+    const years = Math.floor(days / 365);
+    return years + (years === 1 ? ' year ago' : ' years ago');
+}
+
 // Helper function to render a property card
 function renderPropertyCard(property) {
     const statusClass = property.status || 'draft';
     const statusLabel = getStatusLabel(statusClass);
-    const price = property.price ? '$' + parseFloat(property.price).toLocaleString() : 'No price';
+    const priceNum = property.price ? parseFloat(property.price) : 0;
+    const price = priceNum ? '$' + priceNum.toLocaleString() : 'No price';
     const address = property.address || 'No address';
+    const city = property.city || '';
+    const state = property.state || '';
+    const zipcode = property.zipcode || '';
+    const cityStateZip = [city, state].filter(Boolean).join(', ') + (zipcode ? ' ' + zipcode : '');
     const beds = property.beds || 0;
     const baths = property.baths || 0;
-    const sqft = property.livingArea ? parseFloat(property.livingArea).toLocaleString() + ' sqft' : '';
+    const sqftNum = property.livingArea ? parseFloat(property.livingArea) : 0;
+    const sqft = sqftNum ? sqftNum.toLocaleString() + ' sqft' : '';
+    const pricePerSqft = (priceNum && sqftNum) ? '$' + Math.round(priceNum / sqftNum).toLocaleString() + '/sqft' : '';
+    const propType = getShortPropertyType(property.propertyType);
+    const transType = getTransactionLabel(property.listingType);
+    const timeAgo = getTimeAgo(property.createdAt);
 
     return `
-        <div class="property-card" style="position:relative;">
+        <div class="property-card" data-property-id="${property.id}" style="position:relative;">
             <span class="property-status ${statusClass}" style="position:absolute;top:10px;left:10px;z-index:10;">${statusLabel}</span>
+            ${timeAgo ? `<span style="position:absolute;top:10px;right:10px;z-index:10;font-size:11px;color:white;background:rgba(0,0,0,0.4);padding:3px 8px;border-radius:12px;">${timeAgo}</span>` : ''}
             <div class="property-image" style="background: linear-gradient(135deg, #7d8ff7 0%, #a5b4fc 100%);">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -213,8 +223,9 @@ function renderPropertyCard(property) {
                 </svg>
             </div>
             <div class="property-details">
-                <h3>${address}</h3>
-                <p style="font-size: 18px; font-weight: 700; color: var(--c-primary); margin: 8px 0;">${price}</p>
+                <p style="font-size: 13px; color: var(--c-text-secondary); margin-bottom: 4px;">${propType} for ${transType}</p>
+                <h3><span class="address-main">${address}</span>${cityStateZip ? `<span class="address-secondary">${cityStateZip}</span>` : ''}</h3>
+                <p style="font-size: 18px; font-weight: 700; color: var(--c-primary); margin: 8px 0;">${price}${pricePerSqft ? `<span style="font-size: 13px; font-weight: 400; color: var(--c-text-secondary); margin-left: 8px;">${pricePerSqft}</span>` : ''}</p>
                 <p style="font-size: 13px; color: var(--c-text-secondary); margin-bottom: 12px;">${beds} beds · ${baths} baths${sqft ? ' · ' + sqft : ''}</p>
                 ${getActionButtons(property.id, statusClass, address)}
             </div>
@@ -225,9 +236,19 @@ function renderPropertyCard(property) {
 export function render() {
     const properties = store.get('properties') || [];
     const hasProperties = properties.length > 0;
+    const showSearchBar = properties.length >= 2;
 
     return `<div class="visit-tabs">
         <button class="btn btn-accent compose-btn" id="addPropertyBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add new listing</button>
+        ${showSearchBar ? `
+            <div class="message-search">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="propertySearchInput" placeholder="Search properties..." />
+            </div>
+        ` : ''}
         <div class="filter-dropdown" style="position: relative;">
             <button class="filter-btn" id="statusFilterBtn">
                 <span id="statusFilterText">All Statuses</span>
@@ -236,74 +257,16 @@ export function render() {
                 </svg>
             </button>
             <div class="menu right scroll" id="statusFilterMenu">
-                <button class="menu-item status-filter-item active" data-status="all">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                    </svg>
-                    All Statuses
-                </button>
-                <button class="menu-item status-filter-item" data-status="draft">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                    </svg>
-                    Draft
-                </button>
-                <button class="menu-item status-filter-item" data-status="pending-payment">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                        <line x1="1" y1="10" x2="23" y2="10"></line>
-                    </svg>
-                    Pending Payment
-                </button>
-                <button class="menu-item status-filter-item" data-status="in-progress">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                    </svg>
-                    In Progress
-                </button>
-                <button class="menu-item status-filter-item" data-status="request-doc">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                    </svg>
-                    Request Extra Document
-                </button>
-                <button class="menu-item status-filter-item" data-status="live-active">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                    </svg>
-                    Live & Active
-                </button>
-                <button class="menu-item status-filter-item" data-status="temporary-off">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
-                    </svg>
-                    Temporary Off Market
-                </button>
-                <button class="menu-item status-filter-item" data-status="under-contract">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="9" y1="15" x2="15" y2="15"></line>
-                    </svg>
-                    Under Contract
-                </button>
-                <button class="menu-item status-filter-item" data-status="closed">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    Closed
-                </button>
-                <button class="menu-item status-filter-item" data-status="cancelled">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                    Cancelled
-                </button>
+                <button class="menu-item status-filter-item active" data-status="all">All Statuses</button>
+                <button class="menu-item status-filter-item" data-status="draft">Draft</button>
+                <button class="menu-item status-filter-item" data-status="pending-payment">Pending Payment</button>
+                <button class="menu-item status-filter-item" data-status="in-progress">In Progress</button>
+                <button class="menu-item status-filter-item" data-status="request-doc">Request Extra Document</button>
+                <button class="menu-item status-filter-item" data-status="live-active">Live & Active</button>
+                <button class="menu-item status-filter-item" data-status="temporary-off">Temporary Off Market</button>
+                <button class="menu-item status-filter-item" data-status="under-contract">Under Contract</button>
+                <button class="menu-item status-filter-item" data-status="closed">Closed</button>
+                <button class="menu-item status-filter-item" data-status="cancelled">Cancelled</button>
             </div>
         </div>
     </div>
@@ -341,6 +304,7 @@ export function render() {
 
 export function init() {
     let currentStatusFilter = 'all';
+    let currentSearchQuery = '';
 
     document.getElementById('addPropertyBtn')?.addEventListener('click', () => {
         window.location.hash = '/submit-property';
@@ -349,6 +313,23 @@ export function init() {
     document.getElementById('addPropertyBtnEmpty')?.addEventListener('click', () => {
         window.location.hash = '/submit-property';
     });
+
+    // Search input handler
+    document.getElementById('propertySearchInput')?.addEventListener('input', (e) => {
+        currentSearchQuery = e.target.value.toLowerCase();
+        filterProperties();
+    });
+
+    function filterProperties() {
+        const propertyCards = document.querySelectorAll('.property-card');
+        propertyCards.forEach(card => {
+            const cardStatus = card.querySelector('.property-status');
+            const cardText = card.textContent.toLowerCase();
+            const matchesStatus = currentStatusFilter === 'all' || (cardStatus && cardStatus.classList.contains(currentStatusFilter));
+            const matchesSearch = !currentSearchQuery || cardText.includes(currentSearchQuery);
+            card.style.display = (matchesStatus && matchesSearch) ? '' : 'none';
+        });
+    }
 
     // Status filter dropdown toggle
     document.getElementById('statusFilterBtn')?.addEventListener('click', (e) => {
@@ -376,25 +357,9 @@ export function init() {
             document.getElementById('statusFilterMenu').classList.remove('show');
 
             // Filter properties
-            filterPropertiesByStatus(status);
+            filterProperties();
         });
     });
-
-    function filterPropertiesByStatus(status) {
-        const propertyCards = document.querySelectorAll('.property-card');
-
-        propertyCards.forEach(card => {
-            const cardStatus = card.querySelector('.property-status');
-
-            if (status === 'all') {
-                card.style.display = '';
-            } else {
-                // Get status class from the badge
-                const hasStatus = cardStatus && cardStatus.classList.contains(status);
-                card.style.display = hasStatus ? '' : 'none';
-            }
-        });
-    }
 
     // Edit button handlers
     document.querySelectorAll('.property-edit-btn').forEach(btn => {
@@ -414,8 +379,9 @@ export function init() {
             e.stopPropagation();
             const propertyId = btn.dataset.propertyId;
             const propertyName = btn.dataset.propertyName;
+            const propertyStatus = btn.dataset.propertyStatus;
 
-            showCancelModal(propertyId, propertyName);
+            showCancelModal(propertyId, propertyName, propertyStatus);
         });
     });
 
@@ -448,8 +414,8 @@ export function init() {
             if (menu) menu.classList.remove('show');
 
             if (action === 'cancel') {
-                // Show cancel confirmation modal
-                showCancelModal(propertyId, propertyName);
+                // Show cancel confirmation modal (always 'live-active' from status menu)
+                showCancelModal(propertyId, propertyName, 'live-active');
             } else if (action === 'temporary-off') {
                 // Update status to temporary off market
                 if (isDesktopView()) {
@@ -474,6 +440,17 @@ export function init() {
                     addChatMessage('Property <strong>' + propertyName + '</strong> has been closed.');
                 }
                 // Update property status in store when connected
+            }
+        });
+    });
+
+    // In-progress cards open the MLS questionnaire
+    document.querySelectorAll('.property-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('button') || e.target.closest('.filter-dropdown')) return;
+            if (card.querySelector('.property-status.in-progress')) {
+                const pid = card.dataset.propertyId;
+                if (pid) window.location.hash = `/mls-form/${pid}`;
             }
         });
     });

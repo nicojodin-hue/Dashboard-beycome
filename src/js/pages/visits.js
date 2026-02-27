@@ -5,9 +5,22 @@ import { showMessageModal, showSuccess } from '../components/modals.js';
 let pendingVisitsCount = 2;
 
 export function render() {
+    // Count total visits (hardcoded for demo, should come from store in production)
+    const totalVisits = 3;
+    const showSearchBar = totalVisits >= 2;
+
     return `<div class="visit-tabs">
+        ${showSearchBar ? `
+            <div class="message-search">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="visitSearchInput" placeholder="Search showings..." />
+            </div>
+        ` : ''}
         <div class="filter-dropdown">
-            <button class="filter-btn" id="visitFilterBtn"><span id="filterDropdownText">All</span><span class="filter-count" id="filterDropdownCount">3</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <button class="filter-btn" id="visitFilterBtn"><span id="filterDropdownText">All</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
             <div class="menu" id="filterDropdownMenu">
                 <button class="menu-item active" data-filter="all">All <span class="filter-count">3</span></button>
                 <button class="menu-item" data-filter="received">Received <span class="filter-count">2</span></button>
@@ -27,7 +40,7 @@ export function render() {
                     </div>
                 </div>
                 <div class="visit-actions">
-                    <button class="btn decline-btn">Decline</button>
+                    <button class="btn btn-danger decline-btn">Decline</button>
                     <button class="btn btn-success accept-btn">Accept</button>
                 </div>
             </div>
@@ -43,7 +56,7 @@ export function render() {
                     </div>
                 </div>
                 <div class="visit-actions">
-                    <button class="btn decline-btn">Decline</button>
+                    <button class="btn btn-danger decline-btn">Decline</button>
                     <button class="btn btn-success accept-btn">Accept</button>
                 </div>
             </div>
@@ -59,14 +72,60 @@ export function render() {
                         <span class="status-badge accepted">Confirmed</span>
                     </div>
                 </div>
-                <div class="visit-actions"><button class="btn cancel-requested-btn">Cancel</button></div>
+                <div class="visit-actions"><button class="btn btn-danger cancel-requested-btn">Cancel</button></div>
             </div>
         </div>
     </div>`;
 }
 
 export function init() {
+    let currentFilter = 'all';
+    let currentSearchQuery = '';
+
     document.getElementById('visitFilterBtn')?.addEventListener('click', (e) => toggleMenu('filterDropdownMenu', e));
+
+    // Visit search handler
+    const searchInput = document.getElementById('visitSearchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentSearchQuery = e.target.value.toLowerCase();
+            filterVisits();
+        });
+    }
+
+    function filterVisits() {
+        const visitCards = document.querySelectorAll('.visit-card');
+
+        visitCards.forEach(card => {
+            const address = card.querySelector('.address-main')?.textContent.toLowerCase() || '';
+            const cityStateZip = card.querySelector('.address-secondary')?.textContent.toLowerCase() || '';
+            const fullAddress = address + ' ' + cityStateZip;
+            const contactName = card.querySelector('.visit-meta-row strong:nth-of-type(2)')?.textContent.toLowerCase() || '';
+            const dateTime = card.querySelector('.visit-meta-row strong:first-of-type')?.textContent.toLowerCase() || '';
+            const searchableText = fullAddress + ' ' + contactName + ' ' + dateTime;
+
+            // Check search query
+            let searchMatch = true;
+            if (currentSearchQuery) {
+                searchMatch = searchableText.includes(currentSearchQuery);
+            }
+
+            // Check filter (received/requested/all)
+            let filterMatch = true;
+            if (currentFilter !== 'all') {
+                const isInReceived = card.closest('#visitsReceived') !== null;
+                const isInRequested = card.closest('#visitsRequested') !== null;
+                filterMatch = (currentFilter === 'received' && isInReceived) || (currentFilter === 'requested' && isInRequested);
+            }
+
+            // Show card only if both match
+            card.style.display = (searchMatch && filterMatch) ? '' : 'none';
+        });
+
+        // Hide/show sections based on filter
+        document.getElementById('visitsReceived').style.display = (currentFilter === 'all' || currentFilter === 'received') ? 'block' : 'none';
+        document.getElementById('visitsRequested').style.display = (currentFilter === 'all' || currentFilter === 'requested') ? 'block' : 'none';
+    }
 
     document.querySelectorAll('#filterDropdownMenu .menu-item').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -74,10 +133,9 @@ export function init() {
             document.querySelectorAll('#filterDropdownMenu .menu-item').forEach(i => i.classList.remove('active'));
             btn.classList.add('active');
             document.getElementById('filterDropdownMenu').classList.remove('show');
-            const filter = btn.dataset.filter;
+            currentFilter = btn.dataset.filter;
             document.getElementById('filterDropdownText').textContent = btn.textContent.trim().split(' ')[0];
-            document.getElementById('visitsReceived').style.display = (filter === 'all' || filter === 'received') ? 'block' : 'none';
-            document.getElementById('visitsRequested').style.display = (filter === 'all' || filter === 'requested') ? 'block' : 'none';
+            filterVisits();
         });
     });
 

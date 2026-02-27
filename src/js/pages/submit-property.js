@@ -5,6 +5,48 @@ let signingDocs = [];
 let propertyMap = null;
 let propertyMarker = null;
 let geocoder = null;
+let sideOptionsHeight = 0;
+let sideOptionsScrollBound = false;
+
+function positionSideOptions() {
+    const boxR = document.getElementById('packageIncludesRight');
+    if (!boxR || boxR.style.display === 'none') return;
+
+    const col = document.getElementById('sidebarColumn');
+    const mapCard = document.getElementById('sidebarMapCard');
+    const payBtn = document.getElementById('continuePaymentBtn');
+    const pkgForm = document.getElementById('packageOptionsForm');
+
+    // Horizontal position: align with sidebar
+    if (col) {
+        const colRect = col.getBoundingClientRect();
+        boxR.style.left = colRect.left + 'px';
+        boxR.style.width = colRect.width + 'px';
+    }
+
+    if (!pkgForm) return;
+
+    // Natural position: follow packageOptionsForm
+    const pkgTop = pkgForm.getBoundingClientRect().top;
+
+    // Upper limit: 20px below the sticky map
+    const mapH = mapCard ? mapCard.offsetHeight : 0;
+    const minTop = 147 + mapH + 20;
+
+    // Lower limit: bottom of side options aligns with bottom of pay button
+    const payBottom = payBtn ? payBtn.getBoundingClientRect().bottom : window.innerHeight;
+    const maxTop = payBottom - sideOptionsHeight;
+
+    // Follow packages, clamp to stay under map and above pay button bottom
+    let top = Math.max(minTop, pkgTop);
+    // Only apply lower limit if pay button is visible in viewport
+    if (payBtn && payBottom <= window.innerHeight) {
+        top = Math.min(top, maxTop);
+    }
+
+    boxR.style.top = top + 'px';
+}
+
 
 const pkgIncludes = {
     basic: [
@@ -56,14 +98,30 @@ export function render(propertyId = null) {
     const step2Display = isEditing ? 'block' : 'none';
 
     return `
-    <header style="background:var(--c-bg); padding:20px 0; border-bottom:1px solid var(--c-border);">
-        <div style="max-width:1400px; margin:0 auto; padding:0 20px; display:flex; align-items:center; justify-content:space-between;">
-            <a href="javascript:void(0)" id="submitBackBtn" style="display:flex; align-items:center; gap:6px; text-decoration:none; color:var(--c-primary); font-size:14px; font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>Back</a>
-            <a href="#" class="logo" style="text-decoration:none;"><svg width="141" height="27" viewBox="0 0 141 27" fill="none" xmlns="http://www.w3.org/2000/svg" title="beycome.com" alt="beycome.com"><path d="M55.5,9.8c-.4-.89-.98-1.69-1.7-2.33-.72-.64-1.57-1.12-2.49-1.4-.92-.28-1.89-.35-2.84-.21-.95.14-1.86.48-2.67,1.01-1,.64-1.84,1.52-2.45,2.55-.61,1.04-.97,2.2-1.05,3.41-.14,1.09-.05,2.2.25,3.26.3,1.06.82,2.04,1.51,2.88.63.78,1.42,1.41,2.3,1.86.89.45,1.86.7,2.84.74.99.04,1.97-.13,2.89-.51.92-.38,1.75-.95,2.44-1.67.7-.74,1.21-1.65,1.47-2.64h-3.41c-.06,0-.11.02-.16.05-.05.03-.09.08-.12.13-.28.39-.64.7-1.05.93-.41.23-.87.36-1.34.38-.85.13-1.73-.05-2.46-.51-.74-.46-1.29-1.17-1.57-2.01-.13-.41-.13-.41.28-.41h9.76c.23,0,.32-.04.35-.29.24-1.79-.04-3.6-.8-5.23h0ZM45.71,12.15c.16-.93.66-1.76,1.41-2.32.75-.56,1.68-.8,2.59-.67.83-.03,1.64.26,2.28.81.63.55,1.04,1.33,1.13,2.17h-7.41Z" fill="#070707"/><path d="M106.82,7.54c.58-.81,1.44-1.37,2.4-1.59,1.98-.38,3.78.02,4.92,1.93.12.2.17.23.32.02.58-.79,1.37-1.4,2.27-1.75.9-.36,1.88-.45,2.84-.26,2.75.33,3.98,2.2,4.38,4.58.11.72.16,1.45.15,2.18,0,2.77,0,5.53,0,8.29,0,.28-.06.36-.34.35-.86-.02-1.71-.02-2.57,0-.27,0-.35-.06-.35-.34.01-2.6.01-5.22,0-7.83.01-.76-.07-1.53-.26-2.27-.06-.28-.18-.55-.35-.79s-.38-.44-.62-.6c-.24-.15-.51-.26-.79-.31-.28-.05-.57-.04-.85.03-1.31.16-1.95.91-2.21,2.39-.12.82-.18,1.64-.17,2.46,0,2.31,0,4.62,0,6.93,0,.28-.07.34-.33.33-.86-.02-1.72-.02-2.57,0-.3,0-.39-.05-.39-.38.02-2.78,0-5.55,0-8.33,0-.55-.07-1.1-.22-1.63-.06-.3-.18-.58-.35-.83-.17-.25-.38-.47-.63-.63-.25-.17-.53-.28-.82-.33-.29-.05-.59-.05-.89.02-1.33.14-1.97.91-2.17,2.43-.1.77-.15,1.55-.15,2.32,0,2.33,0,4.67,0,7,0,.27-.05.37-.34.36-.89-.02-1.79-.02-2.68,0-.22,0-.27-.06-.27-.28,0-4.86,0-9.72,0-14.58,0-.24.07-.3.31-.3.81.01,1.62.01,2.43,0,.22,0,.29.05.28.28-.02.34,0,.69,0,1.13" fill="#070707"/><path d="M100.48,8.86c-.93-1.4-2.32-2.4-3.92-2.83-1.6-.43-3.3-.25-4.78.5-1.17.58-2.16,1.46-2.89,2.55-.73,1.1-1.16,2.37-1.25,3.69-.15,1.16-.05,2.34.29,3.45.35,1.11.93,2.14,1.7,3,.99,1.16,2.32,1.94,3.79,2.24,1.47.3,3,.09,4.34-.59,1.19-.57,2.21-1.46,2.94-2.57.74-1.11,1.16-2.41,1.24-3.75.16-2.01-.36-4.02-1.48-5.69h0ZM97.39,17.08c-.33.37-.73.67-1.18.87-.45.2-.93.31-1.42.31-.49,0-.98-.1-1.43-.3-.45-.2-.85-.5-1.19-.86-.83-.91-1.29-2.1-1.31-3.34-.01-1.24.43-2.44,1.23-3.37.36-.42.8-.74,1.3-.96.5-.21,1.04-.31,1.58-.28.54.03,1.07.19,1.54.45.47.27.88.64,1.19,1.1.67.94,1.01,2.09.95,3.25-.06,1.16-.51,2.27-1.27,3.13" fill="#070707"/><path d="M85.96,16.25c-.96,2.73-2.58,4.72-5.48,5.21-1.34.27-2.73.12-3.99-.42-1.26-.54-2.33-1.46-3.07-2.64-1.13-1.64-1.62-3.65-1.37-5.64.08-1.08.38-2.13.89-3.09.51-.95,1.2-1.79,2.05-2.45.83-.64,1.78-1.07,2.79-1.28,1.01-.21,2.06-.19,3.06.07,1,.26,1.94.74,2.73,1.41.8.67,1.44,1.52,1.87,2.48.2.42.37.87.5,1.32h-3.51c-.05,0-.1,0-.15-.03-.04-.03-.08-.07-.1-.12-.29-.65-.77-1.19-1.38-1.54-.61-.34-1.32-.48-2.01-.37-.76.04-1.48.32-2.07.82-.58.49-1,1.17-1.17,1.92-.29.83-.37,1.71-.24,2.58.14.87.49,1.68,1.02,2.37.34.46.79.83,1.3,1.07.51.24,1.08.36,1.64.33.56-.03,1.11-.2,1.6-.5.49-.3.89-.71,1.19-1.2.06-.11.14-.19.25-.25.1-.06.22-.08.34-.06,1.08.01,2.16,0,3.3,0" fill="#070707"/><path d="M57.27,6.13c1.19,0,2.35,0,3.5,0,.23,0,.26.12.31.29.92,3.02,1.84,6.04,2.76,9.06.04.12.03.27.17.36.55-1.66,1.1-3.31,1.65-4.95.5-1.5.99-3,1.49-4.49.04-.13.05-.26.26-.26,1.17.01,2.35,0,3.52,0,.06.14-.03.24-.07.35-2.51,6.51-5.02,13.01-7.53,19.52-.03.11-.09.2-.18.26s-.2.08-.3.07c-1.03-.02-2.07,0-3.11,0-.01-.1.01-.21.07-.29.77-1.97,1.53-3.93,2.31-5.9.04-.09.06-.19.06-.29,0-.1-.02-.2-.05-.29-1.59-4.37-3.17-8.74-4.74-13.12-.03-.09-.06-.18-.09-.3" fill="#070707"/><path d="M139.38,9.77c-.44-.97-1.1-1.82-1.92-2.49-.82-.66-1.78-1.12-2.81-1.34-1.03-.22-2.09-.19-3.1.09-1.01.28-1.95.79-2.73,1.5-1.13,1.01-1.95,2.33-2.38,3.8-.43,1.47-.44,3.04-.04,4.51.4,1.81,1.45,3.41,2.96,4.45,1.5,1.05,3.34,1.47,5.14,1.17,1.21-.15,2.35-.64,3.29-1.42.94-.78,1.65-1.82,2.04-3,.1-.27.03-.31-.22-.31-.99.01-1.97,0-2.96,0-.09,0-.17,0-.25.04-.08.04-.15.09-.2.16-.28.38-.63.69-1.04.92-.41.22-.86.35-1.33.37-.86.13-1.74-.05-2.48-.52-.74-.47-1.3-1.18-1.57-2.03-.09-.28-.08-.39.26-.38,1.62.02,3.24,0,4.86,0s3.29,0,4.93,0c.23,0,.32-.04.35-.29.24-1.8-.04-3.63-.81-5.26h0ZM129.63,12.14c.15-.91.63-1.72,1.35-2.28.72-.56,1.61-.82,2.51-.72.85-.06,1.7.22,2.35.78.66.56,1.08,1.35,1.18,2.22h-7.39Z" fill="#070707"/><path d="M32.3,6.06c-.88.25-1.66.76-2.26,1.46,0-2.06-.01-4.03.01-6.01,0-.36-.1-.43-.43-.42-.83.03-1.67.02-2.5,0-.29,0-.37.06-.37.37.01,3.39,0,6.77,0,10.16,0,3.11,0,6.22,0,9.33,0,.26.06.34.33.34.8-.02,1.6-.02,2.4,0,.23,0,.3-.06.29-.29-.02-.52,0-1.04,0-1.62.33.37.69.72,1.07,1.04.36.3.77.55,1.2.73,1.35.56,2.86.62,4.25.17s2.58-1.39,3.37-2.65c.69-1.09,1.14-2.32,1.32-3.6.19-1.28.11-2.59-.24-3.84-.19-.93-.56-1.8-1.1-2.57-.54-.77-1.22-1.42-2.02-1.9s-1.68-.8-2.59-.92c-.92-.12-1.85-.04-2.74.22h0ZM37.75,13.42c.08,1.24-.27,2.46-1,3.45-.39.48-.88.86-1.44,1.1s-1.17.35-1.77.3c-.61-.05-1.19-.24-1.71-.57-.52-.33-.95-.77-1.27-1.31-.46-.78-.72-1.66-.75-2.56-.03-.91.16-1.81.56-2.61.32-.7.85-1.28,1.51-1.66.66-.38,1.41-.55,2.16-.48.81.05,1.58.36,2.2.89.62.52,1.07,1.23,1.28,2.03.14.46.21.93.22,1.41" fill="#070707"/><path d="M20.19,12.72c-.55-.66-1.34-1.07-2.18-1.16-.85-.09-1.69.17-2.36.7-.06.07-.15.1-.24.11-.09,0-.18-.03-.24-.1-.61-.46-1.35-.71-2.1-.7-.75,0-1.47.25-2.05.73-.58.48-.98,1.15-1.13,1.9-.14.68-.12,1.39.04,2.06.16.68.47,1.31.91,1.84,1.1,1.38,2.49,2.49,4.08,3.23.15.09.33.14.5.13.18,0,.35-.05.5-.14.89-.46,1.74-1.01,2.52-1.63,1.13-.83,1.97-2.01,2.41-3.37.2-.61.25-1.26.14-1.9-.11-.63-.39-1.23-.79-1.72h0ZM19.39,15.43c-.24,1.13-.88,2.14-1.79,2.83-.6.52-1.26.97-1.95,1.34-.05.05-.12.07-.19.08-.07,0-.14,0-.2-.04-1.25-.62-2.34-1.53-3.19-2.65-.37-.47-.59-1.04-.65-1.63-.05-.41.02-.83.21-1.2.19-.37.49-.66.86-.84.38-.12.79-.12,1.18,0,.38.12.72.36.97.67.1.18.26.31.44.39.19.08.39.08.58.03.18-.07.33-.19.43-.35.18-.24.42-.44.68-.59.27-.14.56-.23.86-.25.27,0,.53.05.77.16s.46.28.62.5c.17.21.29.46.35.73.06.27.06.54,0,.81" fill="#ff9b77"/><path d="M.16,14.92c0-1.84,0-3.69,0-5.53,0-.17.03-.34.1-.5.07-.16.18-.29.31-.4C3.67,5.86,6.77,3.23,9.88.59c.56-.48.87-.48,1.43-.01,3.11,2.64,6.22,5.28,9.33,7.93.1.06.19.15.25.25.07.1.11.21.13.33.02.12.01.24-.02.36-.03.12-.09.22-.16.32s-.17.17-.28.22c-.11.05-.22.08-.34.08-.12,0-.23-.02-.34-.07-.11-.05-.2-.12-.28-.21-2.84-2.41-5.69-4.82-8.53-7.24-.48-.41-.47-.41-.95,0-2.63,2.24-5.27,4.47-7.9,6.7-.14.1-.26.24-.34.41-.08.16-.11.34-.1.52.02,3.08.02,6.15,0,9.23,0,.38.11.44.45.44,2.63-.01,5.26,0,7.89,0,.18-.02.36.03.51.13.15.1.26.25.32.42.06.17.06.36,0,.54-.06.17-.17.32-.32.42-.14.1-.3.14-.46.14H1c-.12,0-.23-.01-.34-.05-.11-.04-.2-.11-.28-.19-.08-.09-.14-.19-.18-.3-.04-.11-.05-.23-.04-.35v-5.67" fill="#ff9b77"/></svg></a>
-            <div></div>
+    <header class="main-header" style="z-index:2001; height:56px;">
+        <div class="main-header-container">
+            <div class="main-header-left"><a href="javascript:void(0)" id="submitBackBtn">← Properties</a></div>
+            <div class="main-header-center"><a href="#" class="logo"><svg width="141" height="27" viewBox="0 0 141 27" fill="none" xmlns="http://www.w3.org/2000/svg" title="beycome.com" alt="beycome.com"><path d="M55.5,9.8c-.4-.89-.98-1.69-1.7-2.33-.72-.64-1.57-1.12-2.49-1.4-.92-.28-1.89-.35-2.84-.21-.95.14-1.86.48-2.67,1.01-1,.64-1.84,1.52-2.45,2.55-.61,1.04-.97,2.2-1.05,3.41-.14,1.09-.05,2.2.25,3.26.3,1.06.82,2.04,1.51,2.88.63.78,1.42,1.41,2.3,1.86.89.45,1.86.7,2.84.74.99.04,1.97-.13,2.89-.51.92-.38,1.75-.95,2.44-1.67.7-.74,1.21-1.65,1.47-2.64h-3.41c-.06,0-.11.02-.16.05-.05.03-.09.08-.12.13-.28.39-.64.7-1.05.93-.41.23-.87.36-1.34.38-.85.13-1.73-.05-2.46-.51-.74-.46-1.29-1.17-1.57-2.01-.13-.41-.13-.41.28-.41h9.76c.23,0,.32-.04.35-.29.24-1.79-.04-3.6-.8-5.23h0ZM45.71,12.15c.16-.93.66-1.76,1.41-2.32.75-.56,1.68-.8,2.59-.67.83-.03,1.64.26,2.28.81.63.55,1.04,1.33,1.13,2.17h-7.41Z" fill="#070707"/><path d="M106.82,7.54c.58-.81,1.44-1.37,2.4-1.59,1.98-.38,3.78.02,4.92,1.93.12.2.17.23.32.02.58-.79,1.37-1.4,2.27-1.75.9-.36,1.88-.45,2.84-.26,2.75.33,3.98,2.2,4.38,4.58.11.72.16,1.45.15,2.18,0,2.77,0,5.53,0,8.29,0,.28-.06.36-.34.35-.86-.02-1.71-.02-2.57,0-.27,0-.35-.06-.35-.34.01-2.6.01-5.22,0-7.83.01-.76-.07-1.53-.26-2.27-.06-.28-.18-.55-.35-.79s-.38-.44-.62-.6c-.24-.15-.51-.26-.79-.31-.28-.05-.57-.04-.85.03-1.31.16-1.95.91-2.21,2.39-.12.82-.18,1.64-.17,2.46,0,2.31,0,4.62,0,6.93,0,.28-.07.34-.33.33-.86-.02-1.72-.02-2.57,0-.3,0-.39-.05-.39-.38.02-2.78,0-5.55,0-8.33,0-.55-.07-1.1-.22-1.63-.06-.3-.18-.58-.35-.83-.17-.25-.38-.47-.63-.63-.25-.17-.53-.28-.82-.33-.29-.05-.59-.05-.89.02-1.33.14-1.97.91-2.17,2.43-.1.77-.15,1.55-.15,2.32,0,2.33,0,4.67,0,7,0,.27-.05.37-.34.36-.89-.02-1.79-.02-2.68,0-.22,0-.27-.06-.27-.28,0-4.86,0-9.72,0-14.58,0-.24.07-.3.31-.3.81.01,1.62.01,2.43,0,.22,0,.29.05.28.28-.02.34,0,.69,0,1.13" fill="#070707"/><path d="M100.48,8.86c-.93-1.4-2.32-2.4-3.92-2.83-1.6-.43-3.3-.25-4.78.5-1.17.58-2.16,1.46-2.89,2.55-.73,1.1-1.16,2.37-1.25,3.69-.15,1.16-.05,2.34.29,3.45.35,1.11.93,2.14,1.7,3,.99,1.16,2.32,1.94,3.79,2.24,1.47.3,3,.09,4.34-.59,1.19-.57,2.21-1.46,2.94-2.57.74-1.11,1.16-2.41,1.24-3.75.16-2.01-.36-4.02-1.48-5.69h0ZM97.39,17.08c-.33.37-.73.67-1.18.87-.45.2-.93.31-1.42.31-.49,0-.98-.1-1.43-.3-.45-.2-.85-.5-1.19-.86-.83-.91-1.29-2.1-1.31-3.34-.01-1.24.43-2.44,1.23-3.37.36-.42.8-.74,1.3-.96.5-.21,1.04-.31,1.58-.28.54.03,1.07.19,1.54.45.47.27.88.64,1.19,1.1.67.94,1.01,2.09.95,3.25-.06,1.16-.51,2.27-1.27,3.13" fill="#070707"/><path d="M85.96,16.25c-.96,2.73-2.58,4.72-5.48,5.21-1.34.27-2.73.12-3.99-.42-1.26-.54-2.33-1.46-3.07-2.64-1.13-1.64-1.62-3.65-1.37-5.64.08-1.08.38-2.13.89-3.09.51-.95,1.2-1.79,2.05-2.45.83-.64,1.78-1.07,2.79-1.28,1.01-.21,2.06-.19,3.06.07,1,.26,1.94.74,2.73,1.41.8.67,1.44,1.52,1.87,2.48.2.42.37.87.5,1.32h-3.51c-.05,0-.1,0-.15-.03-.04-.03-.08-.07-.1-.12-.29-.65-.77-1.19-1.38-1.54-.61-.34-1.32-.48-2.01-.37-.76.04-1.48.32-2.07.82-.58.49-1,1.17-1.17,1.92-.29.83-.37,1.71-.24,2.58.14.87.49,1.68,1.02,2.37.34.46.79.83,1.3,1.07.51.24,1.08.36,1.64.33.56-.03,1.11-.2,1.6-.5.49-.3.89-.71,1.19-1.2.06-.11.14-.19.25-.25.1-.06.22-.08.34-.06,1.08.01,2.16,0,3.3,0" fill="#070707"/><path d="M57.27,6.13c1.19,0,2.35,0,3.5,0,.23,0,.26.12.31.29.92,3.02,1.84,6.04,2.76,9.06.04.12.03.27.17.36.55-1.66,1.1-3.31,1.65-4.95.5-1.5.99-3,1.49-4.49.04-.13.05-.26.26-.26,1.17.01,2.35,0,3.52,0,.06.14-.03.24-.07.35-2.51,6.51-5.02,13.01-7.53,19.52-.03.11-.09.2-.18.26s-.2.08-.3.07c-1.03-.02-2.07,0-3.11,0-.01-.1.01-.21.07-.29.77-1.97,1.53-3.93,2.31-5.9.04-.09.06-.19.06-.29,0-.1-.02-.2-.05-.29-1.59-4.37-3.17-8.74-4.74-13.12-.03-.09-.06-.18-.09-.3" fill="#070707"/><path d="M139.38,9.77c-.44-.97-1.1-1.82-1.92-2.49-.82-.66-1.78-1.12-2.81-1.34-1.03-.22-2.09-.19-3.1.09-1.01.28-1.95.79-2.73,1.5-1.13,1.01-1.95,2.33-2.38,3.8-.43,1.47-.44,3.04-.04,4.51.4,1.81,1.45,3.41,2.96,4.45,1.5,1.05,3.34,1.47,5.14,1.17,1.21-.15,2.35-.64,3.29-1.42.94-.78,1.65-1.82,2.04-3,.1-.27.03-.31-.22-.31-.99.01-1.97,0-2.96,0-.09,0-.17,0-.25.04-.08.04-.15.09-.2.16-.28.38-.63.69-1.04.92-.41.22-.86.35-1.33.37-.86.13-1.74-.05-2.48-.52-.74-.47-1.3-1.18-1.57-2.03-.09-.28-.08-.39.26-.38,1.62.02,3.24,0,4.86,0s3.29,0,4.93,0c.23,0,.32-.04.35-.29.24-1.8-.04-3.63-.81-5.26h0ZM129.63,12.14c.15-.91.63-1.72,1.35-2.28.72-.56,1.61-.82,2.51-.72.85-.06,1.7.22,2.35.78.66.56,1.08,1.35,1.18,2.22h-7.39Z" fill="#070707"/><path d="M32.3,6.06c-.88.25-1.66.76-2.26,1.46,0-2.06-.01-4.03.01-6.01,0-.36-.1-.43-.43-.42-.83.03-1.67.02-2.5,0-.29,0-.37.06-.37.37.01,3.39,0,6.77,0,10.16,0,3.11,0,6.22,0,9.33,0,.26.06.34.33.34.8-.02,1.6-.02,2.4,0,.23,0,.3-.06.29-.29-.02-.52,0-1.04,0-1.62.33.37.69.72,1.07,1.04.36.3.77.55,1.2.73,1.35.56,2.86.62,4.25.17s2.58-1.39,3.37-2.65c.69-1.09,1.14-2.32,1.32-3.6.19-1.28.11-2.59-.24-3.84-.19-.93-.56-1.8-1.1-2.57-.54-.77-1.22-1.42-2.02-1.9s-1.68-.8-2.59-.92c-.92-.12-1.85-.04-2.74.22h0ZM37.75,13.42c.08,1.24-.27,2.46-1,3.45-.39.48-.88.86-1.44,1.1s-1.17.35-1.77.3c-.61-.05-1.19-.24-1.71-.57-.52-.33-.95-.77-1.27-1.31-.46-.78-.72-1.66-.75-2.56-.03-.91.16-1.81.56-2.61.32-.7.85-1.28,1.51-1.66.66-.38,1.41-.55,2.16-.48.81.05,1.58.36,2.2.89.62.52,1.07,1.23,1.28,2.03.14.46.21.93.22,1.41" fill="#070707"/><path d="M20.19,12.72c-.55-.66-1.34-1.07-2.18-1.16-.85-.09-1.69.17-2.36.7-.06.07-.15.1-.24.11-.09,0-.18-.03-.24-.1-.61-.46-1.35-.71-2.1-.7-.75,0-1.47.25-2.05.73-.58.48-.98,1.15-1.13,1.9-.14.68-.12,1.39.04,2.06.16.68.47,1.31.91,1.84,1.1,1.38,2.49,2.49,4.08,3.23.15.09.33.14.5.13.18,0,.35-.05.5-.14.89-.46,1.74-1.01,2.52-1.63,1.13-.83,1.97-2.01,2.41-3.37.2-.61.25-1.26.14-1.9-.11-.63-.39-1.23-.79-1.72h0ZM19.39,15.43c-.24,1.13-.88,2.14-1.79,2.83-.6.52-1.26.97-1.95,1.34-.05.05-.12.07-.19.08-.07,0-.14,0-.2-.04-1.25-.62-2.34-1.53-3.19-2.65-.37-.47-.59-1.04-.65-1.63-.05-.41.02-.83.21-1.2.19-.37.49-.66.86-.84.38-.12.79-.12,1.18,0,.38.12.72.36.97.67.1.18.26.31.44.39.19.08.39.08.58.03.18-.07.33-.19.43-.35.18-.24.42-.44.68-.59.27-.14.56-.23.86-.25.27,0,.53.05.77.16s.46.28.62.5c.17.21.29.46.35.73.06.27.06.54,0,.81" fill="#ff9b77"/><path d="M.16,14.92c0-1.84,0-3.69,0-5.53,0-.17.03-.34.1-.5.07-.16.18-.29.31-.4C3.67,5.86,6.77,3.23,9.88.59c.56-.48.87-.48,1.43-.01,3.11,2.64,6.22,5.28,9.33,7.93.1.06.19.15.25.25.07.1.11.21.13.33.02.12.01.24-.02.36-.03.12-.09.22-.16.32s-.17.17-.28.22c-.11.05-.22.08-.34.08-.12,0-.23-.02-.34-.07-.11-.05-.2-.12-.28-.21-2.84-2.41-5.69-4.82-8.53-7.24-.48-.41-.47-.41-.95,0-2.63,2.24-5.27,4.47-7.9,6.7-.14.1-.26.24-.34.41-.08.16-.11.34-.1.52.02,3.08.02,6.15,0,9.23,0,.38.11.44.45.44,2.63-.01,5.26,0,7.89,0,.18-.02.36.03.51.13.15.1.26.25.32.42.06.17.06.36,0,.54-.06.17-.17.32-.32.42-.14.1-.3.14-.46.14H1c-.12,0-.23-.01-.34-.05-.11-.04-.2-.11-.28-.19-.08-.09-.14-.19-.18-.3-.04-.11-.05-.23-.04-.35v-5.67" fill="#ff9b77"/></svg></a></div>
+            <div class="main-header-right"></div>
         </div>
     </header>
-    <div id="submitStep1" style="display:${step1Display}; flex-direction:column; align-items:center; justify-content:center; min-height:calc(100vh - 80px); text-align:center; padding:40px 20px;">
+    <nav class="top-nav" style="z-index:2000; border-bottom:none; top:56px;">
+        <div class="nav-greeting-section"><span class="nav-greeting" id="submitNavGreeting"><span id="step2PropertyAddress"></span></span></div>
+        <div class="nav-container">
+            <div style="font-size:14px; color:var(--c-text-secondary); display:flex; align-items:center; gap:6px; flex-wrap:wrap; padding:8px 16px;">
+                <span>📍 Covered by <strong style="color:var(--c-primary);" id="mlsInlineText">Miami Association of Realtors (MIAMI MLS)</strong></span>
+                <span>·</span>
+                <span style="position:relative;"><a href="javascript:void(0)" id="changeMlsBtn" style="color:var(--c-accent); text-decoration:none; font-weight:500;">Change MLS</a>
+                <div class="menu" id="mlsInlineMenu" style="min-width:320px;">
+                    <button class="menu-item active" data-mls="Miami Association of Realtors (MIAMI MLS)">Miami Association of Realtors (MIAMI MLS)<span class="mls-badge">Local MLS</span></button>
+                    <button class="menu-item" data-mls="Stellar MLS">Stellar MLS</button>
+                    <button class="menu-item" data-mls="Broward–Palm Beach MLS">Broward–Palm Beach MLS</button>
+                </div></span>
+            </div>
+        </div>
+    </nav>
+    <div style="height:147px;"></div>
+    <div id="submitStep1" style="display:${step1Display}; flex-direction:column; align-items:center; justify-content:center; min-height:calc(100vh - 147px); text-align:center; padding:40px 20px;">
         <h1 class="submit-title">Your Savings Journey<br>Starts Here</h1>
         <p class="submit-subtitle">Full control. Maximum exposure. One flat fee. Zero BS</p>
         <div class="submit-search-bar">
@@ -86,28 +144,17 @@ export function render(propertyId = null) {
         </div>
     </div>
 
-    <div id="submitStep2" style="display:${step2Display}; max-width:1000px; margin:0 auto; padding:40px 20px 80px;">
-        <div style="display:flex; gap:32px; align-items:flex-start;">
+    <div id="submitStep2" style="display:${step2Display}; max-width:1400px; margin:0 auto; padding:20px 20px 80px; padding-left:36px; padding-right:507px;">
+        <div style="display:flex; gap:20px; align-items:flex-start;">
             <div style="flex:1; min-width:0;">
-                <h2 style="font-size:24px; font-weight:700; color:var(--c-primary); margin-bottom:4px;"><span id="step2PropertyAddress"></span></h2>
-                <div style="font-size:14px; color:var(--c-text-secondary); margin-bottom:8px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                    <span>📍 Covered by <strong style="color:var(--c-primary);" id="mlsInlineText">Miami Association of Realtors (MIAMI MLS)</strong></span>
-                    <span>·</span>
-                    <span style="position:relative;"><a href="javascript:void(0)" id="changeMlsBtn" style="color:var(--c-accent); text-decoration:none; font-weight:500;">Change MLS</a>
-                    <div class="menu" id="mlsInlineMenu" style="min-width:320px;">
-                        <button class="menu-item active" data-mls="Miami Association of Realtors (MIAMI MLS)">Miami Association of Realtors (MIAMI MLS)<span class="mls-badge">Local MLS</span></button>
-                        <button class="menu-item" data-mls="Stellar MLS">Stellar MLS</button>
-                        <button class="menu-item" data-mls="Broward–Palm Beach MLS">Broward–Palm Beach MLS</button>
-                    </div></span>
-                </div>
 
-        <div class="message-tabs" style="margin:16px 0 32px; display:inline-flex;">
+        <div class="message-tabs" style="margin:0 0 20px; display:inline-flex;">
             <button class="message-tab active" id="saleTab">For Sale</button>
             <button class="message-tab" id="rentTab2">For Rent</button>
         </div>
 
-        <div style="margin-bottom:32px;">
-            <label style="display:block; font-size:15px; font-weight:600; color:var(--c-primary); margin-bottom:12px;">Which of these best describes your property?<span class="required-mark">*</span><span class="info-bubble" id="propertyTypeInfo">?<span class="info-tooltip">Select the type that matches your property deed. If unsure, check your property tax records.</span></span></label>
+        <div style="margin-bottom:20px;">
+            <label style="display:block; font-size:15px; font-weight:600; color:var(--c-primary); margin-bottom:12px;">Which of these best describes your property?<span class="required-mark">*</span></label>
             <div style="display:flex; flex-wrap:wrap; gap:10px;" id="propertyTypeGrid">
                 <button class="btn submit-prop-type">🏠 House</button>
                 <button class="btn submit-prop-type">🏢 Apartment</button>
@@ -119,7 +166,7 @@ export function render(propertyId = null) {
             </div>
         </div>
 
-        <div style="margin-bottom:32px;">
+        <div style="margin-bottom:20px;">
             <h3 style="font-size:15px; font-weight:600; color:var(--c-primary); margin-bottom:4px;">Share or verify some basics about your <span id="propertyTypeLabel">property</span>:</h3>
             <p style="font-size:13px; color:var(--c-text-secondary);">Don't worry, you'll be able to add more details later.</p>
         </div>
@@ -137,9 +184,9 @@ export function render(propertyId = null) {
             </div>
         </div>
 
-        <div style="display:flex; gap:12px; margin-bottom:32px;" id="bedsRow">
+        <div style="display:flex; gap:12px; margin-bottom:20px;" id="bedsRow">
             <div class="form-group" id="fieldBeds">
-                <label>Beds<span class="required-mark">*</span><span class="info-bubble" id="bedsInfo">?<span class="info-tooltip">Count only rooms that can legally be used as bedrooms (with closet and window).</span></span></label>
+                <label>Beds<span class="required-mark">*</span></label>
                 <div class="stepper-pill">
                     <button class="stepper-btn disabled" id="submitBeds_minus">−</button>
                     <span class="stepper-num" id="submitBeds" contenteditable="true">0</span>
@@ -163,16 +210,16 @@ export function render(propertyId = null) {
                 </div>
             </div>
         </div>
-        <div style="display:flex; gap:12px; margin-bottom:32px; align-items:flex-end;" id="propertyDetailsGrid">
+        <div style="display:flex; gap:16px; margin-bottom:20px;" id="propertyDetailsGrid">
             <div class="form-group" id="fieldLivingArea" style="margin-bottom:0;">
-                <label>Living Area Sqft<span class="required-mark">*</span><span class="info-bubble" id="livingAreaInfo">?<span class="info-tooltip">Include only heated/cooled interior space. Garages, porches, and unfinished areas don't count!</span></span></label>
-                <input type="text" id="submitLivingArea" class="input" placeholder="0" maxlength="9" style="width:120px; height:37px; padding:8px 12px;">
+                <label>Living Area Sqft<span class="required-mark">*</span></label>
+                <input type="text" id="submitLivingArea" class="input" placeholder="0" maxlength="9" style="width:140px; height:37px; padding:8px 12px;">
             </div>
             <div class="form-group" id="fieldLotSize" style="margin-bottom:0;">
                 <label>Lot Size<span class="required-mark">*</span></label>
-                <div style="display:flex; gap:10px; align-items:center;">
-                    <input type="text" id="submitLotSize" class="input" placeholder="0" style="width:120px; min-width:120px; height:37px; padding:8px 12px;">
-                    <div class="message-tabs" style="display:inline-flex;">
+                <div style="display:flex; gap:10px; align-items:flex-start;">
+                    <input type="text" id="submitLotSize" class="input" placeholder="0" style="width:140px; height:37px; padding:8px 12px;">
+                    <div class="message-tabs" style="display:inline-flex; margin-top:-2px;">
                         <button class="message-tab active" id="sqftTab">Sqft</button>
                         <button class="message-tab" id="acresTab">Acres</button>
                     </div>
@@ -181,7 +228,7 @@ export function render(propertyId = null) {
         </div>
 
         <div class="form-group sp-section">
-            <label>Set your price<span class="required-mark">*</span><span class="info-bubble" id="priceInfo">?<span class="info-tooltip">Price competitively! Homes priced within 5% of market value sell 3x faster and get more offers.</span></span></label>
+            <label>Set your price<span class="required-mark">*</span></label>
             <div class="sp-row">
                 <div class="sp-price-input"><span class="sp-price-symbol">$</span><input type="text" id="submitPrice" class="input" placeholder="0" value="0" style="padding-left:28px;width:120px;"></div>
                 <span class="sp-savings">💰 Your potential commission savings: $<span id="savingsAmount">0</span></span>
@@ -199,13 +246,13 @@ export function render(propertyId = null) {
             <details style="cursor:pointer;"><summary class="sp-caption" style="font-weight:600;color:var(--c-accent);list-style:none;display:flex;align-items:center;gap:4px;">More details <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></summary><p style="font-size:11px;color:var(--c-text-secondary);line-height:1.5;margin-top:12px;padding-top:12px;border-top:1px solid var(--c-border);">This AVM is based on Realtors Property Resource's RPR, which is calculated by analyzing nearby, similar, & most recently closed homes. beycome™ and brand children disclaims any liability arising out of the use of this AVM.</p></details>
         </div>
 
-        <div style="margin-bottom:32px;">
+        <div style="margin-bottom:20px;">
             <h3 style="font-size:15px; font-weight:600; color:var(--c-primary); margin-bottom:4px;">Let's describe your property</h3>
             <p style="font-size:13px; color:var(--c-text-secondary); margin-bottom:16px;">Share what makes your place special; you can always change it later.</p>
             <textarea id="submitDescription" class="input" placeholder="e.g., Bright corner unit with updated kitchen, hardwood floors throughout, and a private balcony overlooking the garden..." style="min-height:220px; resize:vertical; font-family:inherit;"></textarea>
         </div>
 
-        <div style="margin-bottom:32px;">
+        <div style="margin-bottom:20px;">
             <h3 style="font-size:15px; font-weight:600; color:var(--c-primary); margin-bottom:4px;">Legal information for <span id="legalHeaderAddress"></span></h3>
             <p style="font-size:13px; color:var(--c-text-secondary); margin-bottom:20px;">Please provide the legal owner's details. If the property has multiple owners, all parties must sign the listing agreement to remain in compliance.</p>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
@@ -225,7 +272,7 @@ export function render(propertyId = null) {
                 </div>
                 <label class="checkbox-label" style="font-size:14px; font-weight:500; color:var(--c-primary); cursor:pointer; height:44px; display:flex; align-items:center; white-space:nowrap;">
                     <input type="checkbox" id="secondaryOwnerCheckbox" style="accent-color:var(--c-accent); margin-top:1px;">
-                    <span>There is a secondary owner <span class="info-bubble" id="secondaryOwnerInfo">?<span class="info-tooltip" style="width:300px; left:auto; right:-20px; transform:none; white-space:normal; word-wrap:break-word;">Per MLS rules and in compliance with applicable state and federal laws, we are required to obtain all Signing Authority Documents. All owners must sign the listing agreement.</span></span></span>
+                    <span>There is a secondary owner</span>
                 </label>
             </div>
             <div id="secondaryOwnerFields" style="display:none; margin-bottom:12px;">
@@ -264,7 +311,6 @@ export function render(propertyId = null) {
                         <div>
                             <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
                                 <label style="font-size:14px; font-weight:600; color:var(--c-primary); margin:0;">Upload Legal Signing Documents</label>
-                                <span class="info-bubble" id="signingDocsInfo">?<span class="info-tooltip" style="width:300px; left:auto; right:-20px; transform:none;">Per MLS rules and in compliance with applicable state and federal laws, we are required to obtain all Signing Authority Documents.<br><br>All owners must sign the listing agreement. If someone signs on behalf of an entity or another individual, they must clearly indicate their proper title (for example: Trustee of a Trust, Managing Member of an LLC, Corporate Officer, or Attorney-in-Fact under a Power of Attorney, as applicable).</span></span>
                             </div>
                             <p style="font-size:13px; color:var(--c-text-secondary); line-height:1.5; margin:0 0 12px 0;">Please upload documentation proving your signing authority (e.g., Trust Agreement, Articles of Organization, Corporate Resolution, or Power of Attorney).</p>
                         </div>
@@ -295,7 +341,7 @@ export function render(propertyId = null) {
             </div>
         </div>
 
-        <div style="margin-bottom:32px;">
+        <div style="margin-bottom:20px;">
             <h3 style="font-size:15px; font-weight:600; color:var(--c-primary); margin-bottom:4px;">Choose one of our True Flat Fee packages</h3>
             <p style="font-size:13px; color:var(--c-text-secondary); margin-bottom:16px;">Save thousands. Keep your equity. Close on your terms. <a href="javascript:void(0)" id="comparePackagesLink" style="color:var(--c-accent); font-weight:500; text-decoration:none;">Compare packages</a></p>
             <div style="display:flex; gap:12px; flex-wrap:wrap;" id="packageOptionsForm">
@@ -348,7 +394,7 @@ export function render(propertyId = null) {
             </div>
         </div>
 
-        <div style="margin-top:40px; margin-bottom:32px;">
+        <div style="margin-top:20px; margin-bottom:20px;">
             <h3 style="font-size:15px; font-weight:600; color:var(--c-primary); margin-bottom:4px;">À la carte options</h3>
             <p style="font-size:13px; color:var(--c-text-secondary); margin-bottom:20px;">Want to stand out even more? Explore our à la carte options below.</p>
             <div style="display:flex; flex-direction:column; gap:10px;" id="aLaCarteOptions"></div>
@@ -394,12 +440,14 @@ export function render(propertyId = null) {
         <p style="font-size:12px; color:var(--c-text-secondary); line-height:1.5; margin-bottom:12px;">By creating this listing on beycome.com, I agree that I am the owner or have authority to act on behalf of the property owner. <a href="https://www.beycome.com/terms-and-conditions" target="_blank" style="color:var(--c-accent); text-decoration:none; font-weight:500;">Rules and Terms of Use</a>.</p>
         <div style="display:flex; gap:12px; margin-top:0; margin-bottom:40px;">
             <button class="btn btn-s btn-lg" id="saveExitBtn" style="flex:1; height:52px; font-size:16px; border-radius:12px;">Save & exit</button>
-            <button class="btn btn-p btn-lg" id="continuePaymentBtn" style="flex:2; height:52px; font-size:16px; border-radius:12px;">Continue with payment</button>
+            <button class="btn btn-payment-orange btn-lg" id="continuePaymentBtn" style="flex:2; height:52px; font-size:16px; border-radius:12px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                Continue with payment
+            </button>
         </div>
             </div>
-            <div style="width:320px; flex-shrink:0; position:relative;">
-                <div style="position:sticky; top:100px;">
-                <div style="background:var(--c-bg-white); border:1px solid var(--c-border); border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+            <div id="sidebarColumn" style="width:460px; flex-shrink:0; position:fixed; top:147px; right:max(20px, calc((100vw - 1400px) / 2 + 20px)); z-index:10;">
+                <div id="sidebarMapCard" style="background:var(--c-bg-white); border:1px solid var(--c-border); border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
                     <div id="propertyMapContainer" style="height:250px; background:var(--c-bg-light);">
                         <div id="propertyMap" style="width:100%; height:100%;"></div>
                     </div>
@@ -407,13 +455,12 @@ export function render(propertyId = null) {
                         <p style="font-size:12px; color:var(--c-text-secondary); margin:0;">📌 Not quite right? Drag the pin to adjust</p>
                     </div>
                 </div>
-                </div>
-                <div id="packageIncludesRight" style="position:absolute; left:0; right:0; background:var(--c-bg-white); border:1px solid var(--c-border); border-radius:12px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.08); display:none; overflow-y:auto;">
-                    <div style="font-size:14px; font-weight:600; color:var(--c-primary); margin-bottom:12px;">Includes<span id="packageIncludesSubtitleRight" style="font-weight:500; color:var(--c-accent); margin-left:6px;"></span></div>
-                    <div style="display:flex; flex-direction:column; gap:8px; font-size:13px; color:var(--c-primary); line-height:1.5;" id="packageIncludesListRight"></div>
-                </div>
             </div>
         </div>
+    </div>
+    <div id="packageIncludesRight" style="position:fixed; top:147px; width:460px; background:var(--c-bg-white); border:1px solid var(--c-border); border-radius:12px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.08); display:none; overflow-y:auto; z-index:9;">
+        <div style="font-size:14px; font-weight:600; color:var(--c-primary); margin-bottom:12px;">Includes<span id="packageIncludesSubtitleRight" style="font-weight:500; color:var(--c-accent); margin-left:6px;"></span></div>
+        <div style="display:flex; flex-direction:column; gap:8px; font-size:13px; color:var(--c-primary); line-height:1.5;" id="packageIncludesListRight"></div>
     </div>`;
 }
 
@@ -428,6 +475,7 @@ function savePropertyData(propertyId = null) {
         propertyType: document.querySelector('.submit-prop-type.selected')?.textContent.trim() || '',
         listingType: document.getElementById('saleTab').classList.contains('active') ? 'sale' : 'rent',
         unitNumber: document.getElementById('submitUnitNumber')?.value.trim() || '',
+        noUnit: document.getElementById('noUnitCheckbox')?.checked || false,
         beds: parseInt(document.getElementById('submitBeds').textContent) || 0,
         baths: parseInt(document.getElementById('submitBaths').textContent) || 0,
         halfBaths: parseInt(document.getElementById('submitHalfBaths').textContent) || 0,
@@ -468,10 +516,44 @@ function loadPropertyForEdit(propertyId) {
         return;
     }
 
-    // Pre-fill address
+    // Pre-fill address (editable for drafts)
     if (property.address) {
-        document.getElementById('step2PropertyAddress').textContent = property.address;
-        document.getElementById('legalHeaderAddress').textContent = property.address;
+        const addrEl = document.getElementById('step2PropertyAddress');
+        const legalEl = document.getElementById('legalHeaderAddress');
+        addrEl.textContent = property.address;
+        legalEl.textContent = property.address;
+
+        if (property.status === 'draft') {
+            addrEl.style.cursor = 'pointer';
+            addrEl.title = 'Click to edit address';
+            addrEl.addEventListener('click', () => {
+                if (addrEl.querySelector('input')) return;
+                const current = addrEl.textContent.trim();
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = current;
+                input.style.cssText = 'font:inherit; font-size:20px; font-weight:700; color:var(--c-primary); border:1px solid var(--c-accent); border-radius:6px; padding:4px 8px; outline:none; width:100%; box-sizing:border-box; background:var(--c-bg-white);';
+                addrEl.textContent = '';
+                addrEl.appendChild(input);
+                input.focus();
+                input.select();
+
+                const save = () => {
+                    const newAddr = input.value.trim() || current;
+                    addrEl.textContent = newAddr;
+                    legalEl.textContent = newAddr;
+                    // Update store
+                    const props = store.get('properties') || [];
+                    const p = props.find(x => x.id === propertyId);
+                    if (p) { p.address = newAddr; store.set('properties', props); }
+                };
+                input.addEventListener('blur', save);
+                input.addEventListener('keydown', (ev) => {
+                    if (ev.key === 'Enter') { ev.preventDefault(); input.blur(); }
+                    if (ev.key === 'Escape') { input.value = current; input.blur(); }
+                });
+            });
+        }
     }
 
     // Pre-select property type
@@ -492,6 +574,10 @@ function loadPropertyForEdit(propertyId) {
     // Pre-fill unit number
     if (property.unitNumber) {
         document.getElementById('submitUnitNumber').value = property.unitNumber;
+    }
+    if (property.noUnit) {
+        document.getElementById('noUnitCheckbox').checked = true;
+        toggleNoUnit();
     }
 
     // Pre-fill beds, baths, half baths
@@ -547,6 +633,7 @@ export function init(propertyId = null) {
     // If propertyId is provided, load the property data for editing
     if (propertyId) {
         loadPropertyForEdit(propertyId);
+        updateOrderTotal(products);
     }
 
     // Back button
@@ -642,15 +729,6 @@ export function init(propertyId = null) {
     });
     document.getElementById('signingDocInput')?.addEventListener('change', handleSigningDocUpload);
 
-    // Info bubbles
-    document.querySelectorAll('#submit-property-container .info-bubble').forEach(b => {
-        b.addEventListener('click', (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            document.querySelectorAll('.info-bubble').forEach(x => { if (x !== b) x.classList.remove('active'); });
-            b.classList.toggle('active');
-        });
-    });
 
     // Render a la carte options
     renderALaCarteOptions(products);
@@ -662,7 +740,7 @@ export function init(propertyId = null) {
 
     // Compare packages link
     document.getElementById('comparePackagesLink')?.addEventListener('click', () => {
-        showMobileToast('📊 Package comparison coming soon!');
+        showComparePackagesModal(products);
     });
 
     // Buy intent
@@ -683,8 +761,8 @@ export function init(propertyId = null) {
 
     // Continue with payment
     document.getElementById('continuePaymentBtn')?.addEventListener('click', () => {
-        savePropertyData(propertyId);
-        submitPropertyForm(products);
+        const savedId = savePropertyData(propertyId);
+        submitPropertyForm(products, savedId || propertyId);
     });
 
     // Auto-save when key fields change
@@ -884,6 +962,175 @@ function toggleNoUnit() {
     }
 }
 
+function showComparePackagesModal(products) {
+    // Build a la carte price lookups
+    const alcPrices = {};
+    const alcPriceMap = {};
+    if (products && products.alacarte) {
+        products.alacarte.forEach(a => {
+            alcPrices[a.id] = a.price;
+            alcPriceMap[a.id] = '+$' + a.price;
+        });
+    }
+
+    const sections = [
+        {
+            title: 'MLS & Listing',
+            features: [
+                { name: 'Listing on your local MLS', basic: true, enhanced: true, concierge: true },
+                { name: 'Syndication to 100+ sites', basic: true, enhanced: true, concierge: true },
+                { name: 'Maximum photos allowed by MLS', basic: true, enhanced: true, concierge: true },
+                { name: '24-month MLS listing', basic: true, enhanced: true, concierge: true },
+                { name: 'Unlimited updates & changes', basic: true, enhanced: true, concierge: true },
+            ]
+        },
+        {
+            title: 'Tools & Support',
+            features: [
+                { name: 'Online offers & messaging', basic: true, enhanced: true, concierge: true },
+                { name: 'Open house scheduler', basic: true, enhanced: true, concierge: true },
+                { name: 'ShowingTime℠ (when available)', basic: true, enhanced: true, concierge: true },
+                { name: 'Home Visit Manager tool', basic: true, enhanced: true, concierge: true },
+                { name: 'Legal forms & disclosures', basic: true, enhanced: true, concierge: true },
+                { name: 'Call, chat & email support', basic: true, enhanced: true, concierge: true },
+                { name: 'Cancel anytime for free', basic: true, enhanced: true, concierge: true },
+                { name: '$0 due at closing', basic: true, enhanced: true, concierge: true },
+            ]
+        },
+        {
+            title: 'Marketing & Media',
+            features: [
+                { name: 'Customizable flyers & brochure', basic: false, enhanced: true, concierge: true },
+                { name: '25 HDR Professional Photos', basic: alcPriceMap.photos || false, enhanced: true, concierge: true },
+                { name: 'Yard sign + open house package', basic: (alcPrices.sign && alcPrices.openhouse) ? '+$' + (alcPrices.sign + alcPrices.openhouse) : false, enhanced: true, concierge: true },
+                { name: 'Key lock box', basic: alcPriceMap.lockbox || false, enhanced: true, concierge: true },
+                { name: 'Digital advertising & social media', basic: alcPriceMap.spotlight || false, enhanced: true, concierge: true },
+                { name: 'Featured on beycome.com', basic: alcPriceMap.spotlight || false, enhanced: true, concierge: true },
+            ]
+        },
+        {
+            title: 'Concierge Services',
+            features: [
+                { name: 'Pricing strategy & CMA', basic: alcPriceMap.cma || false, enhanced: alcPriceMap.cma || false, concierge: true },
+                { name: 'Negotiation & offer support', basic: false, enhanced: false, concierge: true },
+                { name: 'Broker support', basic: false, enhanced: false, concierge: true },
+                { name: 'Access to Pro Support', basic: false, enhanced: alcPriceMap.support || false, concierge: true },
+                { name: 'Dedicated 7/7 personnel', basic: false, enhanced: false, concierge: true },
+                { name: 'Closing coordinator', basic: false, enhanced: false, concierge: true },
+                { name: 'Virtual tour video', basic: false, enhanced: false, concierge: true },
+                { name: '3D home tour (where available)', basic: false, enhanced: false, concierge: true },
+                { name: 'Drone photography', basic: false, enhanced: false, concierge: true },
+            ]
+        },
+        {
+            title: 'Closing',
+            features: [
+                { name: 'Title Settlement', basic: alcPriceMap.title || '+$99', enhanced: alcPriceMap.title || '+$99', concierge: true },
+            ]
+        }
+    ];
+
+    const check = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--c-success)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+    const dash = '<span style="color:var(--c-border); font-size:16px;">—</span>';
+
+    function renderCell(val, isEnhancedCol) {
+        const bg = isEnhancedCol ? ' background:var(--c-periwinkle-bg);' : '';
+        if (val === true) return `<td style="padding:9px 12px; text-align:center; border-bottom:1px solid var(--c-border);${bg}">${check}</td>`;
+        if (val === false) return `<td style="padding:9px 12px; text-align:center; border-bottom:1px solid var(--c-border);${bg}">${dash}</td>`;
+        return `<td style="padding:9px 12px; text-align:center; border-bottom:1px solid var(--c-border);${bg}"><span style="font-size:12px; font-weight:600; color:var(--c-accent);">${val}</span></td>`;
+    }
+
+    let rowsHtml = '';
+    sections.forEach(section => {
+        rowsHtml += `<tr><td colspan="4" style="padding:14px 16px 6px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--c-text-secondary); background:var(--c-bg-light);">${section.title}</td></tr>`;
+        section.features.forEach(f => {
+            rowsHtml += `<tr>
+                <td style="padding:9px 16px; font-size:13px; color:var(--c-primary); border-bottom:1px solid var(--c-border);">${f.name}</td>
+                ${renderCell(f.basic, false)}
+                ${renderCell(f.enhanced, true)}
+                ${renderCell(f.concierge, false)}
+            </tr>`;
+        });
+    });
+
+    // Determine currently selected package
+    const selectedInput = document.querySelector('input[name="packageForm"]:checked');
+    const currentPkg = selectedInput ? selectedInput.value : 'enhanced';
+
+    function makeBtnClass(pkg) {
+        return pkg === currentPkg ? 'btn btn-p' : 'btn';
+    }
+
+    const modalOverlay = document.createElement('div');
+    modalOverlay.className = 'modal-overlay show';
+    modalOverlay.innerHTML = `
+        <div class="modal" style="max-width:720px; padding:0; overflow:hidden;">
+            <div style="padding:20px 24px; border-bottom:1px solid var(--c-border); display:flex; justify-content:space-between; align-items:center;">
+                <h2 style="font-size:18px; font-weight:700; color:var(--c-primary); margin:0;">Compare packages</h2>
+                <button id="closeCompareModal" style="background:none; border:none; cursor:pointer; color:var(--c-text-secondary); font-size:20px; padding:4px; line-height:1;">✕</button>
+            </div>
+            <div style="overflow-y:auto; max-height:75vh;">
+                <table style="width:100%; border-collapse:collapse;">
+                    <thead style="position:sticky; top:0; z-index:1;">
+                        <tr style="background:white;">
+                            <th style="padding:20px 16px 16px; text-align:left; border-bottom:1px solid var(--c-border); width:40%;"></th>
+                            <th style="padding:20px 6px 16px; text-align:center; border-bottom:1px solid var(--c-border); width:20%; vertical-align:bottom;">
+                                <div style="border:2px solid var(--c-border); border-radius:12px; padding:16px 8px;">
+                                    <div style="font-size:14px; font-weight:600; color:var(--c-primary);">Basic</div>
+                                    <div style="font-size:28px; font-weight:700; color:var(--c-primary); margin:4px 0;">$99</div>
+                                    <div style="font-size:11px; color:var(--c-text-secondary); font-weight:400;">one-time</div>
+                                </div>
+                            </th>
+                            <th style="padding:20px 6px 16px; text-align:center; border-bottom:1px solid var(--c-border); width:20%; vertical-align:bottom;">
+                                <div style="border:2px solid var(--c-accent); border-radius:12px; background:#f8f9ff; padding:6px 8px 16px;">
+                                    <span style="display:inline-block; background:var(--c-accent-orange); color:white; font-size:10px; font-weight:700; padding:2px 10px; border-radius:10px; margin-bottom:4px;">Most popular</span>
+                                    <div style="font-size:14px; font-weight:600; color:var(--c-accent);">Enhanced</div>
+                                    <div style="font-size:28px; font-weight:700; color:var(--c-accent); margin:4px 0;">$399</div>
+                                    <div style="font-size:11px; color:var(--c-text-secondary); font-weight:400;">one-time</div>
+                                </div>
+                            </th>
+                            <th style="padding:20px 6px 16px; text-align:center; border-bottom:1px solid var(--c-border); width:20%; vertical-align:bottom;">
+                                <div style="border:2px solid var(--c-border); border-radius:12px; padding:16px 8px;">
+                                    <div style="font-size:14px; font-weight:600; color:var(--c-primary);">Concierge</div>
+                                    <div style="font-size:28px; font-weight:700; color:var(--c-primary); margin:4px 0;"><span style="font-size:14px; font-weight:500; color:var(--c-text-secondary); text-decoration:line-through; margin-right:4px;">$1,399</span>$999</div>
+                                    <div style="font-size:11px; color:var(--c-text-secondary); font-weight:400;">one-time</div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                    <tfoot>
+                        <tr>
+                            <td style="padding:16px;"></td>
+                            <td style="padding:16px 6px; text-align:center;"><button class="${makeBtnClass('basic')} compare-select-btn" data-pkg="basic" style="width:100%;">${currentPkg === 'basic' ? 'Selected' : 'Select'}</button></td>
+                            <td style="padding:16px 6px; text-align:center;"><button class="${makeBtnClass('enhanced')} compare-select-btn" data-pkg="enhanced" style="width:100%;">${currentPkg === 'enhanced' ? 'Selected' : 'Select'}</button></td>
+                            <td style="padding:16px 6px; text-align:center;"><button class="${makeBtnClass('concierge')} compare-select-btn" data-pkg="concierge" style="width:100%;">${currentPkg === 'concierge' ? 'Selected' : 'Select'}</button></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    `;
+
+    modalOverlay.style.zIndex = '9999';
+    document.body.appendChild(modalOverlay);
+    modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) modalOverlay.remove(); });
+    document.getElementById('closeCompareModal').addEventListener('click', () => modalOverlay.remove());
+
+    // Select buttons
+    modalOverlay.querySelectorAll('.compare-select-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const pkg = btn.dataset.pkg;
+            const pkgMap = { basic: 'pkgBasic', enhanced: 'pkgEnhanced', concierge: 'pkgConcierge' };
+            const pkgLabel = document.getElementById(pkgMap[pkg]);
+            if (pkgLabel) {
+                selectPackageForm(pkgLabel, products);
+            }
+            modalOverlay.remove();
+        });
+    });
+}
+
 function calculateSavings() {
     const price = parseFloat((document.getElementById('submitPrice').value || '0').replace(/,/g, '')) || 0;
     const savings = price * 0.06;
@@ -971,14 +1218,29 @@ function selectPackageForm(el, products) {
     const html = includes.map(i => '<div style="display:flex;align-items:flex-start;gap:8px;"><span style="color:var(--c-success);flex-shrink:0;">✓</span><span>' + i + '</span></div>').join('');
     const subtitle = pkg === 'enhanced' ? 'Everything on Basic +' : pkg === 'concierge' ? 'Everything on Enhanced +' : '';
     document.getElementById('packageIncludesSubtitle').textContent = subtitle;
-    document.getElementById('packageIncludesSubtitleRight').textContent = subtitle;
     list.innerHTML = html;
     box.style.display = 'block';
 
-    const listR = document.getElementById('packageIncludesListRight');
+    // Show right-side includes card
     const boxR = document.getElementById('packageIncludesRight');
-    listR.innerHTML = html;
-    boxR.style.display = 'block';
+    const listR = document.getElementById('packageIncludesListRight');
+    if (boxR && listR) {
+        document.getElementById('packageIncludesSubtitleRight').textContent = subtitle;
+        listR.innerHTML = html;
+        boxR.style.display = 'block';
+        // Measure height once, then keep it fixed
+        requestAnimationFrame(() => {
+            sideOptionsHeight = boxR.offsetHeight;
+            positionSideOptions();
+            // Bind scroll/resize only once
+            if (!sideOptionsScrollBound) {
+                sideOptionsScrollBound = true;
+                window.addEventListener('scroll', positionSideOptions);
+                window.addEventListener('resize', positionSideOptions);
+            }
+        });
+    }
+
 
     // Title settlement card
     const tsc = document.getElementById('titleSettlementCard');
@@ -1041,7 +1303,7 @@ function renderSigningDocs() {
     });
 }
 
-function submitPropertyForm(products) {
+function submitPropertyForm(products, propertyId = null) {
     document.querySelectorAll('#submitStep2 .field-error').forEach(e => e.remove());
     document.querySelectorAll('#submitStep2 .input-error').forEach(e => e.classList.remove('input-error'));
     const errors = [];
@@ -1100,8 +1362,60 @@ function submitPropertyForm(products) {
         errors[0].el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
     }
-    showMobileToast('✅ Property submitted!');
-    setTimeout(() => { window.location.hash = '/your-listing'; }, 1500);
+    // Get selected package info for invoice
+    const selectedPackageInput = document.querySelector('input[name="packageForm"]:checked');
+    const packageName = selectedPackageInput ? selectedPackageInput.value : 'basic';
+    const pkg = products?.packages?.find(p => p.id === packageName);
+    const packagePrice = pkg ? pkg.price : 99;
+
+    // Get selected a la carte items
+    const selectedAlacarte = [];
+    document.querySelectorAll('.alacarte-item input[type="checkbox"]:checked').forEach(cb => {
+        const item = products?.alacarte?.find(a => a.id === cb.dataset.id);
+        if (item) selectedAlacarte.push(item);
+    });
+    const alacarteTotal = selectedAlacarte.reduce((sum, i) => sum + i.price, 0);
+    const total = packagePrice + alacarteTotal;
+
+    // 1. Update property status to in-progress
+    if (propertyId) {
+        const properties = store.get('properties') || [];
+        const idx = properties.findIndex(p => p.id === propertyId);
+        if (idx !== -1) {
+            properties[idx].status = 'in-progress';
+            properties[idx].updatedAt = new Date().toISOString();
+            store.set('properties', properties);
+        }
+    }
+
+    // 2. Create invoice
+    const invoices = store.get('invoices') || [];
+    const properties = store.get('properties') || [];
+    const property = properties.find(p => p.id === propertyId);
+    const lineItems = [{ description: `${packageName.charAt(0).toUpperCase() + packageName.slice(1)} Package`, amount: packagePrice }];
+    selectedAlacarte.forEach(i => lineItems.push({ description: i.name, amount: i.price }));
+    invoices.push({
+        id: 'inv_' + Date.now(),
+        propertyId,
+        invoiceNumber: 'INV-' + (invoices.length + 1).toString().padStart(5, '0'),
+        date: new Date().toISOString(),
+        status: 'paid',
+        packageName,
+        lineItems,
+        total,
+        propertyAddress: property ? property.address : '',
+        paymentMethod: 'Credit Card'
+    });
+    store.set('invoices', invoices);
+
+    showMobileToast('✅ Payment successful! Complete your MLS listing.');
+    setTimeout(() => {
+        if (propertyId) {
+            window.location.hash = `/mls-form/${propertyId}`;
+        } else {
+            window.location.hash = '/your-listing';
+        }
+    }, 1500);
 }
 
 function animateCounters() {

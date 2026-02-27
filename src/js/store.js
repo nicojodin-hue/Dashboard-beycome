@@ -40,10 +40,67 @@ const store = {
                 { id: 2, type: 'visit', status: 'pending', title: '1505 N Jean Baptiste Pointe du Sable Lake Shore Dr, Bonadelle Ranchos-Madera Ranchos, CA 33135', shortTitle: '1505 N Jean Baptiste...', date: new Date(2026, 0, 28, 10, 0).toISOString(), person: 'John Smith', phone: '(305) 555-1234', email: 'john.smith@email.com', property: '1505 N Jean Baptiste Pointe du Sable Lake Shore Dr' }
             ]);
         }
+        // Reset invalid seed data (old format had id:'all' with no address)
+        const existingProps = this.get('properties');
+        if (existingProps && existingProps.length > 0 && !existingProps[0].address) {
+            this.remove('properties');
+        }
+
         if (!this.get('properties')) {
             this.set('properties', [
-                { id: 'all', name: 'All Properties' },
-                { id: '456 Ocean Drive', name: '456 Ocean Drive, Miami Beach, FL' }
+                {
+                    id: 'prop_seed_1',
+                    address: '1505 N Jean Baptiste Pointe du Sable Lake Shore Dr',
+                    city: 'Bonadelle Ranchos-Madera Ranchos',
+                    state: 'CA',
+                    zipcode: '33135',
+                    propertyType: 'Single Family Home',
+                    listingType: 'For Sale',
+                    price: '850000',
+                    beds: 4,
+                    baths: 3,
+                    halfBaths: 1,
+                    livingArea: '2400',
+                    lotSize: '8000',
+                    status: 'draft',
+                    createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
+                    updatedAt: new Date(Date.now() - 86400000 * 2).toISOString()
+                },
+                {
+                    id: 'prop_seed_2',
+                    address: '456 Ocean Drive',
+                    city: 'Miami Beach',
+                    state: 'FL',
+                    zipcode: '33139',
+                    propertyType: 'Condo',
+                    listingType: 'For Sale',
+                    price: '1250000',
+                    beds: 3,
+                    baths: 2,
+                    halfBaths: 0,
+                    livingArea: '1800',
+                    status: 'live-active',
+                    createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
+                    updatedAt: new Date(Date.now() - 86400000).toISOString()
+                },
+                {
+                    id: 'prop_seed_3',
+                    address: '789 Palm Avenue',
+                    city: 'Coral Gables',
+                    state: 'FL',
+                    zipcode: '33134',
+                    propertyType: 'Single Family Home',
+                    listingType: 'For Sale',
+                    price: '2100000',
+                    beds: 5,
+                    baths: 4,
+                    halfBaths: 1,
+                    livingArea: '3500',
+                    lotSize: '12000',
+                    status: 'under-contract',
+                    createdAt: new Date(Date.now() - 86400000 * 10).toISOString(),
+                    updatedAt: new Date(Date.now() - 86400000).toISOString()
+                }
             ]);
         }
         if (!this.get('products')) {

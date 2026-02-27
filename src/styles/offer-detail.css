@@ -1,0 +1,784 @@
+/* === Offer Detail Page === */
+
+/* Page wrapper */
+.od-page {
+    width: 100%;
+}
+
+/* Breadcrumb header */
+.od-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.od-page-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.od-back-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-accent);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.od-back-link:hover {
+    text-decoration: underline;
+}
+
+.od-page-separator {
+    color: var(--c-text-secondary);
+    font-size: 14px;
+}
+
+.od-page-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--c-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.od-page-header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+/* Action bar (Accept/Counter/Decline) */
+.od-action-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.od-action-bar[style*="display:none"] {
+    display: none !important;
+}
+
+/* When inside chat widget */
+.od-action-bar.in-chat {
+    margin-bottom: 0;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--c-border);
+    justify-content: center;
+}
+
+/* Hide placeholder when action bar is in content */
+#odChatActionsPlaceholder {
+    display: none;
+}
+
+/* Legal notice banner (below offer card, pending only) */
+.od-legal-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+    background: hsla(210, 39%, 14%, 0.04);
+    border: 1px solid hsla(210, 39%, 14%, 0.1);
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.od-legal-notice-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: hsla(210, 39%, 14%, 0.06);
+    border-radius: 10px;
+    color: var(--c-text-secondary);
+}
+
+.od-legal-notice-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.od-legal-notice-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-primary);
+    margin: 0 0 4px;
+}
+
+.od-legal-notice-detail {
+    font-size: 13px;
+    color: var(--c-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Legal inline text (inside modals, above certification) */
+.od-legal-inline {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 14px;
+    background: hsla(210, 39%, 14%, 0.03);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--c-text-secondary);
+    line-height: 1.5;
+}
+
+.od-legal-inline svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--c-text-secondary);
+}
+
+.od-legal-link {
+    color: var(--c-accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.od-legal-link:hover {
+    text-decoration: underline;
+}
+
+/* Offer summary card */
+.od-card {
+    background: var(--c-bg-white);
+    border-radius: 16px;
+    border: 1px solid var(--c-border);
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.od-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0;
+}
+
+.od-card-info p {
+    font-size: 14px;
+    color: var(--c-primary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.od-card-info h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--c-primary);
+    margin: 4px 0 8px;
+}
+
+.od-card-price {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.od-card-price .od-label {
+    font-size: 13px;
+    color: var(--c-text-secondary);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.od-card-price .od-price {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--c-accent);
+}
+
+/* Divider */
+.od-divider {
+    height: 1px;
+    background: var(--c-border);
+    margin: 24px 0;
+}
+
+/* Detail groups */
+.od-details {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.od-detail-group-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--c-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.od-detail-items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.od-detail-item .od-label {
+    font-size: 13px;
+    color: var(--c-text-secondary);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.od-detail-item .od-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--c-primary);
+}
+
+/* PDF Viewer */
+.od-pdf-viewer {
+    background: var(--c-bg-white);
+    border: 1px solid var(--c-border);
+    border-radius: 16px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.od-pdf-header {
+    background: var(--c-bg-white);
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--c-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.od-pdf-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--c-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.od-pdf-download-btn {
+    background: transparent;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--c-text-secondary);
+    transition: color 0.2s;
+}
+
+.od-pdf-download-btn:hover {
+    color: var(--c-primary);
+}
+
+.od-pdf-content {
+    background: var(--c-bg-white);
+    padding: 0;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.od-pdf-page {
+    background: var(--c-bg-white);
+    padding: 40px;
+    font-family: 'Times New Roman', serif;
+    line-height: 1.6;
+}
+
+.od-pdf-page h1 {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+.od-pdf-page h2 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 24px;
+    margin-bottom: 12px;
+}
+
+.od-pdf-page p {
+    font-size: 14px;
+    color: var(--c-primary);
+    margin-bottom: 12px;
+    text-align: justify;
+}
+
+.od-pdf-page .od-section {
+    margin-bottom: 20px;
+}
+
+.od-pdf-page .od-signature-block {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60px;
+}
+
+.od-pdf-page .od-signature-item {
+    width: 45%;
+}
+
+.od-pdf-page .od-sig-line {
+    border-bottom: 1px solid #000;
+    margin-bottom: 8px;
+    height: 40px;
+}
+
+.od-pdf-page .od-sig-label {
+    font-size: 12px;
+    color: var(--c-text-secondary);
+}
+
+/* Action buttons */
+
+.od-action-btn {
+    padding: 6px 14px;
+    height: 32px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--c-border);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+    background: #f7f7f8;
+    color: #374151;
+}
+
+.od-action-btn.btn-accept {
+    color: #059669;
+}
+
+.od-action-btn.btn-accept:hover {
+    background: #ecfdf5;
+    border-color: #059669;
+}
+
+.od-action-btn.btn-counter {
+    color: var(--c-warning);
+}
+
+.od-action-btn.btn-counter:hover {
+    background: var(--c-warning-bg);
+    border-color: var(--c-warning);
+}
+
+.od-action-btn.btn-decline {
+    color: var(--c-error);
+}
+
+.od-action-btn.btn-decline:hover {
+    background: var(--c-error-bg);
+    border-color: var(--c-error);
+}
+
+
+/* PDF preview thumbnail (inline in chat) */
+.od-pdf-preview-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 12px;
+}
+
+.od-pdf-preview-box {
+    background: var(--c-bg-white);
+    border: 1px solid var(--c-border);
+    border-radius: 8px;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    flex-direction: column;
+    width: 180px;
+    height: 270px;
+    overflow: hidden;
+}
+
+.od-pdf-preview-box:hover {
+    background: #f8f8f8;
+    border-color: #b0b0b0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.od-pdf-thumbnail {
+    width: 100%;
+    height: 100%;
+    background: var(--c-bg-white);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+    overflow: hidden;
+    padding: 16px;
+    font-family: 'Times New Roman', serif;
+}
+
+.od-pdf-thumb-title {
+    font-size: 7px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    color: #333;
+}
+
+.od-pdf-thumb-section {
+    font-size: 6px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 6px;
+    margin-bottom: 3px;
+}
+
+.od-pdf-thumb-line {
+    width: 100%;
+    height: 3px;
+    background: var(--c-border);
+    border-radius: 2px;
+    margin: 2px 0;
+}
+
+.od-pdf-thumb-line.short { width: 60%; }
+.od-pdf-thumb-line.medium { width: 80%; }
+
+.od-pdf-thumb-fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(transparent, white);
+}
+
+.od-pdf-preview-actions {
+    display: flex;
+    gap: 8px;
+    padding: 8px 0 0 0;
+}
+
+.od-pdf-action-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #666;
+    border: none;
+}
+
+.od-pdf-action-icon:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+
+/* === Modals === */
+.od-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.od-modal-overlay.show {
+    display: flex;
+}
+
+.od-modal {
+    background: var(--c-bg-white);
+    border-radius: 16px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 32px;
+    position: relative;
+}
+
+.od-modal h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-primary);
+    margin-bottom: 16px;
+}
+
+.od-modal p {
+    font-size: 15px;
+    color: var(--c-primary);
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+/* Signature pad */
+.od-signature-pad {
+    border: 1px solid var(--c-border);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    background: var(--c-bg-white);
+    padding: 24px;
+    text-align: center;
+}
+
+.od-signature-display {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed var(--c-border);
+    border-radius: 8px;
+    background: #fafafa;
+    margin-bottom: 16px;
+}
+
+.od-signature-input {
+    font-family: 'Dancing Script', cursive;
+    font-size: 52px;
+    color: #000;
+    font-weight: 700;
+    border: none;
+    background: transparent;
+    text-align: center;
+    width: 100%;
+    outline: none;
+    padding: 10px;
+}
+
+.od-signature-label {
+    font-size: 14px;
+    color: var(--c-text-secondary);
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.od-signature-warning {
+    font-size: 13px;
+    color: var(--c-error);
+    margin-top: 8px;
+    display: none;
+    font-weight: 600;
+}
+
+/* Additional owner section */
+.od-additional-owner {
+    margin-bottom: 16px;
+}
+
+.od-additional-owner-question {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.od-additional-owner-question label {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+    margin: 0;
+}
+
+.od-radio-group {
+    display: flex;
+    gap: 20px;
+}
+
+.od-radio-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.od-radio-option input[type="radio"] {
+    cursor: pointer;
+    accent-color: var(--c-accent);
+}
+
+.od-radio-option label {
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+}
+
+.od-additional-owner-fields {
+    display: none;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--c-border);
+}
+
+.od-additional-owner-fields.show {
+    display: block;
+}
+
+/* Co-signer notice */
+.od-cosigner-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+    background: hsla(230, 86.1%, 72%, 0.08);
+    border: 1px solid hsla(230, 86.1%, 72%, 0.25);
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.od-cosigner-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: hsla(230, 86.1%, 72%, 0.15);
+    border-radius: 10px;
+    color: var(--c-accent);
+}
+
+.od-cosigner-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.od-cosigner-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--c-primary);
+    margin: 0 0 4px;
+}
+
+.od-cosigner-detail {
+    font-size: 13px;
+    color: var(--c-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.od-cosigner-detail strong {
+    color: var(--c-primary);
+}
+
+/* Certification box */
+.od-certification {
+    margin-bottom: 24px;
+}
+
+.od-certification-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.od-certification-checkbox input[type="checkbox"] {
+    margin-top: 3px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+    accent-color: var(--c-accent);
+}
+
+.od-certification-checkbox label {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.6;
+    cursor: pointer;
+}
+
+/* Modal actions */
+.od-modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.od-modal-actions .btn {
+    flex: 1;
+}
+
+.od-modal-actions .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Form groups in modals */
+.od-form-group {
+    margin-bottom: 16px;
+}
+
+.od-form-group label {
+    display: block;
+    font-size: 14px;
+    color: var(--c-text-secondary);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.od-form-group input,
+.od-form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--c-border);
+    border-radius: 8px;
+    font-size: 15px;
+    color: var(--c-primary);
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.od-form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Success message */
+.od-success-message {
+    text-align: center;
+    padding: 24px;
+}
+
+.od-success-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    color: var(--c-accent);
+}
+
+/* Contract viewer modal (wider) */
+.od-modal.od-contract-modal {
+    max-width: 800px;
+}

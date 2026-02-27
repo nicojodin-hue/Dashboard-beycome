@@ -5,6 +5,8 @@ import '../styles/layout.css';
 import '../styles/calendar.css';
 import '../styles/submit-property.css';
 import '../styles/responsive.css';
+import '../styles/offer-detail.css';
+import '../styles/listing-detail.css';
 
 // Store
 import store from './store.js';
@@ -29,6 +31,9 @@ import * as calendarPage from './pages/calendar.js';
 import * as accountPage from './pages/account.js';
 import * as contractsPage from './pages/contracts.js';
 import * as submitPropertyPage from './pages/submit-property.js';
+import * as mlsFormPage from './pages/mls-form.js';
+import * as offerDetailPage from './pages/offer-detail.js';
+import * as listingDetailPage from './pages/listing-detail.js';
 
 // Router
 import { initRouter, navigateTo } from './router.js';
@@ -44,7 +49,10 @@ const pageModules = {
     calendar: calendarPage,
     account: accountPage,
     contracts: contractsPage,
-    addProperty: submitPropertyPage
+    addProperty: submitPropertyPage,
+    mlsForm: mlsFormPage,
+    offerDetail: offerDetailPage,
+    listingDetail: listingDetailPage
 };
 
 // Expose app globals for cross-component communication
@@ -68,6 +76,14 @@ document.getElementById('modals-container').innerHTML = renderModals();
 document.getElementById('submit-property-container').innerHTML = submitPropertyPage.render();
 document.getElementById('submit-property-container').style.cssText = 'display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:2000; background:var(--c-bg); overflow-y:auto;';
 submitPropertyPage.init();
+
+// MLS form container (rendered on demand by router)
+document.getElementById('mls-form-container').style.cssText = 'display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:2000; background:var(--c-bg); overflow-y:auto;';
+
+// Listing detail container (full-screen overlay like submit-property)
+document.getElementById('listing-detail-container').style.cssText = 'display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:2000; background:var(--c-bg); overflow-y:auto;';
+
+// Offer detail container (no longer used as overlay — rendered in main layout)
 
 // Initialize layout components
 initHeader();
