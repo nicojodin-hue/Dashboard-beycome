@@ -45,6 +45,32 @@ export function initChat() {
     setTimeout(() => {
         addChatMessage('👋 Hi John! I\'m <strong>Artur</strong>, your personal real estate assistant. I\'m here to guide you through every step of selling your property.<br><br>I can help you with:<br>• Reviewing and responding to offers<br>• Managing visit requests<br>• Understanding contracts<br>• Answering any questions<br><br>Just type below or click on anything you need help with!');
     }, 800);
+
+    // Keep chat widget above the site footer.
+    // Chat stays fixed and full-sized. When footer enters view,
+    // the whole chat slides up so its bottom stops above the footer.
+    const chatWidget = document.querySelector('.chat-widget');
+    const siteFooter = document.getElementById('site-footer-container');
+    if (chatWidget && siteFooter) {
+        const gap = 12;
+        const adjustChatPosition = () => {
+            const footerRect = siteFooter.getBoundingClientRect();
+            const viewportH = window.innerHeight;
+            if (footerRect.top < viewportH - gap) {
+                // Footer visible — pin chat bottom above footer
+                const bottomOffset = viewportH - footerRect.top + gap;
+                chatWidget.style.top = 'auto';
+                chatWidget.style.bottom = bottomOffset + 'px';
+            } else {
+                // Footer not visible — default position
+                chatWidget.style.top = '';
+                chatWidget.style.bottom = '';
+            }
+        };
+        window.addEventListener('scroll', adjustChatPosition, { passive: true });
+        window.addEventListener('resize', adjustChatPosition, { passive: true });
+        adjustChatPosition();
+    }
 }
 
 export function addChatMessage(msg, isUser = false) {

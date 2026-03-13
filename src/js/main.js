@@ -6,7 +6,7 @@ import '../styles/calendar.css';
 import '../styles/submit-property.css';
 import '../styles/responsive.css';
 import '../styles/offer-detail.css';
-import '../styles/listing-detail.css';
+import '../styles/market-trends.css';
 
 // Store
 import store from './store.js';
@@ -18,7 +18,7 @@ import { closeAllDropdowns } from './utils.js';
 import { renderIcons } from './components/icons.js';
 import { renderHeader, initHeader } from './components/header.js';
 import { renderNav, initNav } from './components/nav.js';
-import { renderFooter, initFooter, updateMobileBadges } from './components/footer.js';
+import { renderFooter, initFooter, updateMobileBadges, renderSiteFooter } from './components/footer.js';
 import { renderChat, initChat, showPageContextMessage, resetChatState } from './components/chat.js';
 import { renderModals, initModals } from './components/modals.js';
 
@@ -33,7 +33,8 @@ import * as contractsPage from './pages/contracts.js';
 import * as submitPropertyPage from './pages/submit-property.js';
 import * as mlsFormPage from './pages/mls-form.js';
 import * as offerDetailPage from './pages/offer-detail.js';
-import * as listingDetailPage from './pages/listing-detail.js';
+import * as collectionPage from './pages/collection.js';
+import * as marketTrendsPage from './pages/market-trends.js';
 
 // Router
 import { initRouter, navigateTo } from './router.js';
@@ -52,7 +53,8 @@ const pageModules = {
     addProperty: submitPropertyPage,
     mlsForm: mlsFormPage,
     offerDetail: offerDetailPage,
-    listingDetail: listingDetailPage
+    collection: collectionPage,
+    marketTrends: marketTrendsPage
 };
 
 // Expose app globals for cross-component communication
@@ -69,6 +71,7 @@ document.getElementById('icons-sprite').innerHTML = renderIcons();
 document.getElementById('main-header').innerHTML = renderHeader();
 document.getElementById('top-nav').innerHTML = renderNav();
 document.getElementById('chat-widget-container').innerHTML = renderChat();
+document.getElementById('site-footer-container').innerHTML = renderSiteFooter();
 document.getElementById('mobile-bottom-nav-container').innerHTML = renderFooter();
 document.getElementById('modals-container').innerHTML = renderModals();
 
@@ -79,9 +82,6 @@ submitPropertyPage.init();
 
 // MLS form container (rendered on demand by router)
 document.getElementById('mls-form-container').style.cssText = 'display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:2000; background:var(--c-bg); overflow-y:auto;';
-
-// Listing detail container (full-screen overlay like submit-property)
-document.getElementById('listing-detail-container').style.cssText = 'display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:2000; background:var(--c-bg); overflow-y:auto;';
 
 // Offer detail container (no longer used as overlay — rendered in main layout)
 

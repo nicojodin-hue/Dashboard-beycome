@@ -112,6 +112,17 @@ export function renderDocumentsHtml(docs) {
     return h + '</div>';
 }
 
+// Build listing detail page URL from property data
+export function getListingUrl(property) {
+    const slug = [property.address, property.city, property.state, property.zipcode]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+    return '/Dashboard-beycome/listing-detail.html?id=' + encodeURIComponent(property.id) + '&address=' + slug;
+}
+
 // Animate a number display
 let animFrames = {};
 export function animateNumber(elId, target) {

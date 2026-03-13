@@ -1,5 +1,5 @@
 import store from '../store.js';
-import { isDesktopView } from '../utils.js';
+import { isDesktopView, getListingUrl } from '../utils.js';
 import { addChatMessage } from '../components/chat.js';
 
 // Show cancel/delete confirmation modal
@@ -60,7 +60,7 @@ function showCancelModal(propertyId, propertyName, propertyStatus) {
 }
 
 // Helper function to generate action buttons based on status
-function getActionButtons(propertyId, status, name) {
+function getActionButtons(propertyId, status, name, property) {
     // Statuses that cannot be deleted/cancelled OR edited
     const nonEditableStatuses = ['closed', 'cancelled'];
     const nonDeletableStatuses = ['under-contract', 'closed', 'cancelled'];
@@ -75,7 +75,7 @@ function getActionButtons(propertyId, status, name) {
     // For Live & Active properties, show Status dropdown instead of Cancel button
     if (status === 'live-active') {
         return `
-            <a href="#/listing/${propertyId}" class="btn btn-s property-view-listing-btn" data-property-id="${propertyId}" style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; text-decoration:none; margin-top:12px; background:var(--c-accent-bg); color:var(--c-accent); border:1px solid var(--c-accent); font-weight:600;">
+            <a href="${getListingUrl(property)}" class="btn btn-s property-view-listing-btn" data-property-id="${propertyId}" style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; text-decoration:none; margin-top:12px; background:var(--c-accent-bg); color:var(--c-accent); border:1px solid var(--c-accent); font-weight:600;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                 View Listing
             </a>
@@ -216,18 +216,19 @@ function renderPropertyCard(property) {
         <div class="property-card" data-property-id="${property.id}" style="position:relative;">
             <span class="property-status ${statusClass}" style="position:absolute;top:10px;left:10px;z-index:10;">${statusLabel}</span>
             ${timeAgo ? `<span style="position:absolute;top:10px;right:10px;z-index:10;font-size:11px;color:white;background:rgba(0,0,0,0.4);padding:3px 8px;border-radius:12px;">${timeAgo}</span>` : ''}
-            <div class="property-image" style="background: linear-gradient(135deg, #7d8ff7 0%, #a5b4fc 100%);">
+            <div class="property-image${statusClass === 'live-active' ? ' property-image--clickable' : ''}" style="background: linear-gradient(135deg, #7d8ff7 0%, #a5b4fc 100%);"${statusClass === 'live-active' ? ` data-listing-link="${getListingUrl(property)}"` : ''}>
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                     <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
+                ${statusClass === 'live-active' ? '<span class="property-image-overlay"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> View Listing</span>' : ''}
             </div>
             <div class="property-details">
                 <p style="font-size: 13px; color: var(--c-text-secondary); margin-bottom: 4px;">${propType} for ${transType}</p>
                 <h3><span class="address-main">${address}</span>${cityStateZip ? `<span class="address-secondary">${cityStateZip}</span>` : ''}</h3>
                 <p style="font-size: 18px; font-weight: 700; color: var(--c-primary); margin: 8px 0;">${price}${pricePerSqft ? `<span style="font-size: 13px; font-weight: 400; color: var(--c-text-secondary); margin-left: 8px;">${pricePerSqft}</span>` : ''}</p>
                 <p style="font-size: 13px; color: var(--c-text-secondary); margin-bottom: 12px;">${beds} beds · ${baths} baths${sqft ? ' · ' + sqft : ''}</p>
-                ${getActionButtons(property.id, statusClass, address)}
+                ${getActionButtons(property.id, statusClass, address, property)}
             </div>
         </div>
     `;
@@ -358,6 +359,15 @@ export function init() {
 
             // Filter properties
             filterProperties();
+        });
+    });
+
+    // Clickable property image for live-active listings → open View Listing
+    document.querySelectorAll('.property-image--clickable').forEach(img => {
+        img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const link = img.dataset.listingLink;
+            if (link) window.location.href = link;
         });
     });
 

@@ -7,6 +7,7 @@ const routeMap = {
     '/calendar': 'calendar',
     '/contract': 'contracts',
     '/profile': 'account',
+    '/collection': 'collection',
     '/submit-property': 'addProperty'
 };
 
@@ -39,8 +40,8 @@ export function initRouter(modules, callback) {
     // Handle initial hash
     if (window.location.hash) {
         const hashPath = window.location.hash.slice(1).split('?')[0];
-        // Check for known routes or dynamic routes (offer detail, mls-form, submit-property)
-        if (routeMap[hashPath] || hashPath.match(/^\/offers\/.+$/) || hashPath.match(/^\/mls-form\/.+$/) || hashPath.match(/^\/submit-property(\/.*)?$/) || hashPath.match(/^\/listing\/.+$/)) {
+        // Check for known routes or dynamic routes (offer detail, mls-form, submit-property, market-trends)
+        if (routeMap[hashPath] || hashPath.match(/^\/offers\/.+$/) || hashPath.match(/^\/mls-form\/.+$/) || hashPath.match(/^\/submit-property(\/.*)?$/) || hashPath.match(/^\/market-trends(\/.*)?$/)) {
             handleHash();
         } else {
             window.location.hash = '/offers';
@@ -61,11 +62,12 @@ function handleHash() {
     // Check if it's an offer detail route (e.g., /offers/offer_1)
     const offerDetailMatch = hash.match(/^\/offers\/(.+)$/);
 
-    // Check if it's a listing detail route (e.g., /listing/prop_123)
-    const listingDetailMatch = hash.match(/^\/listing\/(.+)$/);
-
     // Check if it's an MLS form route (e.g., /mls-form/prop_123)
     const mlsFormMatch = hash.match(/^\/mls-form\/(.+)$/);
+
+    // Check if it's a market-trends route
+    const marketTrendsSlugMatch = hash.match(/^\/market-trends\/(.+)$/);
+    const isMarketTrendsRoute = hash === '/market-trends' || marketTrendsSlugMatch;
 
     // Hide submit property page when navigating away
     const submitContainer = document.getElementById('submit-property-container');
@@ -74,16 +76,19 @@ function handleHash() {
         document.body.style.overflow = '';
     }
 
-    // Hide listing detail page when navigating away
-    const listingContainer = document.getElementById('listing-detail-container');
-    if (listingContainer) {
-        listingContainer.style.display = 'none';
+    // Hide market trends page when navigating away
+    const mtContainer = document.getElementById('market-trends-container');
+    if (mtContainer && !isMarketTrendsRoute) {
+        mtContainer.innerHTML = '';
+        mtContainer.style.display = 'none';
         document.body.style.overflow = '';
+        // Restore dashboard layout
+        showDashboardLayout(true);
     }
 
-    // Clean up listing-detail state (IntersectionObservers etc.)
-    if (pageModules.listingDetail && pageModules.listingDetail.cleanup) {
-        pageModules.listingDetail.cleanup();
+    // Clean up market-trends state
+    if (!isMarketTrendsRoute && pageModules.marketTrends && pageModules.marketTrends.cleanup) {
+        pageModules.marketTrends.cleanup();
     }
 
     // Clean up offer-detail state (action bar moved to chat, resize listener)
@@ -91,23 +96,17 @@ function handleHash() {
         pageModules.offerDetail.cleanup();
     }
 
-    // Handle listing detail route — full-screen overlay
-    if (listingDetailMatch) {
-        // Hide MLS form if open
-        const mlsContainer = document.getElementById('mls-form-container');
-        if (mlsContainer) { mlsContainer.style.display = 'none'; document.body.style.overflow = ''; }
-
-        const propertyId = listingDetailMatch[1];
-        const ldContainer = document.getElementById('listing-detail-container');
-        if (ldContainer && pageModules.listingDetail) {
-            ldContainer.innerHTML = pageModules.listingDetail.render(propertyId);
-            pageModules.listingDetail.init(propertyId);
-            ldContainer.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-            ldContainer.scrollTop = 0;
+    // Handle market trends route — full-screen standalone page
+    if (isMarketTrendsRoute) {
+        const slug = marketTrendsSlugMatch ? marketTrendsSlugMatch[1] : null;
+        const mtCont = document.getElementById('market-trends-container');
+        if (mtCont && pageModules.marketTrends) {
+            // Hide dashboard layout
+            showDashboardLayout(false);
+            mtCont.style.cssText = 'display:block; position:fixed; top:0; left:0; right:0; bottom:0; z-index:2000; background:var(--c-bg); overflow-y:auto;';
+            mtCont.innerHTML = pageModules.marketTrends.render(slug);
+            pageModules.marketTrends.init(slug);
         }
-        updateActiveNav('/your-listing');
-        updateMobileActiveNav('properties');
         return;
     }
 
@@ -207,6 +206,18 @@ function updateMobileActiveNav(page) {
         const items = document.querySelectorAll('.mobile-bottom-nav-items > .mobile-bottom-nav-item');
         if (items[idx]) items[idx].classList.add('active');
     }
+}
+
+function showDashboardLayout(show) {
+    const els = [
+        document.getElementById('main-header'),
+        document.getElementById('top-nav'),
+        document.querySelector('.main-layout'),
+        document.getElementById('mobile-bottom-nav-container')
+    ];
+    els.forEach(el => {
+        if (el) el.style.display = show ? '' : 'none';
+    });
 }
 
 export { routeMap, pageToRoute };

@@ -30,6 +30,7 @@ export function renderHeader() {
                 </button>
                 <div class="dashboard-menu" id="dashboardMenu">
                     <a href="/profile" class="dashboard-menu-item desktop-only">My Account</a>
+                    <a href="javascript:void(0)" class="dashboard-menu-item" id="headerMarketTrendsLink"><svg class="mobile-only" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>Market Trends</a>
                     <a href="#" class="dashboard-menu-item mobile-only"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>Dashboard</a>
                     <a href="#" class="dashboard-menu-item desktop-only">Sign Out</a>
                     <a href="#" class="dashboard-menu-item mobile-only" style="color: var(--c-error);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>Sign Out</a>
@@ -55,6 +56,9 @@ export function initHeader() {
         updateNotificationsBadge();
         renderNotifications();
     });
+
+    const mtLink = document.getElementById('headerMarketTrendsLink');
+    if (mtLink) mtLink.addEventListener('click', () => { closeAllDropdowns(); window.location.hash = '/market-trends'; });
 
     updateNotificationsBadge();
 }

@@ -2,6 +2,7 @@
 :root {
     --c-primary: #152330;
     --c-accent: #7d8ff7;
+    --c-accent-orange: #FF9B77;
     --c-accent-hover: #6a7de8;
     --c-text-secondary: #636366;
     --c-border: #e0e0e0;
@@ -21,6 +22,13 @@
     --c-pink: #ec4899;
     --c-pink-dark: #be185d;
     --c-pink-bg: #fdf2f8;
+
+    /* Tailwind v4 breakpoints */
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-2xl: 1536px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }

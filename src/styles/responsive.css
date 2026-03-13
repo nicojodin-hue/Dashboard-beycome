@@ -1,5 +1,6 @@
 /* === Responsive === */
-@media (max-width: 1024px) {
+/* Below lg (1024px) */
+@media (max-width: 1023px) {
     .desktop-only { display: none !important; }
     .mobile-only { display: flex !important; }
     .dashboard-btn { padding: 8px; }
@@ -14,9 +15,12 @@
     .chat-widget.mobile-open { display: flex; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; max-height: 100%; border-radius: 0; z-index: 1000; }
     .mobile-message-view { display: none !important; }
 }
-@media (min-width: 1025px) { .mobile-message-view { display: none !important; } }
-@media (min-width: 769px) { #packageIncludes { display: none !important; } }
-@media (max-width: 768px) {
+/* lg and up (1024px) */
+@media (min-width: 1024px) { .mobile-message-view { display: none !important; } }
+/* md and up (768px) */
+@media (min-width: 768px) { #packageIncludes { display: none !important; } }
+/* Below md (768px) */
+@media (max-width: 767px) {
     #packageIncludesRight { display: none !important; }
     .mobile-bottom-nav { display: block; }
     .nav-menu { display: none; }
@@ -74,12 +78,11 @@
     .submit-stat-label { font-size:12px; }
     #submitStep2 > div > div:last-child { display: none; }
 }
-@media (max-width: 600px) {
+/* Below sm (640px) */
+@media (max-width: 639px) {
     .message-search { max-width: 100%; order: 3; flex-basis: 100%; }
     .invoice-card { flex-wrap: wrap; }
     .invoice-info { width: 100%; }
-}
-@media (max-width: 480px) {
     .notifications-menu { width: calc(100vw - 32px); right: -60px; }
     .filter-btn { min-width: 100px; padding: 8px 12px; }
     .visit-tabs { gap: 8px; }
