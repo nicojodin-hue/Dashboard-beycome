@@ -372,7 +372,7 @@ export function render(propertyId = null) {
                 <div style="font-size:14px; font-weight:600; color:var(--c-primary); margin-bottom:12px;">Includes<span id="packageIncludesSubtitle" style="font-weight:500; color:var(--c-accent); margin-left:6px;"></span></div>
                 <div style="display:flex; flex-direction:column; gap:8px; font-size:13px; color:var(--c-primary); line-height:1.5;" id="packageIncludesList"></div>
             </div>
-            <div id="titleSettlementCard" style="display:none; margin-top:16px; border:2px solid var(--c-accent); border-radius:12px; padding:24px; background:linear-gradient(135deg, #f8f9ff 0%, #fff 100%); box-shadow:0 2px 12px rgba(125,143,247,0.12); position:relative; overflow:hidden;">
+            <div id="titleSettlementCard" style="display:none; margin-top:16px; border:2px solid var(--c-accent); border-radius:12px; padding:24px; background:linear-gradient(135deg, #f8f9ff 0%, white 100%); box-shadow:0 2px 12px rgba(125,143,247,0.12); position:relative; overflow:hidden;">
                 <div style="position:absolute; top:0; right:0; background:var(--c-accent); color:white; font-size:10px; font-weight:600; padding:4px 12px; border-radius:0 0 0 8px;">INCLUDED WITH CONCIERGE</div>
                 <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:16px; margin-top:8px;">
                     <span style="font-size:24px;">🏛️</span>
@@ -423,7 +423,7 @@ export function render(propertyId = null) {
                             <button class="btn" id="buyNoBtn" style="min-width:72px;">Not now</button>
                         </div>
                     </div>
-                    <div id="buyPromo" style="display:none; margin-top:16px; background:linear-gradient(135deg, #f8f9ff 0%, #fff 100%); border:1px solid var(--c-accent); border-radius:12px; padding:20px; animation:alcFadeIn 0.3s ease;">
+                    <div id="buyPromo" style="display:none; margin-top:16px; background:linear-gradient(135deg, #f8f9ff 0%, white 100%); border:1px solid var(--c-accent); border-radius:12px; padding:20px; animation:alcFadeIn 0.3s ease;">
                         <div style="font-size:15px; font-weight:700; color:var(--c-primary); margin-bottom:10px;">💰 Save Thousands When You Sell and Buy Together!</div>
                         <p style="font-size:13px; color:var(--c-primary); line-height:1.6; margin-bottom:12px;">Why leave money behind? Buy your next home with us and get money back — <strong>up to 2% of the purchase price</strong>. Use it for closing costs, take it as cash, or lower your interest rate.</p>
                         <div style="background:var(--c-bg-light); border-radius:8px; padding:14px; margin-bottom:16px;">

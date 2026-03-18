@@ -12,13 +12,17 @@ function contractCard(title, desc) {
 
 export function render() {
     return `<div class="visit-tabs">
-        <div class="filter-dropdown">
-            <button class="filter-btn" id="stateFilterBtn">
-                <span id="stateFilterText">Florida</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        <div class="filter-dropdown" style="position:relative;margin-left:0;">
+            <button class="message-search" id="stateFilterBtn" style="cursor:pointer;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <span id="stateFilterText" style="flex:1;text-align:left;font-size:14px;color:var(--c-primary);">Florida</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
             <div class="menu scroll" id="stateFilterMenu">
-                ${states.map(s => `<button class="menu-item${s === 'Florida' ? ' active' : ''}" data-state="${s}">${s}</button>`).join('')}
+                ${states.map(s => `<button class="menu-item state-filter-item${s === 'Florida' ? ' active' : ''}" data-state="${s}">${s}</button>`).join('')}
             </div>
         </div>
         <div class="message-tabs">
@@ -27,7 +31,6 @@ export function render() {
             <button class="message-tab" id="disclosureTab">Disclosure</button>
             <button class="message-tab" id="agreementTab">Agreement</button>
         </div>
-        <span class="ask-artur-hint" id="askArturContracts">Need help? Ask Artur</span>
     </div>
     <div id="contractsSell" class="contracts-list">
         ${contractCard('Residential Sales Contract', 'Standard purchase agreement for residential properties')}
@@ -56,12 +59,12 @@ export function render() {
 }
 
 export function init() {
-    // State filter
+    // State filter dropdown
     document.getElementById('stateFilterBtn')?.addEventListener('click', (e) => toggleMenu('stateFilterMenu', e));
-    document.querySelectorAll('#stateFilterMenu .menu-item').forEach(btn => {
+    document.querySelectorAll('.state-filter-item').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
-            document.querySelectorAll('#stateFilterMenu .menu-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.state-filter-item').forEach(i => i.classList.remove('active'));
             btn.classList.add('active');
             document.getElementById('stateFilterText').textContent = btn.dataset.state;
             document.getElementById('stateFilterMenu').classList.remove('show');
@@ -79,10 +82,6 @@ export function init() {
         btn.addEventListener('click', () => showMobileToast('📥 Downloading...'));
     });
 
-    // Ask Artur
-    document.getElementById('askArturContracts')?.addEventListener('click', () => {
-        addChatMessage('📋 <strong>Contract Center</strong><br><br>Here you\'ll find all the legal forms you need. I can help you:<br>• Choose the right contract for your situation<br>• Understand contract terms<br>• Fill out required disclosures<br><br>Which type of document do you need?');
-    });
 }
 
 function switchContractTab(tab) {

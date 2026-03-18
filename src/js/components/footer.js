@@ -28,7 +28,7 @@ export function renderFooter() {
         </div>
         <div class="mobile-more-wrapper">
             <div class="menu up right" id="mobileDropupMenu">
-                <button class="menu-item" data-route="/collection"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>Collection</button>
+                <button class="menu-item" data-route="/collection"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>Favorites</button>
                 <button class="menu-item" data-route="/calendar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>Calendar</button>
                 <button class="menu-item" data-route="/contract"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>Contracts</button>
                 <button class="menu-item" data-route="/profile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Account</button>
@@ -55,6 +55,48 @@ export function initFooter() {
     if (sendBtn) sendBtn.addEventListener('click', sendMobileNavChat);
     const chatInput = document.getElementById('mobileNavChatInput');
     if (chatInput) chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMobileNavChat(); });
+
+    // Investor modal
+    const investorLink = document.getElementById('footer-investors-link');
+    const investorModal = document.getElementById('investorModal');
+    const investorClose = document.getElementById('investorModalClose');
+    const investorInput = document.getElementById('investorPasswordInput');
+    const investorSubmit = document.getElementById('investorPasswordSubmit');
+    const investorError = document.getElementById('investorPasswordError');
+
+    if (investorLink && investorModal) {
+        investorLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            investorModal.style.display = 'flex';
+            investorInput.value = '';
+            investorError.style.display = 'none';
+            setTimeout(() => investorInput.focus(), 100);
+        });
+
+        investorClose.addEventListener('click', () => {
+            investorModal.style.display = 'none';
+        });
+
+        investorModal.addEventListener('click', (e) => {
+            if (e.target === investorModal) investorModal.style.display = 'none';
+        });
+
+        function submitInvestorPassword() {
+            if (investorInput.value === 'beycome2026') {
+                investorModal.style.display = 'none';
+                window.location.hash = '/investor-report';
+            } else {
+                investorError.style.display = 'block';
+                investorInput.value = '';
+                investorInput.focus();
+            }
+        }
+
+        investorSubmit.addEventListener('click', submitInvestorPassword);
+        investorInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') submitInvestorPassword();
+        });
+    }
 }
 
 function sendMobileNavChat() {
@@ -100,6 +142,7 @@ export function renderSiteFooter() {
                     <li><a href="https://www.beycome.com/privacy-policy">Privacy & security</a></li>
                     <li><a href="https://www.beycome.com/dmca">DMCA</a></li>
                     <li><a href="https://www.beycome.com/accessibility">Accessibility</a></li>
+                    <li><a href="#" id="footer-investors-link">Investors</a></li>
                 </ul>
             </div>
             <div class="site-footer-col site-footer-contact">
@@ -135,7 +178,22 @@ export function renderSiteFooter() {
             <p>Broker Compensation is fully negotiable and is not fixed, controlled, recommended, or suggested by law or any multiple listing service or association of REALTORS&reg;. Beycome fully supports the <a href="https://www.beycome.com/accessibility">Equal Housing Opportunity</a> laws.</p>
             <p>All rights reserved, Copyright 2026 beycome&trade; | Made with <svg class="footer-heart" width="14" height="14" viewBox="0 0 24 24" fill="#FF9B77"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> in the USA.</p>
         </div>
-    </footer>`;
+    </footer>
+    <!-- Investor Password Modal -->
+    <div class="ir-modal-overlay" id="investorModal" style="display:none; position:fixed; inset:0; z-index:9999; background:hsla(0,0%,0%,0.5); align-items:center; justify-content:center;">
+        <div style="background:#fff; border-radius:16px; padding:40px; max-width:400px; width:90%; text-align:center; position:relative;">
+            <button id="investorModalClose" style="position:absolute; top:12px; right:12px; background:none; border:none; cursor:pointer; color:var(--c-text-secondary); font-size:20px;">&times;</button>
+            <img src="/logos/logo-beycome.svg" alt="Beycome" style="height:28px; margin-bottom:8px;">
+            <div style="font-size:14px; color:var(--c-text-secondary); margin-bottom:24px;">Investor Report | FY 2025</div>
+            <div style="position:relative; margin-bottom:16px;">
+                <svg style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--c-text-secondary);" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" id="investorPasswordInput" placeholder="Enter password" style="width:100%; box-sizing:border-box; padding:12px 16px 12px 42px; border:1px solid var(--c-border); border-radius:8px; font-size:15px; outline:none;">
+            </div>
+            <div id="investorPasswordError" style="display:none; color:var(--c-error); font-size:13px; margin-bottom:12px;">Incorrect password. Please try again.</div>
+            <button id="investorPasswordSubmit" style="width:100%; padding:14px; border:none; border-radius:10px; background:var(--c-accent, hsla(230,86.1%,72%,1)); color:#fff; font-size:15px; font-weight:700; cursor:pointer;">Access Report</button>
+            <div style="font-size:12px; color:var(--c-text-secondary); margin-top:16px;">This report is confidential and intended for investors only.</div>
+        </div>
+    </div>`;
 }
 
 export function updateMobileBadges(pendingVisits, unreadMessages) {

@@ -17,31 +17,38 @@ Object.entries(routeMap).forEach(([k, v]) => pageToRoute[v] = k);
 let routing = false;
 let pageModules = {};
 let onPageChange = null;
-
 export function initRouter(modules, callback) {
     pageModules = modules;
     onPageChange = callback;
 
-    // Intercept link clicks
-    document.addEventListener('click', function (e) {
-        const a = e.target.closest('a');
-        if (a) {
-            const href = a.getAttribute('href');
-            if (href && routeMap[href]) {
-                e.preventDefault();
-                e.stopPropagation();
-                window.location.hash = href;
-            }
-        }
-    }, true);
+    // Store current handleHash on window so listeners always call the latest version
+    window.__handleHash = handleHash;
 
-    window.addEventListener('hashchange', handleHash);
+    if (!window.__routerInit) {
+        window.__routerInit = true;
+
+        document.addEventListener('click', function (e) {
+            const a = e.target.closest('a');
+            if (a) {
+                const href = a.getAttribute('href');
+                if (href && routeMap[href]) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.hash = href;
+                }
+            }
+        }, true);
+
+        window.addEventListener('hashchange', function () {
+            if (window.__handleHash) window.__handleHash();
+        });
+    }
 
     // Handle initial hash
     if (window.location.hash) {
         const hashPath = window.location.hash.slice(1).split('?')[0];
-        // Check for known routes or dynamic routes (offer detail, mls-form, submit-property, market-trends)
-        if (routeMap[hashPath] || hashPath.match(/^\/offers\/.+$/) || hashPath.match(/^\/mls-form\/.+$/) || hashPath.match(/^\/submit-property(\/.*)?$/) || hashPath.match(/^\/market-trends(\/.*)?$/)) {
+        // Check for known routes or dynamic routes (offer detail, mls-form, submit-property, market-trends, title)
+        if (routeMap[hashPath] || hashPath.match(/^\/offers\/.+$/) || hashPath.match(/^\/mls-form\/.+$/) || hashPath.match(/^\/submit-property(\/.*)?$/) || hashPath.match(/^\/market-trends(\/.*)?$/) || hashPath === '/title' || hashPath === '/investor-report') {
             handleHash();
         } else {
             window.location.hash = '/offers';
@@ -69,6 +76,40 @@ function handleHash() {
     const marketTrendsSlugMatch = hash.match(/^\/market-trends\/(.+)$/);
     const isMarketTrendsRoute = hash === '/market-trends' || marketTrendsSlugMatch;
 
+    // Check if it's a title route
+    const isTitleRoute = hash === '/title';
+
+    // Check if it's an investor-report route
+    const isInvestorReportRoute = hash === '/investor-report';
+
+    // Hide investor-report page when navigating away
+    const irContainer = document.getElementById('investor-report-container');
+    if (irContainer && !isInvestorReportRoute) {
+        irContainer.innerHTML = '';
+        irContainer.style.display = 'none';
+        document.body.style.overflow = '';
+        showDashboardLayout(true);
+    }
+
+    // Clean up investor-report state
+    if (!isInvestorReportRoute && pageModules.investorReport && pageModules.investorReport.cleanup) {
+        pageModules.investorReport.cleanup();
+    }
+
+    // Hide title page when navigating away
+    const titleContainer = document.getElementById('title-container');
+    if (titleContainer && !isTitleRoute) {
+        titleContainer.innerHTML = '';
+        titleContainer.style.display = 'none';
+        document.body.style.overflow = '';
+        showDashboardLayout(true);
+    }
+
+    // Clean up title state
+    if (!isTitleRoute && pageModules.title && pageModules.title.cleanup) {
+        pageModules.title.cleanup();
+    }
+
     // Hide submit property page when navigating away
     const submitContainer = document.getElementById('submit-property-container');
     if (submitContainer) {
@@ -94,6 +135,30 @@ function handleHash() {
     // Clean up offer-detail state (action bar moved to chat, resize listener)
     if (pageModules.offerDetail && pageModules.offerDetail.cleanup) {
         pageModules.offerDetail.cleanup();
+    }
+
+    // Handle title route — full-screen standalone page
+    if (isTitleRoute) {
+        const tCont = document.getElementById('title-container');
+        if (tCont && pageModules.title) {
+            showDashboardLayout(false);
+            tCont.style.cssText = 'display:block; position:fixed; top:0; left:0; right:0; bottom:0; z-index:2000; background:var(--c-bg); overflow-y:auto;';
+            tCont.innerHTML = pageModules.title.render();
+            pageModules.title.init();
+        }
+        return;
+    }
+
+    // Handle investor-report route — full-screen standalone page
+    if (isInvestorReportRoute) {
+        const irCont = document.getElementById('investor-report-container');
+        if (irCont && pageModules.investorReport) {
+            showDashboardLayout(false);
+            irCont.style.cssText = 'display:block; position:fixed; top:0; left:0; right:0; bottom:0; z-index:2000; background:var(--c-bg); overflow-y:auto;';
+            irCont.innerHTML = pageModules.investorReport.render();
+            pageModules.investorReport.init();
+        }
+        return;
     }
 
     // Handle market trends route — full-screen standalone page
@@ -192,9 +257,10 @@ export function navigateTo(page, e) {
 }
 
 function updateActiveNav(route) {
+    const r = route || window.location.hash.slice(1).split('?')[0];
     document.querySelectorAll('.nav-link').forEach(l => {
         l.classList.remove('active');
-        if (l.getAttribute('href') === route) l.classList.add('active');
+        if (l.getAttribute('href') === r) l.classList.add('active');
     });
 }
 

@@ -7,6 +7,9 @@ import '../styles/submit-property.css';
 import '../styles/responsive.css';
 import '../styles/offer-detail.css';
 import '../styles/market-trends.css';
+import '../styles/listing-detail.css';
+import '../styles/title.css';
+import '../styles/investor-report.css';
 
 // Store
 import store from './store.js';
@@ -35,6 +38,8 @@ import * as mlsFormPage from './pages/mls-form.js';
 import * as offerDetailPage from './pages/offer-detail.js';
 import * as collectionPage from './pages/collection.js';
 import * as marketTrendsPage from './pages/market-trends.js';
+import * as titlePage from './pages/title.js';
+import * as investorReportPage from './pages/investor-report.js';
 
 // Router
 import { initRouter, navigateTo } from './router.js';
@@ -54,7 +59,9 @@ const pageModules = {
     mlsForm: mlsFormPage,
     offerDetail: offerDetailPage,
     collection: collectionPage,
-    marketTrends: marketTrendsPage
+    marketTrends: marketTrendsPage,
+    title: titlePage,
+    investorReport: investorReportPage
 };
 
 // Expose app globals for cross-component communication
@@ -128,6 +135,7 @@ function onPageChange(page, hash) {
 
     // Initialize page event listeners
     mod.init();
+
 
     // Show contextual chat message
     showPageContextMessage(page, visitedPages);

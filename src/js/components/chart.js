@@ -148,7 +148,7 @@ export function drawLineChart(canvasId, datasets, options = {}) {
     if (!tooltip) {
         tooltip = document.createElement('div');
         tooltip.className = 'chart-tooltip';
-        tooltip.style.cssText = 'position:absolute;z-index:3;pointer-events:none;opacity:0;transition:opacity 0.15s;background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:10px 14px;box-shadow:0 4px 12px rgba(0,0,0,0.10);font-family:Roboto,sans-serif;min-width:180px;';
+        tooltip.style.cssText = 'position:absolute;z-index:3;pointer-events:none;opacity:0;transition:opacity 0.15s;background:white;border:1px solid #e0e0e0;border-radius:8px;padding:10px 14px;box-shadow:0 4px 12px rgba(0,0,0,0.10);font-family:Roboto,sans-serif;min-width:180px;';
         wrapper?.appendChild(tooltip);
     }
 
@@ -191,7 +191,7 @@ export function drawLineChart(canvasId, datasets, options = {}) {
             // White outer ring
             oCtx.beginPath();
             oCtx.arc(x, py, 5, 0, Math.PI * 2);
-            oCtx.fillStyle = '#fff';
+            oCtx.fillStyle = 'white';
             oCtx.fill();
             oCtx.strokeStyle = ds.color;
             oCtx.lineWidth = 2.5;

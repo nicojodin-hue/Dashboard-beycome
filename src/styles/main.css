@@ -1,13 +1,13 @@
 /* === CSS Variables & Reset === */
 :root {
-    --c-primary: #152330;
+    --c-primary: #1f1f1f;
     --c-accent: #7d8ff7;
     --c-accent-orange: #FF9B77;
     --c-accent-hover: #6a7de8;
-    --c-text-secondary: #636366;
-    --c-border: #e0e0e0;
+    --c-text-secondary: #474747;
+    --c-border: #d2d2d2;
     --c-bg: #FBFBFB;
-    --c-bg-light: #f5f5f5;
+    --c-bg-light: #f1f3f4;
     --c-bg-white: white;
     --c-success: #81c797;
     --c-success-dark: #5a9e6f;

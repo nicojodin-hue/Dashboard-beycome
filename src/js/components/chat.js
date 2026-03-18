@@ -8,8 +8,9 @@ let isReplyingToMessage = false;
 let replyingToMessageId = null;
 
 export function renderChat() {
-    return `<div class="chat-widget">
-        <div class="chat-header"><h3>💬 Chat with Artur<span class="chat-online-dot"></span></h3><button class="chat-close-mobile" id="chatCloseMobile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>
+    return `<div class="chat-header-standalone"><h3>💬 Artur<span class="chat-online-dot"></span></h3></div>
+    <div class="chat-widget">
+        <div class="chat-header chat-header--mobile-only"><h3>💬 Artur<span class="chat-online-dot"></span></h3><button class="chat-close-mobile" id="chatCloseMobile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>
         <div class="chat-messages" id="chatMessages"></div>
         <div class="chat-input-container">
             <div id="chatPendingAttachments" class="pending-attachments" style="display: none;"></div>
@@ -50,6 +51,7 @@ export function initChat() {
     // Chat stays fixed and full-sized. When footer enters view,
     // the whole chat slides up so its bottom stops above the footer.
     const chatWidget = document.querySelector('.chat-widget');
+    const chatStandaloneHeader = document.querySelector('.chat-header-standalone');
     const siteFooter = document.getElementById('site-footer-container');
     if (chatWidget && siteFooter) {
         const gap = 12;
@@ -61,10 +63,18 @@ export function initChat() {
                 const bottomOffset = viewportH - footerRect.top + gap;
                 chatWidget.style.top = 'auto';
                 chatWidget.style.bottom = bottomOffset + 'px';
+                // Move standalone header above the chat widget
+                if (chatStandaloneHeader) {
+                    const widgetRect = chatWidget.getBoundingClientRect();
+                    chatStandaloneHeader.style.top = (widgetRect.top - chatStandaloneHeader.offsetHeight) + 'px';
+                }
             } else {
                 // Footer not visible — default position
                 chatWidget.style.top = '';
                 chatWidget.style.bottom = '';
+                if (chatStandaloneHeader) {
+                    chatStandaloneHeader.style.top = '';
+                }
             }
         };
         window.addEventListener('scroll', adjustChatPosition, { passive: true });

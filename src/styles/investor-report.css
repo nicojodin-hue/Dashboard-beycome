@@ -1,0 +1,687 @@
+/* ── Investor Report ── */
+
+.ir-page {
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--c-primary);
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+}
+
+/* ── Sticky Header ── */
+.ir-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    border-bottom: 1px solid var(--c-border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100%;
+    margin: 0 -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.ir-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ir-header-logo {
+    height: 28px;
+}
+
+.ir-header-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--c-border);
+}
+
+.ir-header-title {
+    font-size: 14px;
+    color: var(--c-text-secondary);
+}
+
+.ir-header-exit {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--c-text-secondary);
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.ir-header-exit:hover {
+    color: var(--c-primary);
+}
+
+/* ── Hero Banner ── */
+.ir-hero {
+    background: var(--c-accent, hsla(230, 86.1%, 72%, 1));
+    border-radius: 0 0 16px 16px;
+    padding: 64px 48px;
+    margin: 0 -24px 48px;
+    color: #fff;
+}
+
+.ir-hero-label {
+    font-size: 14px;
+    opacity: 0.85;
+    margin-bottom: 8px;
+}
+
+.ir-hero-title {
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 36px;
+    font-weight: 700;
+    margin: 0 0 12px;
+    color: #fff;
+}
+
+.ir-hero-subtitle {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+/* ── Section Headers ── */
+.ir-section {
+    margin-bottom: 48px;
+}
+
+.ir-section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.ir-section-number {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--c-accent, hsla(230, 86.1%, 72%, 1));
+}
+
+.ir-section-title {
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-accent, hsla(230, 86.1%, 72%, 1));
+    margin: 0;
+}
+
+/* ── Subsection ── */
+.ir-subsection-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-primary);
+    margin: 24px 0 12px;
+}
+
+.ir-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--c-primary);
+    margin-bottom: 16px;
+}
+
+.ir-text strong {
+    font-weight: 700;
+}
+
+/* ── KPI Cards Grid ── */
+.ir-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.ir-kpi-card {
+    background: #fff;
+    border: 1px solid var(--c-border);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.ir-kpi-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-accent, hsla(230, 86.1%, 72%, 1));
+    margin-bottom: 4px;
+}
+
+.ir-kpi-label {
+    font-size: 13px;
+    color: var(--c-primary);
+    font-weight: 700;
+}
+
+.ir-kpi-sub {
+    font-size: 12px;
+    color: var(--c-text-secondary);
+    margin-top: 2px;
+}
+
+/* ── Revenue Breakdown Grid ── */
+.ir-revenue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.ir-revenue-card {
+    background: #fff;
+    border: 1px solid var(--c-border);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.ir-revenue-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--c-accent, hsla(230, 86.1%, 72%, 1));
+    margin-bottom: 4px;
+}
+
+.ir-revenue-label {
+    font-size: 13px;
+    color: var(--c-primary);
+    font-weight: 700;
+}
+
+.ir-revenue-sub {
+    font-size: 12px;
+    color: var(--c-text-secondary);
+    margin-top: 2px;
+}
+
+.ir-revenue-sub.positive {
+    color: var(--c-green, hsla(137, 28%, 49%, 1));
+}
+
+.ir-revenue-sub.negative {
+    color: var(--c-error, hsla(0, 91%, 65%, 1));
+}
+
+/* ── Daily Revenue Comparison ── */
+.ir-daily-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+/* ── Bar Chart ── */
+.ir-chart {
+    background: #fff;
+    border: 1px solid var(--c-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.ir-chart-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    height: 220px;
+    padding: 0 24px;
+}
+
+.ir-chart-bar-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    max-width: 120px;
+}
+
+.ir-chart-bar-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--c-primary);
+}
+
+.ir-chart-bar {
+    width: 80px;
+    border-radius: 6px 6px 0 0;
+    min-height: 20px;
+}
+
+.ir-chart-bar.orange {
+    background: var(--c-accent-orange, hsla(16, 100%, 73%, 1));
+}
+
+.ir-chart-bar.dark {
+    background: var(--c-primary, #152330);
+}
+
+.ir-chart-bar-label {
+    font-size: 12px;
+    color: var(--c-text-secondary);
+    text-align: center;
+    margin-top: 8px;
+}
+
+.ir-chart-note {
+    font-size: 13px;
+    color: var(--c-text-secondary);
+    text-align: center;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--c-border);
+}
+
+/* ── Financial Table ── */
+.ir-table-wrap {
+    margin-bottom: 24px;
+    overflow-x: auto;
+}
+
+.ir-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.ir-table th {
+    text-align: right;
+    font-weight: 700;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--c-border);
+    font-size: 13px;
+    color: var(--c-text-secondary);
+}
+
+.ir-table th:first-child {
+    text-align: left;
+}
+
+.ir-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--c-border);
+    text-align: right;
+}
+
+.ir-table td:first-child {
+    text-align: left;
+    color: var(--c-text-secondary);
+}
+
+.ir-table tr.bold td {
+    font-weight: 700;
+    color: var(--c-primary);
+}
+
+.ir-table tr.total td {
+    font-weight: 700;
+    color: var(--c-primary);
+    border-top: 2px solid var(--c-border);
+}
+
+.ir-table tr.separator td {
+    padding-top: 24px;
+}
+
+/* ── Financial Health Cards ── */
+.ir-health-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.ir-health-card {
+    background: #fff;
+    border: 1px solid var(--c-border);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.ir-health-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--c-accent, hsla(230, 86.1%, 72%, 1));
+    margin-bottom: 4px;
+}
+
+.ir-health-label {
+    font-size: 13px;
+    color: var(--c-primary);
+    font-weight: 700;
+}
+
+.ir-health-sub {
+    font-size: 12px;
+    color: var(--c-text-secondary);
+    margin-top: 2px;
+}
+
+/* ── Closing Note (thank you banner) ── */
+.ir-closing-note {
+    background: hsla(230, 86.1%, 72%, 0.08);
+    border-radius: 12px;
+    padding: 24px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--c-text-secondary);
+    margin-bottom: 24px;
+}
+
+.ir-closing-note strong {
+    color: var(--c-primary);
+}
+
+/* ── Strategy Lists ── */
+.ir-list {
+    list-style: disc;
+    padding-left: 20px;
+    margin-bottom: 16px;
+}
+
+.ir-list li {
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 8px;
+}
+
+.ir-list-nested {
+    list-style: circle;
+    padding-left: 20px;
+    margin-top: 4px;
+}
+
+.ir-list-nested li {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+/* ── Help Cards ── */
+.ir-help-card {
+    background: #fff;
+    border: 1px solid var(--c-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
+.ir-help-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.ir-help-card-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--c-accent, hsla(230, 86.1%, 72%, 1));
+}
+
+.ir-help-card-title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.ir-help-card-badge {
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--c-accent-orange, hsla(16, 100%, 73%, 1));
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 999px;
+}
+
+.ir-help-card-text {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--c-text-secondary);
+}
+
+/* ── Product Update Columns ── */
+.ir-product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.ir-product-col-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.ir-product-col-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.ir-product-col-icon.green {
+    color: var(--c-green, hsla(137, 28%, 49%, 1));
+}
+
+.ir-product-col-icon.accent {
+    color: var(--c-accent, hsla(230, 86.1%, 72%, 1));
+}
+
+.ir-product-item {
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 10px 0;
+    border-left: 3px solid var(--c-border);
+    padding-left: 12px;
+    margin-bottom: 8px;
+}
+
+.ir-product-item.launched {
+    border-left-color: var(--c-green, hsla(137, 28%, 49%, 1));
+}
+
+.ir-product-item.next {
+    border-left-color: var(--c-accent, hsla(230, 86.1%, 72%, 1));
+}
+
+/* ── Execution Status ── */
+.ir-status-summary {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.ir-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+}
+
+.ir-status-badge.done {
+    background: var(--c-green-bg, hsla(137, 28%, 49%, 0.1));
+    color: var(--c-green, hsla(137, 28%, 49%, 1));
+}
+
+.ir-status-badge.progress {
+    background: var(--c-periwinkle-bg, hsla(230, 86.1%, 72%, 0.1));
+    color: var(--c-accent, hsla(230, 86.1%, 72%, 1));
+}
+
+.ir-status-badge.risk {
+    background: var(--c-error-bg, hsla(0, 91%, 65%, 0.1));
+    color: var(--c-error, hsla(0, 91%, 65%, 1));
+}
+
+.ir-exec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.ir-exec-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--c-border);
+}
+
+.ir-exec-table td:last-child {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.ir-exec-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.ir-exec-status.done {
+    color: var(--c-green, hsla(137, 28%, 49%, 1));
+}
+
+.ir-exec-status.progress {
+    color: var(--c-accent-orange, hsla(16, 100%, 73%, 1));
+}
+
+.ir-exec-status.risk {
+    color: var(--c-error, hsla(0, 91%, 65%, 1));
+}
+
+/* ── Outlook Section ── */
+.ir-outlook-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 24px 0 12px;
+}
+
+/* ── YoY Growth Banner ── */
+.ir-yoy-banner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--c-green-bg, hsla(137, 28%, 49%, 0.1));
+    border-left: 4px solid var(--c-green, hsla(137, 28%, 49%, 1));
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+}
+
+.ir-yoy-value {
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--c-green, hsla(137, 28%, 49%, 1));
+    line-height: 1;
+}
+
+.ir-yoy-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-primary);
+}
+
+.ir-yoy-sub {
+    font-size: 13px;
+    color: var(--c-text-secondary);
+    margin-top: 2px;
+}
+
+/* ── Note / Callout ── */
+.ir-note {
+    background: hsla(230, 86.1%, 72%, 0.06);
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--c-text-secondary);
+}
+
+.ir-note--warning {
+    background: var(--c-warning-bg, hsla(32, 94%, 44%, 0.1));
+    border-left: 4px solid var(--c-warning, hsla(32, 94%, 44%, 1));
+    border-radius: 12px;
+    font-size: 15px;
+    color: var(--c-primary);
+    margin-bottom: 24px;
+}
+
+.ir-note strong {
+    color: var(--c-primary);
+}
+
+/* ── Footer / Sign-off ── */
+.ir-signoff {
+    text-align: center;
+    padding: 48px 0 0;
+    border-top: 1px solid var(--c-border);
+    margin-top: 48px;
+}
+
+.ir-signoff p {
+    font-size: 14px;
+    color: var(--c-text-secondary);
+    line-height: 1.7;
+    margin-bottom: 16px;
+}
+
+.ir-signoff-team {
+    font-weight: 700;
+    color: var(--c-primary);
+}
+
+.ir-signoff-names {
+    font-size: 14px;
+    color: var(--c-text-secondary);
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+    .ir-kpi-grid,
+    .ir-revenue-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ir-daily-grid,
+    .ir-health-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ir-product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ir-hero {
+        padding: 40px 24px;
+    }
+
+    .ir-hero-title {
+        font-size: 28px;
+    }
+
+    .ir-chart-bars {
+        height: 160px;
+    }
+
+    .ir-chart-bar {
+        width: 60px;
+    }
+}

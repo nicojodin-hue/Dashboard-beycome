@@ -75,11 +75,7 @@ function getActionButtons(propertyId, status, name, property) {
     // For Live & Active properties, show Status dropdown instead of Cancel button
     if (status === 'live-active') {
         return `
-            <a href="${getListingUrl(property)}" class="btn btn-s property-view-listing-btn" data-property-id="${propertyId}" style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; text-decoration:none; margin-top:12px; background:var(--c-accent-bg); color:var(--c-accent); border:1px solid var(--c-accent); font-weight:600;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                View Listing
-            </a>
-            <div class="property-actions" style="display: flex; gap: 8px; padding-top: 8px;">
+            <div class="property-actions" style="display: flex; gap: 8px;">
                 <button class="btn property-edit-btn" data-property-id="${propertyId}" style="flex: 1;">
                     Edit
                 </button>
@@ -214,20 +210,29 @@ function renderPropertyCard(property) {
 
     return `
         <div class="property-card" data-property-id="${property.id}" style="position:relative;">
-            <span class="property-status ${statusClass}" style="position:absolute;top:10px;left:10px;z-index:10;">${statusLabel}</span>
-            ${timeAgo ? `<span style="position:absolute;top:10px;right:10px;z-index:10;font-size:11px;color:white;background:rgba(0,0,0,0.4);padding:3px 8px;border-radius:12px;">${timeAgo}</span>` : ''}
-            <div class="property-image${statusClass === 'live-active' ? ' property-image--clickable' : ''}" style="background: linear-gradient(135deg, #7d8ff7 0%, #a5b4fc 100%);"${statusClass === 'live-active' ? ` data-listing-link="${getListingUrl(property)}"` : ''}>
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
+            <span class="property-type-badge" style="position:absolute;top:10px;left:10px;z-index:10;"><span class="property-type-dot property-type-dot--${statusClass}"></span>${propType} for ${transType}</span>
+            <div class="property-image${statusClass === 'live-active' ? ' property-image--clickable' : ''}" style="background: var(--c-bg-white);"${statusClass === 'live-active' ? ` data-listing-link="${getListingUrl(property)}"` : ''}>
+
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--c-primary)" stroke-width="1.5">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                     <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
                 ${statusClass === 'live-active' ? '<span class="property-image-overlay"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> View Listing</span>' : ''}
             </div>
+            <div class="prop-meta-row">
+                <span class="property-status ${statusClass}">${statusLabel}</span>
+                ${timeAgo ? `<span class="prop-time-ago">${timeAgo}</span>` : ''}
+            </div>
             <div class="property-details">
-                <p style="font-size: 13px; color: var(--c-text-secondary); margin-bottom: 4px;">${propType} for ${transType}</p>
-                <h3><span class="address-main">${address}</span>${cityStateZip ? `<span class="address-secondary">${cityStateZip}</span>` : ''}</h3>
+                <div class="prop-header">
+                    <h3><span class="address-main">${address}</span>${cityStateZip ? `<span class="address-secondary">${cityStateZip}</span>` : ''}</h3>
+                    <div class="ld-summary-stats prop-stats">
+                        ${beds ? `<div class="ld-summary-stat"><span class="ld-summary-stat-value">${beds}</span><span class="ld-summary-stat-label">beds</span></div>` : ''}
+                        ${baths ? `<div class="ld-summary-stat"><span class="ld-summary-stat-value">${baths}</span><span class="ld-summary-stat-label">baths</span></div>` : ''}
+                        ${sqft ? `<div class="ld-summary-stat"><span class="ld-summary-stat-value">${sqftNum.toLocaleString()}</span><span class="ld-summary-stat-label">sqft</span></div>` : ''}
+                    </div>
+                </div>
                 <p style="font-size: 18px; font-weight: 700; color: var(--c-primary); margin: 8px 0;">${price}${pricePerSqft ? `<span style="font-size: 13px; font-weight: 400; color: var(--c-text-secondary); margin-left: 8px;">${pricePerSqft}</span>` : ''}</p>
-                <p style="font-size: 13px; color: var(--c-text-secondary); margin-bottom: 12px;">${beds} beds · ${baths} baths${sqft ? ' · ' + sqft : ''}</p>
                 ${getActionButtons(property.id, statusClass, address, property)}
             </div>
         </div>

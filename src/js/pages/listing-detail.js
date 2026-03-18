@@ -152,7 +152,7 @@ export function render(propertyId) {
     </header>
 
     <!-- Photo Gallery -->
-    <div style="max-width:1400px;margin:12px auto 0;padding:0 20px;">
+    <div style="max-width:1180px;margin:12px auto 0;padding:0 20px;">
         <div class="ld-gallery">
             <div class="ld-gallery-main">
                 <svg class="ld-gallery-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -195,7 +195,7 @@ export function render(propertyId) {
     </div>
 
     <!-- Price + Stats Summary Bar (Zillow-style) -->
-    <div style="max-width:1400px;margin:0 auto;padding:0 20px;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 20px;">
         <div class="ld-summary-bar">
             <div class="ld-summary-row">
                 <div class="ld-summary-left">
@@ -223,7 +223,7 @@ export function render(propertyId) {
     </div>
 
     <!-- Two-column layout -->
-    <div style="max-width:1400px;margin:0 auto;padding:0 20px;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 20px;">
         <div class="ld-content">
             <!-- Main content -->
             <div class="ld-main">
@@ -773,7 +773,7 @@ export function render(propertyId) {
             <!-- Sidebar -->
             <div class="ld-sidebar">
                 <div class="ld-price-card">
-                    <div class="ld-sidebar-price">$${d.priceFormatted} <span class="ld-sidebar-ppsf">$${d.pricePerSqft}/sf</span></div>
+                    <div class="ld-sidebar-price">$${d.priceFormatted} <span class="ld-sidebar-ppsf">$${d.pricePerSqft}/sqft</span></div>
                     <a href="javascript:void(0)" class="ld-credit-back">Credit Back up to $${d.creditBack}*</a>
                     <button class="ld-cta-primary" id="ldOfferBtn">Make an Offer</button>
                     <div class="ld-cta-row">
@@ -998,10 +998,10 @@ export function init(propertyId) {
                     current.push(propertyId);
                     localStorage.setItem('savedListings', JSON.stringify(current));
                 }
-                showToast('Added to your Collection.');
+                showToast('Added to your favorites.');
             } else {
                 localStorage.setItem('savedListings', JSON.stringify(current.filter(id => id !== propertyId)));
-                showToast('Removed from your Collection.');
+                showToast('Removed from your favorites.');
             }
         });
     }
@@ -1093,10 +1093,10 @@ export function init(propertyId) {
                         current.push(cardId);
                         localStorage.setItem('savedListings', JSON.stringify(current));
                     }
-                    showToast('Added to your Collection.');
+                    showToast('Added to your favorites.');
                 } else {
                     localStorage.setItem('savedListings', JSON.stringify(current.filter(id => id !== cardId)));
-                    showToast('Removed from your Collection.');
+                    showToast('Removed from your favorites.');
                 }
             });
         }
