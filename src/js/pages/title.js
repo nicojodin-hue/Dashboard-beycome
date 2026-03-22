@@ -16,7 +16,7 @@ export function render() {
         </a>
         <div class="bt-header-nav bt-header-nav--right">
             <a href="tel:+17869527143" class="bt-header-link bt-call-link" data-desktop-href="#bt-footer-contact"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;vertical-align:middle;margin-right:4px"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>Call us</a>
-            <a href="https://beycome.zohobookings.com/#/sam" target="_blank" class="bt-header-link"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;vertical-align:middle;margin-right:4px"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5v-5z"/></svg>Schedule a call</a>
+            <a href="https://beycome.zohobookings.com/#/sam" target="_blank" class="bt-header-schedule-btn">Schedule free call</a>
         </div>
     </div>
     </header>

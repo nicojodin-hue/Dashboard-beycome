@@ -10,6 +10,8 @@
 .bt-header-nav--right { justify-self: end; }
 .bt-header-link { font-size: 14px; font-weight: 700; color: var(--c-primary, #152330); text-decoration: none; }
 .bt-header-link:hover { color: var(--c-accent, #7d8ff7); }
+.bt-header-schedule-btn { font-size: 14px; font-weight: 700; color: white; background: var(--c-accent-orange, #FF9B77); border-radius: 50px; padding: 8px 20px; text-decoration: none; display: inline-flex; align-items: center; transition: all 0.2s; }
+.bt-header-schedule-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px hsla(16, 100%, 73%, 0.35); }
 
 /* Back link (legacy) */
 .bt-back { display: none; }
