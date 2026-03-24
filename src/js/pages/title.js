@@ -31,7 +31,7 @@ export function render() {
     <section class="bt-hero">
         <div class="bt-hero-bg"><object data="/Dashboard-beycome/icons/hero-bg.svg" type="image/svg+xml" class="bt-hero-bg-img"></object></div>
         <div class="bt-hero-inner">
-            <h1><span class="bt-hero-rotate-wrap">Close with <span class="bt-hero-rotate" id="bt-hero-rotate"><span class="bt-hero-rotate-item active"><em>confidence.</em></span><span class="bt-hero-rotate-item"><em>ease.</em></span><span class="bt-hero-rotate-item" style="margin-left:-0.12em">out <em>overpaying.</em></span><span class="bt-hero-rotate-item"><em>control.</em></span><span class="bt-hero-rotate-item" style="margin-left:-0.12em">out <em>surprises.</em></span></span></span><br>Flat pricing. Skip the BS.</h1>
+            <h1><span class="bt-hero-rotate-wrap">Close with <span class="bt-hero-rotate" id="bt-hero-rotate"><span class="bt-hero-rotate-item active"><em>confidence.</em></span><span class="bt-hero-rotate-item"><em>ease.</em></span><span class="bt-hero-rotate-item" style="margin-left:-0.2em">out <em>overpaying.</em></span><span class="bt-hero-rotate-item"><em>control.</em></span><span class="bt-hero-rotate-item" style="margin-left:-0.2em">out <em>surprises.</em></span></span></span><br>Flat pricing. Skip the BS.</h1>
             <div class="bt-hero-eco">
                 The official title partner of <a href="https://beycome.com" target="_blank">Beycome.com</a>
             </div>
@@ -176,19 +176,19 @@ export function render() {
             <h2 class="bt-title">What sets us apart</h2>
             <div class="bt-why-grid">
                 <div class="bt-why-card">
-                    <div class="bt-why-icon"><img src="/icons/serious-savings-gray.svg" alt="Flat pricing" width="48" height="48"></div>
+                    <div class="bt-why-icon"><img src="/Dashboard-beycome/icons/serious-savings-gray.svg" alt="Flat pricing" width="48" height="48"></div>
                     <h3>Flat, Transparent Pricing</h3>
                     <p>Full quote upfront. No hidden fees, no percentage-of-sale markups, no referral kickbacks. You pay the best price we can offer.</p>
                     <a href="#bt-quote" class="bt-why-link bt-scroll-link">See your quote <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></a>
                 </div>
                 <div class="bt-why-card">
-                    <div class="bt-why-icon"><img src="/icons/cut-commission-gray.svg" alt="Old Republic" width="48" height="48"></div>
+                    <div class="bt-why-icon"><img src="/Dashboard-beycome/icons/old-republic-gray.svg" alt="Old Republic" width="48" height="48"></div>
                     <h3>Old Republic Backed</h3>
                     <p>Title insurance underwritten by Old Republic — a Fortune 500 company with the highest financial strength ratings in the USA. Your transaction, protected by the best.</p>
                     <a href="#bt-quote" class="bt-why-link bt-scroll-link">See your quote <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></a>
                 </div>
                 <div class="bt-why-card">
-                    <div class="bt-why-icon"><img src="/icons/fast-closing-gray.svg" alt="48-Hour Turnaround" width="48" height="48"></div>
+                    <div class="bt-why-icon"><img src="/Dashboard-beycome/icons/fast-closing-gray.svg" alt="48-Hour Turnaround" width="48" height="48"></div>
                     <h3>48-Hour Turnaround</h3>
                     <p>We're not only fast to sell your property, but also to close it. Title searches completed in 48 hours — built for speed without sacrificing accuracy.</p>
                     <a href="#bt-quote" class="bt-why-link bt-scroll-link">See your quote <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg></a>
@@ -298,7 +298,7 @@ export function render() {
     <section class="bt-eco-section">
         <div class="bt-eco-inner">
             <h2 class="bt-pricing-headline">Your full real estate journey on one platform.</h2>
-            <p class="bt-pricing-desc">Sell, buy, title &amp; escrow—all in one place. Bundle and save even more. No middlemen. No inflated fees.<br>List &amp; sell for $99 true flat fee (avg saving of $13,970). Close for $99–$199. Buy and get ~2% back.</p>
+            <p class="bt-pricing-desc">Sell, buy, title &amp; escrow—all in one place. Bundle and save even more. No middlemen. No inflated fees.<br>List &amp; sell for $99 true flat fee (avg saving of $13,970). Close for $99–$299. Buy and get ~2% back.</p>
             <div class="bt-eco-grid">
                 <div class="bt-eco-card">
                     <h3>Sell your home. Keep your money.</h3>
@@ -307,7 +307,7 @@ export function render() {
                         <div class="bt-eco-sell-label">True flat fee starting at</div>
                         <div class="bt-eco-sell-row">
                             <div class="bt-eco-sell-item"><span class="bt-eco-sell-price">$199</span><span class="bt-eco-sell-state">FL</span> Flat fee + title settlement</div>
-                            <div class="bt-eco-sell-item"><span class="bt-eco-sell-price">$399</span><span class="bt-eco-sell-state">TX</span> Flat fee + title settlement</div>
+                            <div class="bt-eco-sell-item"><span class="bt-eco-sell-price">$379</span><span class="bt-eco-sell-state">TX</span> Flat fee + title settlement</div>
                         </div>
                     </div>
                     <div class="bt-eco-steps">

@@ -180,7 +180,7 @@
 /* ── WHY US — 3 cards ── */
 .bt-why-section { background: white; padding: 24px 20px; }
 .bt-why-inner { max-width: 1100px; margin: 0 auto; }
-.bt-why-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 24px; padding: 16px 12px; border-radius: 16px; background-image: radial-gradient(hsla(230, 86%, 72%, 0.15) 1.5px, transparent 1.5px); background-size: 16px 16px; background-color: hsla(230, 86%, 72%, 0.03); }
+.bt-why-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 16px; padding: 12px 10px; border-radius: 16px; background-image: radial-gradient(hsla(230, 86%, 72%, 0.15) 1.5px, transparent 1.5px); background-size: 16px 16px; background-color: hsla(230, 86%, 72%, 0.03); }
 .bt-why-card { background: white; border: 1px solid var(--c-border); border-radius: 12px; padding: 20px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
 .bt-why-card:hover { border-color: var(--c-accent); box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
 .bt-why-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
@@ -382,7 +382,7 @@
     .bt-section { padding: 48px 32px; }
 
     .bt-why-section { padding: 48px 32px; }
-    .bt-why-grid { grid-template-columns: 1fr 1fr; padding: 32px 20px; }
+    .bt-why-grid { grid-template-columns: 1fr 1fr; gap: 16px; padding: 20px 16px; }
     .bt-why-grid .bt-why-card:last-child { grid-column: 1 / -1; }
 
     .bt-services-section { padding: 48px 32px; border-top: 1px solid var(--c-border); }
@@ -434,7 +434,7 @@
     .bt-section { padding: 48px 48px; }
 
     .bt-why-section { padding: 48px 48px; }
-    .bt-why-grid { grid-template-columns: repeat(3, 1fr); padding: 40px 24px; }
+    .bt-why-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 24px 20px; }
     .bt-why-grid .bt-why-card:last-child { grid-column: auto; }
 
     .bt-services-section { padding: 48px 48px; }
