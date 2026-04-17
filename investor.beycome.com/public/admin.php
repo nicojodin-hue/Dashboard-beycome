@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['pdf_file']) && !empt
 
     if ($file['error'] === UPLOAD_ERR_OK) {
         $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        if (in_array($ext, ['pdf', 'xlsx', 'pptx', 'docx', 'csv'])) {
+        if (in_array($ext, ['pdf', 'xlsx', 'pptx', 'docx', 'csv', 'mp4', 'mov', 'webm', 'm4v', 'avi', 'mkv'])) {
             // Clean filename
             $safe_name = preg_replace('/[^a-zA-Z0-9._-]/', '_', $file['name']);
             $dest = $DOCS_DIR . $safe_name;
@@ -204,6 +204,7 @@ td{padding:10px 12px;border-bottom:1px solid #eceeff}
 .ext-pptx{background:#fff3e0;color:#e65100}
 .ext-docx{background:#e3f2fd;color:#1565c0}
 .ext-csv{background:#f3e5f5;color:#7b1fa2}
+.ext-mp4,.ext-mov,.ext-webm,.ext-m4v,.ext-avi,.ext-mkv{background:#ede9fe;color:#5b21b6}
 </style>
 </head>
 <body>
@@ -224,7 +225,7 @@ td{padding:10px 12px;border-bottom:1px solid #eceeff}
     <?php elseif ($upload_msg === 'error') : ?>
     <div class="msg msg-error">✗ Upload failed. Please try again.</div>
     <?php elseif ($upload_msg === 'invalid_type') : ?>
-    <div class="msg msg-error">✗ Invalid file type. Allowed: PDF, XLSX, PPTX, DOCX, CSV.</div>
+    <div class="msg msg-error">✗ Invalid file type. Allowed: PDF, XLSX, PPTX, DOCX, CSV, MP4, MOV, WEBM, M4V, AVI, MKV.</div>
     <?php endif; ?>
 
     <!-- Report Financial Documents (P&L, Balance Sheet) -->
@@ -314,8 +315,8 @@ td{padding:10px 12px;border-bottom:1px solid #eceeff}
     <div class="card">
         <h3>Upload Document</h3>
         <form method="POST" enctype="multipart/form-data">
-            <label>File (PDF, XLSX, PPTX, DOCX, CSV)</label>
-            <input type="file" name="pdf_file" accept=".pdf,.xlsx,.pptx,.docx,.csv" required>
+            <label>File (PDF, XLSX, PPTX, DOCX, CSV, MP4, MOV, WEBM, M4V, AVI, MKV)</label>
+            <input type="file" name="pdf_file" accept=".pdf,.xlsx,.pptx,.docx,.csv,.mp4,.mov,.webm,.m4v,.avi,.mkv,video/*" required>
 
             <label>Display Name</label>
             <input type="text" name="file_label" placeholder="e.g. Q1 2026 Financial Statements">

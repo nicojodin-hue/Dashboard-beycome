@@ -48,7 +48,7 @@ if (false) {
       letter-spacing: -0.01em;
     }
     .pw-sub {
-      font-size: 14px;
+      font-size: var(--text-lg);
       color: #5a627a;
       margin-bottom: 28px;
     }
@@ -57,7 +57,7 @@ if (false) {
       padding: 11px 14px;
       border: 1.5px solid #d5d8f0;
       border-radius: 10px;
-      font-size: 15px;
+      font-size: var(--text-lg);
       font-family: inherit;
       color: #1a1f4d;
       outline: none;
@@ -79,7 +79,7 @@ if (false) {
       color: #ffffff;
       border: none;
       border-radius: 10px;
-      font-size: 15px;
+      font-size: var(--text-lg);
       font-weight: 600;
       font-family: inherit;
       cursor: pointer;
@@ -126,33 +126,36 @@ if (false) {
     @font-face { font-family:Roboto; font-style:normal; font-weight:700; font-display:swap; src:url('/assets/roboto-700.woff2') format('woff2'); }
 
     :root {
-      --c-bg: #fefefe;
-      --c-surface: #ffffff;
-      --c-ink: #1a1f4d;
-      --c-ink-soft: #5a627a;
-      --c-border: #d5d8f0;
-      --c-accent: #7d8ff7;
-      --c-accent-soft: #e5eaff;
+      /* calculator design tokens */
+      --c-bg: #ffffff;
+      --c-surface: #f9fafb;
+      --c-primary: hsla(210, 39%, 14%, 1);
+      --c-secondary: hsla(210, 38.9%, 14.1%, 0.7);
+      --c-tertiary: #4a5056;
+      --c-ink: var(--c-primary);
+      --c-ink-soft: var(--c-secondary);
+      --c-border: hsla(0, 0%, 88%, 1);
+      --c-accent: #5a6ad4;
+      --c-accent-soft: rgba(90, 106, 212, 0.1);
+      --text-lg: 1.125rem;                        /* 18px */
+      --color-gray-600: #4b5563;                  /* Tailwind gray-600 */
       --c-negative: #bb4b43;
-      --c-positive: #43bb4d;
-      --shadow-lg: 0 22px 60px rgba(21, 25, 70, 0.12);
-      --shadow-sm: 0 8px 24px rgba(21, 25, 70, 0.08);
+      --c-positive: hsla(137, 28%, 49%, 1);
+      --shadow-lg: 0 1px 3px 0 rgba(21, 35, 48, 0.04), 0 4px 20px -4px rgba(21, 35, 48, 0.06);
+      --shadow-sm: 0 1px 3px 0 rgba(21, 35, 48, 0.04), 0 4px 20px -4px rgba(21, 35, 48, 0.06);
       --radius-xl: 22px;
       --radius-lg: 16px;
       --radius-md: 12px;
       --radius-sm: 10px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html,
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       font-family: Roboto, "Segoe UI", "Helvetica Neue", sans-serif;
-      background: radial-gradient(circle at 10% 10%, #e2e4ff 0%, #f5f5ff 42%), linear-gradient(180deg, #f7f8ff 0%, #eceeff 100%);
+      background: #ffffff;
       color: var(--c-ink);
     }
 
@@ -160,120 +163,108 @@ if (false) {
       font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     }
 
+    /* Calculator-style navbar */
     .ir-header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      position: relative;
+      background: #ffffff;
+      padding: 16px 24px;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding: 14px 24px;
-      box-shadow: 0 2px 12px rgba(21, 25, 70, 0.1);
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: saturate(160%) blur(14px);
     }
 
-    .ir-header-left {
-      display: flex;
-      align-items: center;
-      min-width: 0;
-      gap: 14px;
-    }
+    .ir-header-left { display: flex; align-items: center; }
+    .ir-header-center { display: flex; align-items: center; justify-content: center; }
+    .ir-header-right { display: flex; align-items: center; gap: 10px; }
 
     .ir-header-logo {
-      width: 124px;
-      height: auto;
+      height: 28px;
+      width: auto;
       display: block;
     }
 
-    .ir-header-divider {
-      width: 1px;
-      height: 22px;
-      background: var(--c-border);
-      flex-shrink: 0;
-    }
-
-    .ir-header-title {
-      font-size: 14px;
-      letter-spacing: 0.02em;
-      color: var(--c-ink-soft);
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
+    .ir-header-divider, .ir-header-title { display: none; }
 
     .ir-header-exit {
-      border: 1px solid #c5c9ee;
-      background: #ffffff;
-      color: var(--c-ink);
-      border-radius: 999px;
-      padding: 8px 14px;
-      font-weight: 600;
-      font-size: 14px;
+      border: none;
+      background: transparent;
+      color: var(--c-primary);
+      padding: 6px 10px;
+      font-weight: 500;
+      font-size: var(--text-lg);
       font-family: inherit;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       cursor: pointer;
-      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+      transition: color 0.15s;
       flex-shrink: 0;
     }
-
-    .ir-header-exit:hover {
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-sm);
-      border-color: #9098d4;
-    }
+    .ir-header-exit:hover { color: var(--c-accent); }
+    .ir-print-btn { color: var(--c-accent); }
 
     .ir-page {
-      max-width: 1080px;
+      max-width: 1152px;
       margin: 0 auto;
-      padding: 28px 20px 64px;
+      padding: 0 16px 64px;
     }
 
+    /* Calculator-style hero */
     .ir-hero {
-      border-radius: var(--radius-xl);
-      padding: 42px 34px;
-      background: linear-gradient(160deg, #8c8cf0 0%, #2d3a8c 58%, #4a5bc7 100%);
-      box-shadow: var(--shadow-lg);
-      color: #fff;
-      margin-bottom: 26px;
+      padding: 64px 16px 48px;
+      background: #ffffff;
+      box-shadow: none;
+      color: var(--c-primary);
+      margin: 0 auto 24px;
+      text-align: center;
     }
-
     .ir-hero-label {
-      display: inline-flex;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.14);
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      display: inline-block;
+      padding: 0;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      color: var(--c-secondary);
       margin-bottom: 14px;
     }
-
     .ir-hero-title {
-      margin: 0;
-      font-size: clamp(28px, 4vw, 46px);
-      line-height: 1.08;
-      text-wrap: balance;
+      margin: 0 0 24px;
+      font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      font-size: 63px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: normal;
+      color: var(--c-primary);
     }
-
     .ir-hero-subtitle {
-      margin-top: 14px;
-      font-size: clamp(15px, 1.8vw, 19px);
-      line-height: 1.45;
-      color: rgba(238, 240, 255, 0.9);
-      max-width: 860px;
+      margin: 0 auto;
+      font-family: Roboto, "Segoe UI", "Helvetica Neue", sans-serif;
+      font-size: 22px;
+      line-height: 1.5;
+      color: var(--c-tertiary);
+      max-width: 672px;
+    }
+    @media (max-width: 720px) {
+      .ir-hero { padding: 40px 16px 32px; }
+      .ir-hero-title { font-size: 40px; }
+      .ir-hero-subtitle { font-size: 18px; }
     }
 
+    /* Calculator-style section cards */
     .ir-section {
       background: var(--c-surface);
-      border-radius: var(--radius-xl);
-      padding: 42px 34px;
-      box-shadow: var(--shadow-sm);
+      border-radius: 16px;
+      padding: 28px 28px;
+      box-shadow: none;
       margin-bottom: 22px;
+    }
+    @media (min-width: 600px) {
+      .ir-section { padding: 32px 36px; }
     }
 
     .ir-section-header {
@@ -292,7 +283,7 @@ if (false) {
       background: var(--c-accent-soft);
       color: var(--c-accent);
       font-weight: 700;
-      font-size: 15px;
+      font-size: var(--text-lg);
     }
 
     .ir-section-title {
@@ -303,7 +294,7 @@ if (false) {
 
     .ir-subsection-title {
       margin: 32px 0 12px;
-      font-size: 15px;
+      font-size: var(--text-lg);
       color: var(--c-ink-soft);
       font-weight: 600;
       text-transform: uppercase;
@@ -312,20 +303,29 @@ if (false) {
 
     .ir-text {
       margin: 0 0 14px;
-      color: #2f2f5a;
-      font-size: 16px;
+      color: var(--color-gray-600);
+      font-size: var(--text-lg);
       line-height: 1.68;
     }
 
     .ir-yoy-banner {
       margin: 30px 0;
-      border-radius: var(--radius-lg);
-      border: 1px solid #c5cbf9;
-      background: linear-gradient(120deg, #e8eaff 0%, #f5f6ff 100%);
-      padding: 18px;
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr;
       gap: 16px;
+    }
+    @media (min-width: 700px) {
+      .ir-yoy-banner { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    .ir-yoy-card {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--c-border);
+      background: #ffffff;
+      padding: 20px;
+      display: flex;
+      gap: 14px;
       align-items: center;
+      color: var(--c-accent);
     }
 
     .ir-yoy-value {
@@ -333,40 +333,46 @@ if (false) {
       font-weight: 800;
       line-height: 1;
       letter-spacing: -0.03em;
+      color: var(--c-accent);
     }
 
     .ir-yoy-label {
-      font-size: 15px;
+      font-size: var(--text-lg);
       font-weight: 700;
-      color: var(--c-ink);
+      color: var(--c-accent);
     }
 
     .ir-yoy-sub {
       margin-top: 4px;
-      color: var(--c-ink-soft);
+      color: var(--c-accent);
       font-size: 13px;
+      opacity: 0.75;
     }
 
     .ir-note {
-      border-left: 4px solid #a5aef9;
-      background: #f0f1ff;
-      border-radius: 0 var(--radius-md) var(--radius-md) 0;
-      padding: 14px 16px;
-      font-size: 14px;
-      color: #24245c;
-      line-height: 1.55;
+      border-left: none;
+      background: transparent;
+      border-radius: 0;
+      padding: 0;
+      font-size: var(--text-lg);
+      color: var(--color-gray-600);
+      line-height: 1.68;
       margin: 16px 0;
     }
 
     .ir-note--warning {
-      border-left-color: #f59e0b;
-      background: #fffaeb;
-      color: #6e4d00;
+      font-size: var(--text-lg);
+      line-height: 1.68;
+      color: var(--color-gray-600);
     }
 
     .ir-grid-title {
-      font-size: 14px;
-      margin: 20px 0;
+      margin: 32px 0 12px;
+      font-size: var(--text-lg);
+      color: var(--c-ink-soft);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
     }
 
     .ir-kpi-grid,
@@ -398,7 +404,7 @@ if (false) {
       font-size: clamp(23px, 2.1vw, 31px);
       font-weight: 700;
       letter-spacing: -0.02em;
-      color: #19195a;
+      color: #162432;
       line-height: 1.05;
     }
 
@@ -448,7 +454,7 @@ if (false) {
 
     .ir-table thead th {
       background: #f5f5ff;
-      color: #24244a;
+      color: var(--color-gray-600);
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -467,9 +473,9 @@ if (false) {
     .ir-table tbody td {
       padding: 11px 14px;
       border-bottom: 1px solid #ededfc;
-      font-size: 14px;
+      font-size: var(--text-lg);
       text-align: right;
-      color: #1e1e46;
+      color: var(--color-gray-600);
     }
 
     .ir-table tbody tr.bold td {
@@ -503,12 +509,14 @@ if (false) {
       border-radius: var(--radius-xl);
       padding: 26px;
       background: linear-gradient(180deg, #ffffff 0%, #f8f8ff 100%);
-      color: #21215a;
+      color: var(--color-gray-600);
+      font-size: var(--text-lg);
     }
 
     .ir-signoff p {
       margin: 0 0 12px;
       line-height: 1.65;
+      font-size: var(--text-lg);
     }
 
     .ir-signoff-team,
@@ -566,7 +574,7 @@ if (false) {
       margin-bottom: 4px;
     }
     .ir-org-subtitle {
-      font-size: 14px;
+      font-size: var(--text-lg);
       color: var(--c-ink-soft);
       margin-bottom: 28px;
     }
@@ -594,7 +602,7 @@ if (false) {
     .org-card.ceo { border-color: var(--c-accent); background: linear-gradient(160deg, #f0f1ff, #fff); }
     .org-card.vp { border-color: #a5aef9; background: #f8f8ff; min-height: 100px; min-width: 140px; max-width: 180px; flex: 1 1 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-    .org-name { font-size: 14px; font-weight: 700; color: var(--c-ink); }
+    .org-name { font-size: var(--text-lg); font-weight: 700; color: var(--c-ink); }
     .org-role { font-size: 12px; color: var(--c-ink-soft); margin-top: 2px; }
     .org-badge {
       display: inline-block;
@@ -726,34 +734,12 @@ if (false) {
     }
 
     @media (max-width: 720px) {
-      .ir-header {
-        padding: 12px 14px;
-      }
-
-      .ir-header-logo {
-        width: 108px;
-      }
-
-      .ir-header-divider,
-      .ir-header-title {
-        display: none;
-      }
-
-      .ir-header-exit {
-        padding: 7px 10px;
-        font-size: 13px;
-      }
-
-      .ir-page {
-        padding: 14px 12px 50px;
-      }
-
-      .ir-hero,
-      .ir-section,
-      .ir-signoff {
-        border-radius: 14px;
-        padding: 18px;
-      }
+      .ir-header { padding: 12px 14px; }
+      .ir-header-logo { height: 24px; }
+      .ir-header-exit { padding: 6px 8px; font-size: 13px; }
+      .ir-page { padding: 0 12px 50px; }
+      .ir-section { border-radius: 14px; padding: 20px; }
+      .ir-signoff { border-radius: 14px; padding: 18px; }
     }
 
     @media print {
@@ -773,11 +759,12 @@ if (false) {
       .ir-table thead th { padding: 8px 10px !important; font-size: 11px !important; }
       .ir-table tbody td { padding: 7px 10px !important; font-size: 12px !important; }
       .ir-table-wrap { margin: 6px 0 12px !important; }
-      .ir-text { font-size: 14px !important; margin-bottom: 8px !important; line-height: 1.5 !important; }
+      .ir-text { font-size: var(--text-lg) !important; margin-bottom: 8px !important; line-height: 1.5 !important; }
       .ir-note { padding: 10px 12px !important; margin: 8px 0 !important; font-size: 12px !important; }
       .ir-subsection-title { margin: 16px 0 8px !important; font-size: 13px !important; }
       .ir-grid-title { margin: 10px 0 !important; font-size: 13px !important; }
-      .ir-yoy-banner { margin: 14px 0 !important; padding: 12px !important; }
+      .ir-yoy-banner { margin: 14px 0 !important; gap: 10px !important; }
+      .ir-yoy-card { padding: 12px !important; }
       .ir-org-overlay { display: none !important; }
       .ir-section-title { font-size: 22px !important; }
       .ir-hero-title { font-size: 32px !important; }
@@ -789,15 +776,16 @@ if (false) {
   </style>
 </head>
 <body>
-  <div id="investor-report-container" style="display: block; position: fixed; inset: 0px; z-index: 2000; background: var(--c-bg); overflow-y: auto;">
+  <div id="investor-report-container" style="display: block; position: fixed; inset: 0px; z-index: 2000; background: #ffffff; overflow-y: auto;">
     <div class="ir-header">
-      <div class="ir-header-left">
-        <img src="/assets/logo.svg" alt="Beycome" class="ir-header-logo">
-        <div class="ir-header-divider"></div>
-        <span class="ir-header-title">Investor Report | Q1 2026</span>
+      <div class="ir-header-left" style="flex:1;min-width:0"></div>
+      <div class="ir-header-center">
+        <a href="/" aria-label="Beycome" style="display:inline-block;line-height:0">
+          <img src="/assets/logo.svg" alt="Beycome" class="ir-header-logo">
+        </a>
       </div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <button onclick="window.print()" class="ir-header-exit ir-print-btn" style="color:var(--c-accent)">
+      <div class="ir-header-right" style="flex:1;display:flex;align-items:center;justify-content:flex-end;gap:10px">
+        <button onclick="window.print()" class="ir-header-exit ir-print-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
           Print / PDF
         </button>
@@ -810,8 +798,7 @@ if (false) {
 
     <div class="ir-page">
       <div class="ir-hero">
-        <div class="ir-hero-label">Investor Report</div>
-        <h1 class="ir-hero-title">Beycome | Q1 2026</h1>
+        <h1 class="ir-hero-title">Beycome Investor Report<br>Q1 2026</h1>
         <div class="ir-hero-subtitle">AI-first real estate platform | Quarterly operating update</div>
       </div>
 
@@ -827,16 +814,32 @@ if (false) {
         <p class="ir-text">Headcount was 11 FTE plus 16 contractors across CS/MLS, Sales, and Tech. Cash on hand was $1.94M with an estimated runway of 30 months. Q2 2026 revenue targets are $700K listings, $200K title, and $80K buyer.</p>
 
         <div class="ir-yoy-banner">
-          <div class="ir-yoy-value">+60%</div>
-          <div class="ir-yoy-detail">
-            <div class="ir-yoy-label">Revenue Growth</div>
-            <div class="ir-yoy-sub">Q1 2026 vs Q1 2025</div>
+          <div class="ir-yoy-card">
+            <div class="ir-yoy-value">+60%</div>
+            <div class="ir-yoy-detail">
+              <div class="ir-yoy-label">Revenue Growth</div>
+              <div class="ir-yoy-sub">Q1 2026 vs Q1 2025</div>
+            </div>
+          </div>
+          <div class="ir-yoy-card">
+            <div class="ir-yoy-value">$220.3M</div>
+            <div class="ir-yoy-detail">
+              <div class="ir-yoy-label">Com. Saved</div>
+              <div class="ir-yoy-sub">All-time total</div>
+            </div>
+          </div>
+          <div class="ir-yoy-card">
+            <div class="ir-yoy-value">19,384</div>
+            <div class="ir-yoy-detail">
+              <div class="ir-yoy-label">Properties Closed</div>
+              <div class="ir-yoy-sub">All-time total</div>
+            </div>
           </div>
         </div>
 
-        <div class="ir-note ir-note--warning">Note: Since January 29, new MLS and state-level regulations prohibited wholesale and double-closing listings on Beycome across most U.S. states. This generated a temporary spike in refund activity during Q1 (198 transactions, -$25,360). Management is evaluating alternative listing structures.</div>
+        <div class="ir-note ir-note--warning"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--c-negative);flex-shrink:0;vertical-align:-4px;margin-right:8px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><strong>Note:</strong> Since January 29, new MLS and state-level regulations prohibited wholesale and double-closing listings on Beycome across most U.S. states. This generated a temporary spike in refund activity during Q1 (198 transactions, -$25,360). Management is evaluating alternative listing structures.</div>
 
-        <div class="ir-note ir-note--warning">Market headwinds: The broader real estate market has taken a hit, driven by geopolitical uncertainty following the Iran conflict. Traditional home sales dropped to a nine-month low, down 3.6% month-over-month, while interest rates jumped another 0.4% in just one month.<br><br>We're not avoiding it. And it shows — March, typically slower than April, is set to outperform, with April expected to come in as the lowest month for listing volume.</div>
+        <div class="ir-note ir-note--warning"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--c-negative);flex-shrink:0;vertical-align:-4px;margin-right:8px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><strong>Market headwinds:</strong> The broader real estate market has taken a hit, driven by geopolitical uncertainty following the Iran conflict. Traditional home sales dropped to a nine-month low, down 3.6% month-over-month, while interest rates jumped another 0.4% in just one month.<br><br>We're not avoiding it. And it shows — March, typically slower than April, is set to outperform, with April expected to come in as the lowest month for listing volume.</div>
       </div>
 
       <!-- 02 KPIs -->
@@ -854,7 +857,7 @@ if (false) {
 
           <div class="ir-kpi-card"><div class="ir-kpi-value">4</div><div class="ir-kpi-label">Brokers</div><div class="ir-kpi-sub">Contractors</div></div>
         </div>
-        <div class="ir-note">Despite losing the wholesaler business in Q1, the number of unique owners grew from 1,233 in Q1 2025 to 2,069 in Q1 2026 (+67.8%). Recurring listings dropped from 1,102 to 785 (-28.8%) due to the wholesaler exit.</div>
+        <div class="ir-note"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--c-negative);flex-shrink:0;vertical-align:-4px;margin-right:8px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Despite losing the wholesaler business in Q1, the number of unique owners grew from 1,233 in Q1 2025 to 2,069 in Q1 2026 (+67.8%). Recurring listings dropped from 1,102 to 785 (-28.8%) due to the wholesaler exit.</div>
 
         <div class="ir-grid-title">Revenue Breakdown</div>
         <div class="ir-revenue-grid">
@@ -868,8 +871,8 @@ if (false) {
 
         <div class="ir-grid-title">Financial Health</div>
         <div class="ir-health-grid">
-          <div class="ir-health-card"><div class="ir-health-value">$1.94M</div><div class="ir-health-label">Cash Balance</div><div class="ir-health-sub">Early April 2026</div></div>
-          <div class="ir-health-card"><div class="ir-health-value">($63.9K)</div><div class="ir-health-label">Avg Monthly Burn</div><div class="ir-health-sub">Q1 average</div></div>
+          <div class="ir-health-card"><div class="ir-health-value">$1.94M</div><div class="ir-health-label">Cash Balance*</div><div class="ir-health-sub">Early April 2026</div></div>
+          <div class="ir-health-card"><div class="ir-health-value" style="color:var(--c-negative)">($63.9K)</div><div class="ir-health-label">Avg Monthly Burn</div><div class="ir-health-sub">Q1 average</div></div>
           <div class="ir-health-card"><div class="ir-health-value">30.3 mo</div><div class="ir-health-label">Runway</div><div class="ir-health-sub"></div></div>
           <div class="ir-health-card"><div class="ir-health-value">86%</div><div class="ir-health-label">Gross Margin</div><div class="ir-health-sub">Q1 2026</div></div>
         </div>
@@ -882,9 +885,8 @@ if (false) {
           <span class="ir-section-number">03</span>
           <h2 class="ir-section-title">Financial Statements</h2>
         </div>
-        <div class="ir-note">Consolidated P&L: Beycome Corp + Beycome Title of Florida LLC + LLC 1. Source: QuickBooks (accrual basis).</div>
-        <div style="font-size:14px;font-weight:700;margin:16px 0 8px">Commentary</div>
-        <ul style="margin:0 0 20px 20px;font-size:14px;line-height:1.8;color:var(--c-ink-soft)">
+        <div style="font-size:var(--text-lg);font-weight:700;margin:16px 0 8px">Commentary</div>
+        <ul style="margin:0 0 20px 20px;font-size:var(--text-lg);line-height:1.8;color:var(--c-ink-soft)">
           <li>Listing fees (basic + enhanced) represented 60% of total revenue at $342,314.</li>
           <li>Gross margin was 86% for the quarter. COGS remained low relative to revenue.</li>
           <li>SG&A totaled $688,577 (120% of revenue), driven by people costs and marketing ramp-up.</li>
@@ -1061,7 +1063,7 @@ if (false) {
             </tbody>
           </table>
         </div>
-        <div class="ir-note"><small>Consolidated P&amp;L: Beycome Corp + Beycome Title of Florida LLC + LLC 1. Source: QuickBooks (accrual basis). Revenue figures may differ from product-level totals — see Revenue by Product table.</small></div>
+        <div class="ir-note"><small>Revenue figures may differ from product-level totals — see Revenue by Product table.</small></div>
       </div>
 
       <!-- 04 BEYCOME TITLE -->
@@ -1205,10 +1207,10 @@ if (false) {
           <div class="ir-kpi-card"><div class="ir-kpi-value">4.04M</div><div class="ir-kpi-label">Impressions</div><div class="ir-kpi-sub positive">+136%</div></div>
           <div class="ir-kpi-card"><div class="ir-kpi-value">41,503</div><div class="ir-kpi-label">Clicks</div><div class="ir-kpi-sub positive">+116%</div></div>
           <div class="ir-kpi-card"><div class="ir-kpi-value">64K</div><div class="ir-kpi-label">Active Users (Jan)</div><div class="ir-kpi-sub positive">+190% vs Dec</div></div>
-          <div class="ir-kpi-card"><div class="ir-kpi-value">96K</div><div class="ir-kpi-label">Active Users (Feb)</div><div class="ir-kpi-sub"></div></div>
+          <div class="ir-kpi-card"><div class="ir-kpi-value">96K</div><div class="ir-kpi-label">Active Users (Feb)</div><div class="ir-kpi-sub positive">+50% vs Jan</div></div>
           <div class="ir-kpi-card"><div class="ir-kpi-value">134K</div><div class="ir-kpi-label">Active Users (Mar)</div><div class="ir-kpi-sub positive">+109% vs Jan</div></div>
         </div>
-        <div class="ir-note">Q1 total: 289K active users, 285K new users. March active users up 109% versus January, reflecting organic and SEO momentum.</div>
+        <div class="ir-note"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--c-negative);flex-shrink:0;vertical-align:-4px;margin-right:8px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Q1 total: 289K active users, 285K new users. March active users up 109% versus January, reflecting organic and SEO momentum.</div>
         <div class="ir-grid-title">Listing Acquisition by Channel — Q1 2026</div>
         <div class="ir-kpi-grid">
           <div class="ir-kpi-card"><div class="ir-kpi-value">861</div><div class="ir-kpi-label">Organic</div><div class="ir-kpi-sub positive">+80% YoY (478)</div></div>
@@ -1218,15 +1220,9 @@ if (false) {
         </div>
         <div class="ir-grid-title">PPC Direct Acquisition — Q1 2026</div>
         <div class="ir-kpi-grid">
-          <div class="ir-kpi-card"><div class="ir-kpi-value">843</div><div class="ir-kpi-label">Listings</div><div class="ir-kpi-sub"></div></div>
-          <div class="ir-kpi-card"><div class="ir-kpi-value">$152.52</div><div class="ir-kpi-label">Avg Rev / Listing</div><div class="ir-kpi-sub"></div></div>
-          <div class="ir-kpi-card"><div class="ir-kpi-value">$87.21</div><div class="ir-kpi-label">CPL</div><div class="ir-kpi-sub positive">3.5× ROI on CPL</div></div>
-        </div>
-        <div class="ir-grid-title">Paid Acquisition — Q4 2025</div>
-        <div class="ir-kpi-grid">
-          <div class="ir-kpi-card"><div class="ir-kpi-value">807</div><div class="ir-kpi-label">Listings</div><div class="ir-kpi-sub"></div></div>
-          <div class="ir-kpi-card"><div class="ir-kpi-value">$135.42</div><div class="ir-kpi-label">Avg Rev / Listing</div><div class="ir-kpi-sub"></div></div>
-          <div class="ir-kpi-card"><div class="ir-kpi-value">$101.96</div><div class="ir-kpi-label">CPL</div><div class="ir-kpi-sub"></div></div>
+          <div class="ir-kpi-card"><div class="ir-kpi-value">843</div><div class="ir-kpi-label">Listings</div><div class="ir-kpi-sub positive">+4.5% QoQ · +111% YoY</div></div>
+          <div class="ir-kpi-card"><div class="ir-kpi-value">$152.52</div><div class="ir-kpi-label">Avg Rev / Listing</div><div class="ir-kpi-sub"><span class="positive">+12.6% QoQ</span> · <span class="negative">-10.7% YoY</span></div></div>
+          <div class="ir-kpi-card"><div class="ir-kpi-value">$87.21</div><div class="ir-kpi-label">CPL</div><div class="ir-kpi-sub positive">-14.5% QoQ · -1.8% YoY · 3.5× ROI</div></div>
         </div>
         <div class="ir-grid-title">Paid Acquisition — Q1 2025</div>
         <div class="ir-kpi-grid">
@@ -1243,15 +1239,15 @@ if (false) {
           <h2 class="ir-section-title">Product &amp; Technology</h2>
         </div>
         <div style="margin-bottom:28px">
-          <div style="font-size:15px;font-weight:700;margin-bottom:10px;color:var(--c-accent)">January 2026</div>
+          <div style="font-size:var(--text-lg);font-weight:700;margin-bottom:10px;color:var(--c-accent)">January 2026</div>
           <p class="ir-text">We onboarded three new teammates and significantly improved our development workflow by adopting Linear for project management and implementing a full CI/CD pipeline. On the marketplace side, we opened four new MLS boards — West Alabama, Western Upstate, Aiken, and Montgomery (MAAR) — expanding our geographic reach. We also created the Beycome design system, establishing a consistent visual language across all products and pages.</p>
         </div>
         <div style="margin-bottom:28px">
-          <div style="font-size:15px;font-weight:700;margin-bottom:10px;color:var(--c-accent)">February 2026</div>
+          <div style="font-size:var(--text-lg);font-weight:700;margin-bottom:10px;color:var(--c-accent)">February 2026</div>
           <p class="ir-text">The biggest milestone this month was the launch of Beycome Title of Texas, our first expansion of title services outside Florida. Alongside this, we built a Title CRM with automated quote generation to streamline the closing process. We launched the staging website at www2.beycome.com, updated Artur AI with new capabilities, and resolved a critical token leak. We also opened four new MLS boards for Virginia — Roanoke Valley, SWVAR, Lynchburg, and CVRMLS — preparing the ground for the full Virginia launch.</p>
         </div>
         <div style="margin-bottom:28px">
-          <div style="font-size:15px;font-weight:700;margin-bottom:10px;color:var(--c-accent)">March 2026</div>
+          <div style="font-size:var(--text-lg);font-weight:700;margin-bottom:10px;color:var(--c-accent)">March 2026</div>
           <p class="ir-text">Virginia officially launched as a new state on the platform. We centralized all AI calls across multiple models with retry and fallback logic, making our AI infrastructure more resilient. Artur AI gained new features including property estimates with Zillow cross-checking, and the new website received interior redesign capabilities and translation support.</p>
           <p class="ir-text">We automated yard sign printing through Openclaw and enabled open house scheduling on 10+ MLS boards. Two more Virginia MLS were added — Bright MLS and Charlottesville (CAAR). We cleaned up legacy cronjobs to reduce tech debt, launched client invoices directly on the seller dashboard, integrated real title quotes on beycometitle.com, and published a comprehensive SEO glossary with 137 terms.</p>
         </div>
@@ -1260,29 +1256,29 @@ if (false) {
           <div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
               <span style="color:#43bb4d;font-size:18px">✓</span>
-              <span style="font-size:15px;font-weight:700;color:var(--c-ink)">What We've Launched</span>
+              <span style="font-size:var(--text-lg);font-weight:700;color:var(--c-ink)">What We've Launched</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:12px">
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Automated offer comparison tool with net proceeds calculator</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Document vault with e-signature integration</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Concierge dashboard for buyer transaction management</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Mortgage rate comparison tool with lender integration</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Enhanced analytics for pricing recommendations</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Automated 10 new MLS integrations</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Full Title CRM creation</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Automated offer comparison tool with net proceeds calculator</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Document vault with e-signature integration</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Concierge dashboard for buyer transaction management</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Mortgage rate comparison tool with lender integration</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Enhanced analytics for pricing recommendations</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Automated 10 new MLS integrations</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Full Title CRM creation</div>
             </div>
           </div>
           <div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
               <span style="color:var(--c-accent);font-size:16px">→</span>
-              <span style="font-size:15px;font-weight:700;color:var(--c-ink)">What's Next</span>
+              <span style="font-size:var(--text-lg);font-weight:700;color:var(--c-ink)">What's Next</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:12px">
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Launching new website (currently in full testing) — calculator pages, new FAQ website, and deep Artur AI integration</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Staging AI application — allows sellers to apply, get pre-qualified, and onboard through a fully guided AI flow</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">All documents updated on the fly via AI — contracts, disclosures, and forms auto-generated per transaction</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Market trend analytics by city, county, and state — powered by AI-driven data</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Integrated 10 AI models (open-source and proprietary) — developed OpenClaw assistant to manage packages, print yard signs, handle shipping, and control inventory</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Launching new website (currently in full testing) — calculator pages, new FAQ website, and deep Artur AI integration</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Staging AI application — allows sellers to apply, get pre-qualified, and onboard through a fully guided AI flow</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">All documents updated on the fly via AI — contracts, disclosures, and forms auto-generated per transaction</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Market trend analytics by city, county, and state — powered by AI-driven data</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Integrated 10 AI models (open-source and proprietary) — developed OpenClaw assistant to manage packages, print yard signs, handle shipping, and control inventory</div>
             </div>
           </div>
         </div>
@@ -1297,15 +1293,15 @@ if (false) {
 
         <div class="ir-subsection-title">Team</div>
         <p class="ir-text">We are currently a team of 27 (full-time, part-time, and contractor combined), 11 on payroll:</p>
-        <ul style="margin:0 0 20px 20px;font-size:14px;line-height:1.8;color:var(--c-ink-soft)">
+        <ul style="margin:0 0 20px 20px;font-size:var(--text-lg);line-height:1.8;color:var(--c-ink-soft)">
           <li>10 Customer Support and MLS Team (Miami-based manager + part-time, foreign contractors)</li>
           <li>8 Sales Team (Miami-based VP + FTE + foreign contractors)</li>
           <li>6 Developers (Miami-based + 2 foreign contractors)</li>
           <li>4 Brokers (USA contractors)</li>
         </ul>
 
-        <div style="font-size:14px;font-weight:700;margin:16px 0 8px;color:var(--c-accent)">Recently Hired</div>
-        <ul style="margin:0 0 24px 20px;font-size:14px;line-height:1.8;color:var(--c-ink-soft)">
+        <div style="font-size:var(--text-lg);font-weight:700;margin:16px 0 8px;color:var(--c-accent)">Recently Hired</div>
+        <ul style="margin:0 0 24px 20px;font-size:var(--text-lg);line-height:1.8;color:var(--c-ink-soft)">
           <li>1 Sales Manager (Miami)</li>
           <li>5 Sales Representatives (foreign)</li>
           <li>3 Developers:
@@ -1319,8 +1315,7 @@ if (false) {
         </ul>
 
         <div class="ir-grid-title">Q1 Highlights</div>
-        <ul style="margin:0 0 24px 20px;font-size:14px;line-height:1.8;color:var(--c-ink-soft)">
-          <li>Marc and Sharon (Jan hires) fully ramped — $16.4K and $9.2K in March revenue respectively.</li>
+        <ul style="margin:0 0 24px 20px;font-size:var(--text-lg);line-height:1.8;color:var(--c-ink-soft)">
           <li>Hired a part-time CFO to strengthen financial planning, reporting, and investor relations.</li>
           <li>New website launched on www2.beycome.com.</li>
           <li>Buyer/broker agreement flow automated — agreements ramped 5 → 8 → 14 MoM.</li>
@@ -1337,39 +1332,39 @@ if (false) {
         </div>
 
         <div style="margin-top:32px;padding-top:28px;border-top:1px solid var(--c-border)">
-          <div style="display:inline-block;padding:6px 14px;border-radius:6px;background:var(--c-accent-soft);color:var(--c-accent);font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:20px">Q2 2026 Focus Areas</div>
+          <div style="display:inline-block;padding:6px 14px;border-radius:6px;background:var(--c-accent-soft);color:var(--c-accent);font-size:var(--text-lg);font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:20px">Q2 2026 Focus Areas</div>
 
-          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:15px;line-height:1.7;color:#2f2f5a">
+          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:var(--text-lg);line-height:1.7;color:var(--color-gray-600)">
             <span style="position:absolute;left:0;color:var(--c-accent);font-size:16px">→</span>
             <strong>State expansion</strong> — processing expanding into Maryland, Pennsylvania, California, New York, New Jersey, and Washington DC, all expected to complete before end of Q2. In California, escrow services are also targeted to launch by end of Q2.
           </div>
 
-          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:15px;line-height:1.7;color:#2f2f5a">
+          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:var(--text-lg);line-height:1.7;color:var(--color-gray-600)">
             <span style="position:absolute;left:0;color:var(--c-accent);font-size:16px">→</span>
             <strong>Scale title services</strong> — expand coverage including California, and strengthen operations to support 2&times; volume without increasing headcount at the same pace.
           </div>
 
-          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:15px;line-height:1.7;color:#2f2f5a">
+          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:var(--text-lg);line-height:1.7;color:var(--color-gray-600)">
             <span style="position:absolute;left:0;color:var(--c-accent);font-size:16px">→</span>
             <strong>Platform &amp; product</strong> — launch a new, more intuitive AI-guided UI/UX to simplify the journey and increase engagement and conversion. This includes improving the client dashboard with deeper Artur AI interaction, enhancing the MLS questionnaire UX (more intuitive, embeddable, fully connected to Artur), and better integrating showings and open houses (calendar sync, ShowingTime optimization, automated setup). Artur will also handle more interactions between users, MLS, and title (including scheduling), with the goal of reducing reliance on CS and MLS teams.
           </div>
 
-          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:15px;line-height:1.7;color:#2f2f5a">
+          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:var(--text-lg);line-height:1.7;color:var(--color-gray-600)">
             <span style="position:absolute;left:0;color:var(--c-accent);font-size:16px">→</span>
             <strong>Customer experience</strong> — improve service quality with faster automated responses, better escalation flows, and stronger internal tools.
           </div>
 
-          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:15px;line-height:1.7;color:#2f2f5a">
+          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:var(--text-lg);line-height:1.7;color:var(--color-gray-600)">
             <span style="position:absolute;left:0;color:var(--c-accent);font-size:16px">→</span>
             <strong>Growth &amp; marketing</strong> — continue reducing CAC through content, referrals, and social acquisition. Campaigns are live on Meta, Reddit, and Neighborhood.com, with TikTok coming next. Hiring a new marketing manager. Expand efforts across social media, blog, SEO, and strategic content to diversify acquisition channels and strengthen organic growth.
           </div>
 
-          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:15px;line-height:1.7;color:#2f2f5a">
+          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:var(--text-lg);line-height:1.7;color:var(--color-gray-600)">
             <span style="position:absolute;left:0;color:var(--c-accent);font-size:16px">→</span>
             <strong>Buyer program</strong> — improve conversion by optimizing the funnel, clarifying the value proposition, and reducing friction.
           </div>
 
-          <div style="margin-bottom:0;padding-left:28px;position:relative;font-size:15px;line-height:1.7;color:#2f2f5a">
+          <div style="margin-bottom:0;padding-left:28px;position:relative;font-size:var(--text-lg);line-height:1.7;color:var(--color-gray-600)">
             <span style="position:absolute;left:0;color:var(--c-accent);font-size:16px">→</span>
             <strong>Partnerships</strong> — build cash offer integrations for users, with advanced discussions underway with HomeLight and a slower path with Opendoor. HomeLight is ready to redirect its investor network (ranked #1 nationwide on their platform) into the Beycome system. Also closing new partnerships with OpenCasa (220 concierge properties) and TopBrokerage (investor platform, ~300 expected listings).
           </div>
@@ -1399,10 +1394,10 @@ if (false) {
           <h2 class="ir-section-title">Execution Status vs Plan (2025)</h2>
         </div>
         <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap">
-          <span style="padding:4px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#43bb4d;background:rgba(67,187,77,0.1)">8 Done</span>
-          <span style="padding:4px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#43bb4d;background:rgba(67,187,77,0.1)">1 Running</span>
-          <span style="padding:4px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#d97706;background:rgba(217,119,6,0.1)">1 In progress</span>
-          <span style="padding:4px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#bb4b43;background:rgba(187,75,67,0.1)">1 At risk</span>
+          <span style="padding:4px 12px;border-radius:8px;font-size:var(--text-lg);font-weight:600;color:#43bb4d;background:rgba(67,187,77,0.1)">8 Done</span>
+          <span style="padding:4px 12px;border-radius:8px;font-size:var(--text-lg);font-weight:600;color:#43bb4d;background:rgba(67,187,77,0.1)">1 Running</span>
+          <span style="padding:4px 12px;border-radius:8px;font-size:var(--text-lg);font-weight:600;color:#d97706;background:rgba(217,119,6,0.1)">1 In progress</span>
+          <span style="padding:4px 12px;border-radius:8px;font-size:var(--text-lg);font-weight:600;color:#bb4b43;background:rgba(187,75,67,0.1)">1 At risk</span>
         </div>
 
         <div class="ir-table-wrap">
@@ -1416,47 +1411,47 @@ if (false) {
             <tbody>
               <tr>
                 <td>Seed raise</td>
-                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">✓ Done</span></td>
+                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">✓ Done</span></td>
               </tr>
               <tr>
                 <td>Hire: CMO</td>
-                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#bb4b43;font-weight:600;font-size:13px">△ At risk</span></td>
+                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#bb4b43;font-weight:600;font-size:var(--text-lg)">△ At risk</span></td>
               </tr>
               <tr>
                 <td>Hire: Title Operations Lead</td>
-                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">✓ Done</span></td>
+                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">✓ Done</span></td>
               </tr>
               <tr>
                 <td>Hire: Sales Manager</td>
-                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">✓ Done</span></td>
+                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">✓ Done</span></td>
               </tr>
               <tr>
                 <td>Hire: Tech Team</td>
-                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">✓ Done</span></td>
+                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">✓ Done</span></td>
               </tr>
               <tr>
                 <td>Marketing: Paid acquisition playbook</td>
-                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">◔ Running</span></td>
+                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">◔ Running</span></td>
               </tr>
               <tr>
                 <td>Marketing: Content + SEO foundation</td>
-                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">✓ Done</span></td>
+                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">✓ Done</span></td>
               </tr>
               <tr>
                 <td>Title: Florida coverage expansion</td>
-                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">✓ Done</span></td>
+                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">✓ Done</span></td>
               </tr>
               <tr>
                 <td>Title: Texas entry</td>
-                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">✓ Done</span></td>
+                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">✓ Done</span></td>
               </tr>
               <tr>
                 <td>Buyer/Concierge: Launch MVP</td>
-                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">✓ Done</span></td>
+                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">✓ Done</span></td>
               </tr>
               <tr>
                 <td>Mortgage: Partner integration</td>
-                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#d97706;font-weight:600;font-size:13px">◔ In progress</span></td>
+                <td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#d97706;font-weight:600;font-size:var(--text-lg)">◔ In progress</span></td>
               </tr>
             </tbody>
           </table>
@@ -1488,7 +1483,7 @@ if (false) {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b42318" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             </div>
             <div>
-              <div style="font-size:15px;font-weight:700"><?php echo htmlspecialchars($type_labels[$tkey] ?? $tkey); ?></div>
+              <div style="font-size:var(--text-lg);font-weight:700"><?php echo htmlspecialchars($type_labels[$tkey] ?? $tkey); ?></div>
               <div style="font-size:12px;color:var(--c-ink-soft)">PDF · <?php echo $size; ?></div>
             </div>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent)" stroke-width="2" style="margin-left:auto;flex-shrink:0"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -1498,12 +1493,28 @@ if (false) {
       </div>
       <?php endif; ?>
 
-      <!-- SIGN-OFF -->
-      <div class="ir-signoff">
-        <p>As always — and more than ever — we're fully committed to building a best-in-class real estate platform for everyday people, operating with transparency, sharp focus, and strong financial discipline.<br><br>Questions and feedback are always welcome, <a href="mailto:nj@beycome.com" style="color:var(--c-accent);text-decoration:none">nj@beycome.com</a> or <a href="tel:3054399111" style="color:var(--c-accent);text-decoration:none">305-439-9111</a></p>
-        <p class="ir-signoff-names">Nico &amp; Cyril</p>
+    </div><!-- /.ir-page -->
+
+    <footer class="bc-legal-footer">
+      <div class="bc-legal-footer-inner">
+        <div class="bc-legal-footer-title">Confidentiality &amp; Legal Notice</div>
+        <p>This portal contains confidential and proprietary information of Beycome Corp. and is intended solely for the use of authorized investors and prospective investors of Beycome. Access to this portal is restricted and subject to applicable confidentiality obligations.</p>
+        <p>If you have accessed this portal in error, you are not authorized to review, use, copy, disclose, or distribute any of the information contained herein. Please exit immediately and notify us at <a href="mailto:policy@beycome.com">policy@beycome.com</a> so that we can take appropriate action.</p>
+        <p>All content, materials, data, financial information, projections, and communications available through this portal are provided for informational purposes only and do not constitute an offer to sell, a solicitation of an offer to buy, or a recommendation to invest in any securities. Any investment in Beycome is subject to formal documentation, applicable securities laws, and investor qualification requirements.</p>
+        <p>By continuing to access this portal, you acknowledge and agree to maintain the confidentiality of all information contained herein and to use such information solely for evaluation purposes related to a potential or existing investment in Beycome.</p>
+        <div class="bc-legal-footer-contact">Questions or feedback — <a href="mailto:nj@beycome.com">nj@beycome.com</a> &amp; <a href="mailto:cyril@beycome.com">cyril@beycome.com</a></div>
       </div>
-    </div>
+    </footer>
+
+    <style>
+      .bc-legal-footer { margin-top: 48px; padding: 28px 16px; border-top: 1px solid hsla(0, 0%, 88%, 1); background: #f9fafb; }
+      .bc-legal-footer-inner { max-width: 1152px; margin: 0 auto; font-family: Roboto, "Segoe UI", "Helvetica Neue", sans-serif; font-size: 12px; line-height: 1.55; color: hsla(210, 38.9%, 14.1%, 0.7); }
+      .bc-legal-footer-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: hsla(210, 39%, 14%, 1); margin-bottom: 10px; }
+      .bc-legal-footer p { margin: 0 0 8px; }
+      .bc-legal-footer a { color: var(--c-accent); text-decoration: none; }
+      .bc-legal-footer a:hover { text-decoration: underline; }
+      .bc-legal-footer-contact { margin-top: 12px; padding-top: 10px; border-top: 1px solid hsla(0, 0%, 88%, 1); font-size: 12px; }
+    </style>
   </div>
 
   <!-- ORG CHART MODAL -->

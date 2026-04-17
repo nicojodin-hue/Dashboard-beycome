@@ -48,7 +48,7 @@ if (false) {
       letter-spacing: -0.01em;
     }
     .pw-sub {
-      font-size: 14px;
+      font-size: var(--text-lg);
       color: #5a627a;
       margin-bottom: 28px;
     }
@@ -57,7 +57,7 @@ if (false) {
       padding: 11px 14px;
       border: 1.5px solid #d5d8f0;
       border-radius: 10px;
-      font-size: 15px;
+      font-size: var(--text-lg);
       font-family: inherit;
       color: #1a1f4d;
       outline: none;
@@ -79,7 +79,7 @@ if (false) {
       color: #ffffff;
       border: none;
       border-radius: 10px;
-      font-size: 15px;
+      font-size: var(--text-lg);
       font-weight: 600;
       font-family: inherit;
       cursor: pointer;
@@ -126,17 +126,23 @@ if (false) {
     @font-face { font-family:Roboto; font-style:normal; font-weight:700; font-display:swap; src:url('/assets/roboto-700.woff2') format('woff2'); }
 
     :root {
-      --c-bg: #fefefe;
-      --c-surface: #ffffff;
-      --c-ink: #1a1f4d;
-      --c-ink-soft: #5a627a;
-      --c-border: #d5d8f0;
-      --c-accent: #7d8ff7;
-      --c-accent-soft: #e5eaff;
+      /* calculator design tokens */
+      --c-bg: #ffffff;
+      --c-surface: #f9fafb;                       /* section/card bg */
+      --c-primary: hsla(210, 39%, 14%, 1);        /* Gunmetal #152330 */
+      --c-secondary: hsla(210, 38.9%, 14.1%, 0.7);/* Gunmetal-70 */
+      --c-tertiary: #4a5056;                      /* subtitle grey */
+      --c-ink: var(--c-primary);
+      --c-ink-soft: var(--c-secondary);
+      --c-border: hsla(0, 0%, 88%, 1);
+      --c-accent: #5a6ad4;                        /* Beycome blue */
+      --c-accent-soft: rgba(90, 106, 212, 0.1);
+      --text-lg: 1.125rem;                        /* 18px */
+      --color-gray-600: #4b5563;                  /* Tailwind gray-600 */
       --c-negative: #bb4b43;
-      --c-positive: #43bb4d;
-      --shadow-lg: 0 22px 60px rgba(21, 25, 70, 0.12);
-      --shadow-sm: 0 8px 24px rgba(21, 25, 70, 0.08);
+      --c-positive: hsla(137, 28%, 49%, 1);
+      --shadow-lg: 0 1px 3px 0 rgba(21, 35, 48, 0.04), 0 4px 20px -4px rgba(21, 35, 48, 0.06);
+      --shadow-sm: 0 1px 3px 0 rgba(21, 35, 48, 0.04), 0 4px 20px -4px rgba(21, 35, 48, 0.06);
       --radius-xl: 22px;
       --radius-lg: 16px;
       --radius-md: 12px;
@@ -152,7 +158,7 @@ if (false) {
       margin: 0;
       padding: 0;
       font-family: Roboto, "Segoe UI", "Helvetica Neue", sans-serif;
-      background: radial-gradient(circle at 10% 10%, #e2e4ff 0%, #f5f5ff 42%), linear-gradient(180deg, #f7f8ff 0%, #eceeff 100%);
+      background: #ffffff;
       color: var(--c-ink);
     }
 
@@ -160,120 +166,113 @@ if (false) {
       font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     }
 
+    /* Calculator-style navbar — white, centered logo */
     .ir-header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      position: relative;
+      background: #ffffff;
+      padding: 16px 24px;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding: 14px 24px;
-      box-shadow: 0 2px 12px rgba(21, 25, 70, 0.1);
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: saturate(160%) blur(14px);
     }
 
-    .ir-header-left {
-      display: flex;
-      align-items: center;
-      min-width: 0;
-      gap: 14px;
-    }
+    .ir-header-left { display: flex; align-items: center; }
+    .ir-header-center { display: flex; align-items: center; justify-content: center; }
+    .ir-header-right { display: flex; align-items: center; gap: 10px; }
 
     .ir-header-logo {
-      width: 124px;
-      height: auto;
+      height: 28px;
+      width: auto;
       display: block;
     }
 
-    .ir-header-divider {
-      width: 1px;
-      height: 22px;
-      background: var(--c-border);
-      flex-shrink: 0;
-    }
-
-    .ir-header-title {
-      font-size: 14px;
-      letter-spacing: 0.02em;
-      color: var(--c-ink-soft);
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
+    .ir-header-divider, .ir-header-title { display: none; }
 
     .ir-header-exit {
-      border: 1px solid #c5c9ee;
-      background: #ffffff;
-      color: var(--c-ink);
-      border-radius: 999px;
-      padding: 8px 14px;
-      font-weight: 600;
-      font-size: 14px;
+      border: none;
+      background: transparent;
+      color: var(--c-primary);
+      padding: 6px 10px;
+      font-weight: 500;
+      font-size: var(--text-lg);
       font-family: inherit;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       cursor: pointer;
-      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+      transition: color 0.15s;
       flex-shrink: 0;
     }
 
-    .ir-header-exit:hover {
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-sm);
-      border-color: #9098d4;
-    }
+    .ir-header-exit:hover { color: var(--c-accent); }
+    .ir-print-btn { color: var(--c-accent); }
 
     .ir-page {
-      max-width: 1080px;
+      max-width: 1152px;
       margin: 0 auto;
-      padding: 28px 20px 64px;
+      padding: 0 16px 64px;
     }
 
+    /* Calculator-style hero — white, Gunmetal title, grey subtitle, centered */
     .ir-hero {
-      border-radius: var(--radius-xl);
-      padding: 42px 34px;
-      background: linear-gradient(160deg, #8c8cf0 0%, #2d3a8c 58%, #4a5bc7 100%);
-      box-shadow: var(--shadow-lg);
-      color: #fff;
-      margin-bottom: 26px;
+      padding: 64px 16px 48px;
+      background: #ffffff;
+      box-shadow: none;
+      color: var(--c-primary);
+      margin: 0 auto 24px;
+      text-align: center;
     }
 
     .ir-hero-label {
-      display: inline-flex;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.14);
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      display: inline-block;
+      padding: 0;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      color: var(--c-secondary);
       margin-bottom: 14px;
     }
 
     .ir-hero-title {
-      margin: 0;
-      font-size: clamp(28px, 4vw, 46px);
-      line-height: 1.08;
-      text-wrap: balance;
+      margin: 0 0 24px;
+      font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      font-size: 63px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: normal;
+      color: var(--c-primary);
     }
 
     .ir-hero-subtitle {
-      margin-top: 14px;
-      font-size: clamp(15px, 1.8vw, 19px);
-      line-height: 1.45;
-      color: rgba(238, 240, 255, 0.9);
-      max-width: 860px;
+      margin: 0 auto;
+      font-family: Roboto, "Segoe UI", "Helvetica Neue", sans-serif;
+      font-size: 22px;
+      line-height: 1.5;
+      color: var(--c-tertiary);
+      max-width: 672px;
     }
 
+    @media (max-width: 720px) {
+      .ir-hero { padding: 40px 16px 32px; }
+      .ir-hero-title { font-size: 40px; }
+      .ir-hero-subtitle { font-size: 18px; }
+    }
+
+    /* Calculator-style section cards — light grey on white bg, no border, no shadow */
     .ir-section {
       background: var(--c-surface);
-      border-radius: var(--radius-xl);
-      padding: 42px 34px;
-      box-shadow: var(--shadow-sm);
+      border-radius: 16px;
+      padding: 28px 28px;
+      box-shadow: none;
       margin-bottom: 22px;
+    }
+    @media (min-width: 600px) {
+      .ir-section { padding: 32px 36px; }
     }
 
     .ir-section-header {
@@ -292,7 +291,7 @@ if (false) {
       background: var(--c-accent-soft);
       color: var(--c-accent);
       font-weight: 700;
-      font-size: 15px;
+      font-size: var(--text-lg);
     }
 
     .ir-section-title {
@@ -303,7 +302,7 @@ if (false) {
 
     .ir-subsection-title {
       margin: 32px 0 12px;
-      font-size: 15px;
+      font-size: var(--text-lg);
       color: var(--c-ink-soft);
       font-weight: 600;
       text-transform: uppercase;
@@ -312,8 +311,8 @@ if (false) {
 
     .ir-text {
       margin: 0 0 14px;
-      color: #2f2f5a;
-      font-size: 16px;
+      color: var(--color-gray-600);
+      font-size: var(--text-lg);
       line-height: 1.68;
     }
 
@@ -336,7 +335,7 @@ if (false) {
     }
 
     .ir-yoy-label {
-      font-size: 15px;
+      font-size: var(--text-lg);
       font-weight: 700;
       color: var(--c-ink);
     }
@@ -348,25 +347,29 @@ if (false) {
     }
 
     .ir-note {
-      border-left: 4px solid #a5aef9;
-      background: #f0f1ff;
-      border-radius: 0 var(--radius-md) var(--radius-md) 0;
-      padding: 14px 16px;
-      font-size: 14px;
-      color: #24245c;
-      line-height: 1.55;
+      border-left: none;
+      background: transparent;
+      border-radius: 0;
+      padding: 0;
+      font-size: var(--text-lg);
+      color: var(--color-gray-600);
+      line-height: 1.68;
       margin: 16px 0;
     }
 
     .ir-note--warning {
-      border-left-color: #f59e0b;
-      background: #fffaeb;
-      color: #6e4d00;
+      font-size: var(--text-lg);
+      line-height: 1.68;
+      color: var(--color-gray-600);
     }
 
     .ir-grid-title {
-      font-size: 14px;
-      margin: 20px 0;
+      margin: 32px 0 12px;
+      font-size: var(--text-lg);
+      color: var(--c-ink-soft);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
     }
 
     .ir-kpi-grid,
@@ -398,7 +401,7 @@ if (false) {
       font-size: clamp(23px, 2.1vw, 31px);
       font-weight: 700;
       letter-spacing: -0.02em;
-      color: #19195a;
+      color: #162432;
       line-height: 1.05;
     }
 
@@ -448,7 +451,7 @@ if (false) {
 
     .ir-table thead th {
       background: #f5f5ff;
-      color: #24244a;
+      color: var(--color-gray-600);
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -467,9 +470,9 @@ if (false) {
     .ir-table tbody td {
       padding: 11px 14px;
       border-bottom: 1px solid #ededfc;
-      font-size: 14px;
+      font-size: var(--text-lg);
       text-align: right;
-      color: #1e1e46;
+      color: var(--color-gray-600);
     }
 
     .ir-table tbody tr.bold td {
@@ -503,12 +506,14 @@ if (false) {
       border-radius: var(--radius-xl);
       padding: 26px;
       background: linear-gradient(180deg, #ffffff 0%, #f8f8ff 100%);
-      color: #21215a;
+      color: var(--color-gray-600);
+      font-size: var(--text-lg);
     }
 
     .ir-signoff p {
       margin: 0 0 12px;
       line-height: 1.65;
+      font-size: var(--text-lg);
     }
 
     .ir-signoff-team,
@@ -532,25 +537,22 @@ if (false) {
       }
 
       .ir-header-logo {
-        width: 108px;
-      }
-
-      .ir-header-divider,
-      .ir-header-title {
-        display: none;
+        height: 24px;
       }
 
       .ir-header-exit {
-        padding: 7px 10px;
+        padding: 6px 8px;
         font-size: 13px;
       }
 
       .ir-page {
-        padding: 14px 12px 50px;
+        padding: 0 12px 50px;
       }
 
-      .ir-hero,
-      .ir-section,
+      .ir-section {
+        border-radius: 14px;
+        padding: 20px;
+      }
       .ir-signoff {
         border-radius: 14px;
         padding: 18px;
@@ -574,7 +576,7 @@ if (false) {
       .ir-table thead th { padding: 8px 10px !important; font-size: 11px !important; }
       .ir-table tbody td { padding: 7px 10px !important; font-size: 12px !important; }
       .ir-table-wrap { margin: 6px 0 12px !important; }
-      .ir-text { font-size: 14px !important; margin-bottom: 8px !important; line-height: 1.5 !important; }
+      .ir-text { font-size: var(--text-lg) !important; margin-bottom: 8px !important; line-height: 1.5 !important; }
       .ir-note { padding: 10px 12px !important; margin: 8px 0 !important; font-size: 12px !important; }
       .ir-subsection-title { margin: 16px 0 8px !important; font-size: 13px !important; }
       .ir-grid-title { margin: 10px 0 !important; font-size: 13px !important; }
@@ -588,15 +590,16 @@ if (false) {
   </style>
 </head>
 <body>
-  <div id="investor-report-container" style="display: block; position: fixed; inset: 0px; z-index: 2000; background: var(--c-bg); overflow-y: auto;">
+  <div id="investor-report-container" style="display: block; position: fixed; inset: 0px; z-index: 2000; background: #ffffff; overflow-y: auto;">
     <div class="ir-header">
-      <div class="ir-header-left">
-        <img src="/assets/logo.svg" alt="Beycome" class="ir-header-logo">
-        <div class="ir-header-divider"></div>
-        <span class="ir-header-title">Investor Report | Feb 2026</span>
+      <div class="ir-header-left" style="flex:1;min-width:0"></div>
+      <div class="ir-header-center">
+        <a href="/" aria-label="Beycome" style="display:inline-block;line-height:0">
+          <img src="/assets/logo.svg" alt="Beycome" class="ir-header-logo">
+        </a>
       </div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <button onclick="window.print()" class="ir-header-exit ir-print-btn" style="color:var(--c-accent)">
+      <div class="ir-header-right" style="flex:1;display:flex;align-items:center;justify-content:flex-end;gap:10px">
+        <button onclick="window.print()" class="ir-header-exit ir-print-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
           Print / PDF
         </button>
@@ -609,8 +612,7 @@ if (false) {
 
     <div class="ir-page">
       <div class="ir-hero">
-        <div class="ir-hero-label">Investor Report</div>
-        <h1 class="ir-hero-title">Beycome | February 2026</h1>
+        <h1 class="ir-hero-title">Beycome Investor Report<br>February 2026</h1>
         <div class="ir-hero-subtitle">You + AI Guidance — Save up to 6% when selling and up to 2% when buying</div>
       </div>
 
@@ -633,7 +635,7 @@ if (false) {
           </div>
         </div>
 
-        <div class="ir-note ir-note--warning">Important note for partners: Since January 29, 2026, new MLS and state-level regulations have prohibited the listing of wholesale and double-closing transactions on Beycome across most U.S. states. This change has generated a temporary increase in refund activity ($7,518 in February vs. $4,583 in January). Despite the fact that we did not anticipate this immediate change, we have already shifted our target to B2C.</div>
+        <div class="ir-note ir-note--warning"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--c-negative);flex-shrink:0;vertical-align:-4px;margin-right:8px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><strong>Important note for partners:</strong> Since January 29, 2026, new MLS and state-level regulations have prohibited the listing of wholesale and double-closing transactions on Beycome across most U.S. states. This change has generated a temporary increase in refund activity ($7,518 in February vs. $4,583 in January). Despite the fact that we did not anticipate this immediate change, we have already shifted our target to B2C.</div>
 
         <div class="ir-subsection-title">Key Performance Indicators</div>
         <div class="ir-grid-title">Marketplace</div>
@@ -829,7 +831,7 @@ if (false) {
             <div class="ir-health-sub">28 Feb 2026</div>
           </div>
           <div class="ir-health-card">
-            <div class="ir-health-value">($69.9K)</div>
+            <div class="ir-health-value" style="color:var(--c-negative)">($69.9K)</div>
             <div class="ir-health-label">Avg Monthly Burn</div>
             <div class="ir-health-sub"></div>
           </div>
@@ -872,7 +874,7 @@ if (false) {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b42318" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             </div>
             <div>
-              <div style="font-size:15px;font-weight:700"><?php echo htmlspecialchars($type_labels[$tkey] ?? $tkey); ?></div>
+              <div style="font-size:var(--text-lg);font-weight:700"><?php echo htmlspecialchars($type_labels[$tkey] ?? $tkey); ?></div>
               <div style="font-size:12px;color:var(--c-ink-soft)">PDF · <?php echo $size; ?></div>
             </div>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent)" stroke-width="2" style="margin-left:auto;flex-shrink:0"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -882,12 +884,28 @@ if (false) {
       </div>
       <?php endif; ?>
 
-      <div class="ir-signoff">
-        <p>As always - and more than ever - we're fully committed to building a best-in-class real estate platform for everyday people, operating with transparency, sharp focus, and strong financial discipline.<br><br>Questions and feedback are always welcome.</p>
-        <p class="ir-signoff-team">- The Beycome Team</p>
-        <p class="ir-signoff-names">Nico &amp; Jodin</p>
+    </div><!-- /.ir-page -->
+
+    <footer class="bc-legal-footer">
+      <div class="bc-legal-footer-inner">
+        <div class="bc-legal-footer-title">Confidentiality &amp; Legal Notice</div>
+        <p>This portal contains confidential and proprietary information of Beycome Corp. and is intended solely for the use of authorized investors and prospective investors of Beycome. Access to this portal is restricted and subject to applicable confidentiality obligations.</p>
+        <p>If you have accessed this portal in error, you are not authorized to review, use, copy, disclose, or distribute any of the information contained herein. Please exit immediately and notify us at <a href="mailto:policy@beycome.com">policy@beycome.com</a> so that we can take appropriate action.</p>
+        <p>All content, materials, data, financial information, projections, and communications available through this portal are provided for informational purposes only and do not constitute an offer to sell, a solicitation of an offer to buy, or a recommendation to invest in any securities. Any investment in Beycome is subject to formal documentation, applicable securities laws, and investor qualification requirements.</p>
+        <p>By continuing to access this portal, you acknowledge and agree to maintain the confidentiality of all information contained herein and to use such information solely for evaluation purposes related to a potential or existing investment in Beycome.</p>
+        <div class="bc-legal-footer-contact">Questions or feedback — <a href="mailto:nj@beycome.com">nj@beycome.com</a> &amp; <a href="mailto:cyril@beycome.com">cyril@beycome.com</a></div>
       </div>
-    </div>
+    </footer>
+
+    <style>
+      .bc-legal-footer { margin-top: 48px; padding: 28px 16px; border-top: 1px solid hsla(0, 0%, 88%, 1); background: #f9fafb; }
+      .bc-legal-footer-inner { max-width: 1152px; margin: 0 auto; font-family: Roboto, "Segoe UI", "Helvetica Neue", sans-serif; font-size: 12px; line-height: 1.55; color: hsla(210, 38.9%, 14.1%, 0.7); }
+      .bc-legal-footer-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: hsla(210, 39%, 14%, 1); margin-bottom: 10px; }
+      .bc-legal-footer p { margin: 0 0 8px; }
+      .bc-legal-footer a { color: var(--c-accent); text-decoration: none; }
+      .bc-legal-footer a:hover { text-decoration: underline; }
+      .bc-legal-footer-contact { margin-top: 12px; padding-top: 10px; border-top: 1px solid hsla(0, 0%, 88%, 1); font-size: 12px; }
+    </style>
   </div>
 
   <script>

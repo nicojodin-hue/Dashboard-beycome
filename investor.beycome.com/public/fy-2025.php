@@ -16,17 +16,23 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
     @font-face { font-family:Roboto; font-style:normal; font-weight:700; font-display:swap; src:url('/assets/roboto-700.woff2') format('woff2'); }
 
     :root {
-      --c-bg: #fefefe;
-      --c-surface: #ffffff;
-      --c-ink: #1a1f4d;
-      --c-ink-soft: #5a627a;
-      --c-border: #d5d8f0;
-      --c-accent: #7d8ff7;
-      --c-accent-soft: #e5eaff;
+      /* calculator design tokens */
+      --c-bg: #ffffff;
+      --c-surface: #f9fafb;
+      --c-primary: hsla(210, 39%, 14%, 1);
+      --c-secondary: hsla(210, 38.9%, 14.1%, 0.7);
+      --c-tertiary: #4a5056;
+      --c-ink: var(--c-primary);
+      --c-ink-soft: var(--c-secondary);
+      --c-border: hsla(0, 0%, 88%, 1);
+      --c-accent: #5a6ad4;
+      --c-accent-soft: rgba(90, 106, 212, 0.1);
+      --text-lg: 1.125rem;
+      --color-gray-600: #4b5563;
       --c-negative: #bb4b43;
-      --c-positive: #43bb4d;
-      --shadow-lg: 0 22px 60px rgba(21, 25, 70, 0.12);
-      --shadow-sm: 0 8px 24px rgba(21, 25, 70, 0.08);
+      --c-positive: hsla(137, 28%, 49%, 1);
+      --shadow-lg: 0 1px 3px 0 rgba(21, 35, 48, 0.04), 0 4px 20px -4px rgba(21, 35, 48, 0.06);
+      --shadow-sm: 0 1px 3px 0 rgba(21, 35, 48, 0.04), 0 4px 20px -4px rgba(21, 35, 48, 0.06);
       --radius-xl: 22px;
       --radius-lg: 16px;
       --radius-md: 12px;
@@ -38,7 +44,7 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
     html, body {
       margin: 0; padding: 0;
       font-family: Roboto, "Segoe UI", "Helvetica Neue", sans-serif;
-      background: radial-gradient(circle at 10% 10%, #e2e4ff 0%, #f5f5ff 42%), linear-gradient(180deg, #f7f8ff 0%, #eceeff 100%);
+      background: #ffffff;
       color: var(--c-ink);
     }
 
@@ -46,37 +52,48 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
       font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     }
 
-    .ir-header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 24px; box-shadow: 0 2px 12px rgba(21,25,70,0.1); background: rgba(255,255,255,0.9); backdrop-filter: saturate(160%) blur(14px); }
-    .ir-header-left { display: flex; align-items: center; min-width: 0; gap: 14px; }
-    .ir-header-logo { width: 124px; height: auto; display: block; }
-    .ir-header-divider { width: 1px; height: 22px; background: var(--c-border); flex-shrink: 0; }
-    .ir-header-title { font-size: 14px; letter-spacing: 0.02em; color: var(--c-ink-soft); white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-    .ir-header-exit { border: 1px solid #c5c9ee; background: #ffffff; color: var(--c-ink); border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: 14px; font-family: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease; flex-shrink: 0; }
-    .ir-header-exit:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); border-color: #9098d4; }
+    /* Calculator-style navbar */
+    .ir-header { position: relative; background: #ffffff; padding: 16px 24px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .ir-header-left { display: flex; align-items: center; }
+    .ir-header-center { display: flex; align-items: center; justify-content: center; }
+    .ir-header-right { display: flex; align-items: center; gap: 10px; }
+    .ir-header-logo { height: 28px; width: auto; display: block; }
+    .ir-header-divider, .ir-header-title { display: none; }
+    .ir-header-exit { border: none; background: transparent; color: var(--c-primary); padding: 6px 10px; font-weight: 500; font-size: var(--text-lg); font-family: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; transition: color 0.15s; flex-shrink: 0; }
+    .ir-header-exit:hover { color: var(--c-accent); }
+    .ir-print-btn { color: var(--c-accent); }
 
-    .ir-page { max-width: 1080px; margin: 0 auto; padding: 28px 20px 64px; }
+    .ir-page { max-width: 1152px; margin: 0 auto; padding: 0 16px 64px; }
 
-    .ir-hero { border-radius: var(--radius-xl); padding: 42px 34px; background: linear-gradient(160deg, #8c8cf0 0%, #2d3a8c 58%, #4a5bc7 100%); box-shadow: var(--shadow-lg); color: #fff; margin-bottom: 26px; }
-    .ir-hero-label { display: inline-flex; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.14); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
-    .ir-hero-title { margin: 0; font-size: clamp(28px, 4vw, 46px); line-height: 1.08; text-wrap: balance; }
-    .ir-hero-subtitle { margin-top: 14px; font-size: clamp(15px, 1.8vw, 19px); line-height: 1.45; color: rgba(238,240,255,0.9); max-width: 860px; }
+    /* Calculator-style hero */
+    .ir-hero { padding: 64px 16px 48px; background: #ffffff; box-shadow: none; color: var(--c-primary); margin: 0 auto 24px; text-align: center; }
+    .ir-hero-label { display: inline-block; padding: 0; background: transparent; font-size: 13px; font-weight: 500; letter-spacing: 0.04em; text-transform: none; color: var(--c-secondary); margin-bottom: 14px; }
+    .ir-hero-title { margin: 0 0 24px; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 63px; font-weight: 700; line-height: 1.1; letter-spacing: normal; color: var(--c-primary); }
+    .ir-hero-subtitle { margin: 0 auto; font-family: Roboto, "Segoe UI", "Helvetica Neue", sans-serif; font-size: 22px; line-height: 1.5; color: var(--c-tertiary); max-width: 672px; }
+    @media (max-width: 720px) {
+      .ir-hero { padding: 40px 16px 32px; }
+      .ir-hero-title { font-size: 40px; }
+      .ir-hero-subtitle { font-size: 18px; }
+    }
 
-    .ir-section { background: var(--c-surface); border-radius: var(--radius-xl); padding: 42px 34px; box-shadow: var(--shadow-sm); margin-bottom: 22px; }
+    /* Calculator-style section cards */
+    .ir-section { background: var(--c-surface); border-radius: 16px; padding: 28px 28px; box-shadow: none; margin-bottom: 22px; }
+    @media (min-width: 600px) { .ir-section { padding: 32px 36px; } }
     .ir-section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
-    .ir-section-number { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--c-accent-soft); color: var(--c-accent); font-weight: 700; font-size: 15px; }
+    .ir-section-number { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--c-accent-soft); color: var(--c-accent); font-weight: 700; font-size: var(--text-lg); }
     .ir-section-title { margin: 0; font-size: clamp(22px, 3vw, 30px); letter-spacing: -0.015em; }
-    .ir-subsection-title { margin: 32px 0 12px; font-size: 15px; color: var(--c-ink-soft); font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; }
+    .ir-subsection-title { margin: 32px 0 12px; font-size: var(--text-lg); color: var(--c-ink-soft); font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; }
 
-    .ir-text { margin: 0 0 14px; color: #2f2f5a; font-size: 16px; line-height: 1.68; }
+    .ir-text { margin: 0 0 14px; color: var(--color-gray-600); font-size: var(--text-lg); line-height: 1.68; }
 
-    .ir-note { border-left: 4px solid #a5aef9; background: #f0f1ff; border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 14px 16px; font-size: 14px; color: #24245c; line-height: 1.55; margin: 16px 0; }
-    .ir-note--warning { border-left-color: #f59e0b; background: #fffaeb; color: #6e4d00; }
+    .ir-note { border-left: none; background: transparent; border-radius: 0; padding: 0; font-size: var(--text-lg); color: var(--color-gray-600); line-height: 1.68; margin: 16px 0; }
+    .ir-note--warning { font-size: var(--text-lg); line-height: 1.68; color: var(--color-gray-600); }
 
-    .ir-grid-title { font-size: 14px; margin: 20px 0; }
+    .ir-grid-title { margin: 32px 0 12px; font-size: var(--text-lg); color: var(--c-ink-soft); font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; }
 
     .ir-kpi-grid, .ir-revenue-grid, .ir-health-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin: 0 0 30px; }
     .ir-kpi-card, .ir-revenue-card, .ir-health-card { border: 1px solid var(--c-border); border-radius: var(--radius-md); background: #ffffff; padding: 15px; min-height: 108px; display: flex; flex-direction: column; justify-content: center; }
-    .ir-kpi-value, .ir-revenue-value, .ir-health-value { font-size: clamp(23px, 2.1vw, 31px); font-weight: 700; letter-spacing: -0.02em; color: #19195a; line-height: 1.05; }
+    .ir-kpi-value, .ir-revenue-value, .ir-health-value { font-size: clamp(23px, 2.1vw, 31px); font-weight: 700; letter-spacing: -0.02em; color: #162432; line-height: 1.05; }
     .ir-kpi-label, .ir-revenue-label, .ir-health-label { margin-top: 8px; font-size: 13px; font-weight: 600; color: #27274a; opacity: 0.6; letter-spacing: 0.02em; text-transform: uppercase; }
     .ir-kpi-sub, .ir-revenue-sub, .ir-health-sub { margin-top: 6px; font-size: 12px; color: var(--c-ink-soft); font-weight: bold; letter-spacing: 0.02em; }
     .positive { color: var(--c-positive); }
@@ -84,15 +101,15 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
 
     .ir-table-wrap { margin: 8px 0 22px; overflow-x: auto; border: 1px solid var(--c-border); border-radius: var(--radius-md); }
     .ir-table { width: 100%; border-collapse: collapse; min-width: 640px; background: #ffffff; }
-    .ir-table thead th { background: #f5f5ff; color: #24244a; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700; text-align: right; padding: 12px 14px; border-bottom: 1px solid var(--c-border); }
+    .ir-table thead th { background: #f5f5ff; color: var(--color-gray-600); font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700; text-align: right; padding: 12px 14px; border-bottom: 1px solid var(--c-border); }
     .ir-table thead th:first-child, .ir-table tbody td:first-child { text-align: left; width: 30%; }
-    .ir-table tbody td { padding: 11px 14px; border-bottom: 1px solid #ededfc; font-size: 14px; text-align: right; color: #1e1e46; }
+    .ir-table tbody td { padding: 11px 14px; border-bottom: 1px solid #ededfc; font-size: var(--text-lg); text-align: right; color: var(--color-gray-600); }
     .ir-table tbody tr.bold td { font-weight: 700; background: #f9f9ff; }
     .ir-table tbody tr.total td { font-weight: 700; color: #7a271a; background: #fff6f5; }
     .ir-table tbody tr:last-child td { border-bottom: none; }
 
-    .ir-signoff { margin-top: 10px; border: 1px solid var(--c-border); border-radius: var(--radius-xl); padding: 26px; background: linear-gradient(180deg, #ffffff 0%, #f8f8ff 100%); color: #21215a; }
-    .ir-signoff p { margin: 0 0 12px; line-height: 1.65; }
+    .ir-signoff { margin-top: 10px; border: 1px solid var(--c-border); border-radius: var(--radius-xl); padding: 26px; background: linear-gradient(180deg, #ffffff 0%, #f8f8ff 100%); color: var(--color-gray-600); font-size: var(--text-lg); }
+    .ir-signoff p { margin: 0 0 12px; line-height: 1.65; font-size: var(--text-lg); }
     .ir-signoff-team, .ir-signoff-names { font-weight: 700; margin-bottom: 4px; }
 
     @media (min-width: 900px) {
@@ -101,11 +118,11 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
 
     @media (max-width: 720px) {
       .ir-header { padding: 12px 14px; }
-      .ir-header-logo { width: 108px; }
-      .ir-header-divider, .ir-header-title { display: none; }
-      .ir-header-exit { padding: 7px 10px; font-size: 13px; }
-      .ir-page { padding: 14px 12px 50px; }
-      .ir-hero, .ir-section, .ir-signoff { border-radius: 14px; padding: 18px; }
+      .ir-header-logo { height: 24px; }
+      .ir-header-exit { padding: 6px 8px; font-size: 13px; }
+      .ir-page { padding: 0 12px 50px; }
+      .ir-section { border-radius: 14px; padding: 20px; }
+      .ir-signoff { border-radius: 14px; padding: 18px; }
     }
 
     @media print {
@@ -125,7 +142,7 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
       .ir-table thead th { padding: 8px 10px !important; font-size: 11px !important; }
       .ir-table tbody td { padding: 7px 10px !important; font-size: 12px !important; }
       .ir-table-wrap { margin: 6px 0 12px !important; }
-      .ir-text { font-size: 14px !important; margin-bottom: 8px !important; line-height: 1.5 !important; }
+      .ir-text { font-size: var(--text-lg) !important; margin-bottom: 8px !important; line-height: 1.5 !important; }
       .ir-note { padding: 10px 12px !important; margin: 8px 0 !important; font-size: 12px !important; }
       .ir-subsection-title { margin: 16px 0 8px !important; font-size: 13px !important; }
       .ir-grid-title { margin: 10px 0 !important; font-size: 13px !important; }
@@ -139,15 +156,16 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
   </style>
 </head>
 <body>
-  <div id="investor-report-container" style="display:block;position:fixed;inset:0;z-index:2000;background:var(--c-bg);overflow-y:auto;">
+  <div id="investor-report-container" style="display:block;position:fixed;inset:0;z-index:2000;background:#ffffff;overflow-y:auto;">
     <div class="ir-header">
-      <div class="ir-header-left">
-        <img src="/assets/logo.svg" alt="Beycome" class="ir-header-logo">
-        <div class="ir-header-divider"></div>
-        <span class="ir-header-title">Investor Report | FY 2025</span>
+      <div class="ir-header-left" style="flex:1;min-width:0"></div>
+      <div class="ir-header-center">
+        <a href="/" aria-label="Beycome" style="display:inline-block;line-height:0">
+          <img src="/assets/logo.svg" alt="Beycome" class="ir-header-logo">
+        </a>
       </div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <button onclick="window.print()" class="ir-header-exit ir-print-btn" style="color:var(--c-accent)">
+      <div class="ir-header-right" style="flex:1;display:flex;align-items:center;justify-content:flex-end;gap:10px">
+        <button onclick="window.print()" class="ir-header-exit ir-print-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
           Print / PDF
         </button>
@@ -160,8 +178,7 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
 
     <div class="ir-page">
       <div class="ir-hero">
-        <div class="ir-hero-label">Investor Report</div>
-        <h1 class="ir-hero-title">Beycome | FY 2025 &amp; January 2026</h1>
+        <h1 class="ir-hero-title">Beycome Investor Report<br>FY 2025 &amp; January 2026</h1>
         <div class="ir-hero-subtitle">You + AI Guidance — Save up to 6% when selling and up to 2% when buying</div>
       </div>
 
@@ -179,7 +196,7 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
 
         <div class="ir-note">
           <strong>Pro-forma Title Revenue Bridge</strong>
-          <table style="width:100%;margin-top:10px;font-size:14px;border-collapse:collapse">
+          <table style="width:100%;margin-top:10px;font-size:var(--text-lg);border-collapse:collapse">
             <tr><td style="padding:6px 0">Beycome Title Revenue</td><td style="padding:6px 0;text-align:right;font-weight:700">$119,942</td></tr>
             <tr><td style="padding:6px 0">Title Partners Est. Revenue</td><td style="padding:6px 0;text-align:right;font-weight:700">$371,900</td></tr>
             <tr style="border-top:1px solid #c5cbf9"><td style="padding:8px 0;font-weight:700">Total Pro-forma Title Revenue</td><td style="padding:8px 0;text-align:right;font-weight:700">$491,842</td></tr>
@@ -210,8 +227,8 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
         <div class="ir-grid-title">Financial Health</div>
         <div class="ir-health-grid">
           <div class="ir-health-card"><div class="ir-health-value">$1.49M</div><div class="ir-health-label">Total Revenue</div><div class="ir-health-sub">FY 2025</div></div>
-          <div class="ir-health-card"><div class="ir-health-value">$1.86M</div><div class="ir-health-label">Cash Balance</div><div class="ir-health-sub">12 Feb 2026</div></div>
-          <div class="ir-health-card"><div class="ir-health-value">($37.4K)</div><div class="ir-health-label">Avg Monthly Burn</div></div>
+          <div class="ir-health-card"><div class="ir-health-value">$1.86M</div><div class="ir-health-label">Cash Balance*</div><div class="ir-health-sub">12 Feb 2026</div></div>
+          <div class="ir-health-card"><div class="ir-health-value" style="color:var(--c-negative)">($37.4K)</div><div class="ir-health-label">Avg Monthly Burn</div></div>
           <div class="ir-health-card"><div class="ir-health-value">49 months</div><div class="ir-health-label">Runway</div></div>
         </div>
       </div>
@@ -222,7 +239,6 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
           <span class="ir-section-number">02</span>
           <h2 class="ir-section-title">Financial Statements</h2>
         </div>
-        <div class="ir-note">Consolidated P&amp;L: Beycome Corp + Beycome Title of Florida LLC + LLC 1. Source: QuickBooks (accrual basis).</div>
 
         <div class="ir-table-wrap">
           <table class="ir-table" style="min-width:700px">
@@ -313,8 +329,8 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
           </table>
         </div>
 
-        <div style="font-size:14px;font-weight:700;margin:16px 0 8px">Commentary</div>
-        <ul style="margin:0 0 20px 20px;font-size:14px;line-height:1.8;color:var(--c-ink-soft)">
+        <div style="font-size:var(--text-lg);font-weight:700;margin:16px 0 8px">Commentary</div>
+        <ul style="margin:0 0 20px 20px;font-size:var(--text-lg);line-height:1.8;color:var(--c-ink-soft)">
           <li>Listing fees (basic + enhanced) represented 72% of total revenue at $1,067,906.</li>
           <li>Gross margin held at 86% for the full year. COGS remained low relative to revenue.</li>
           <li>SG&amp;A totaled $1,716,827 (115% of revenue), driven by people costs and G&amp;A buildout.</li>
@@ -335,14 +351,14 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
         <p class="ir-text">Our core thesis was simple — drive more listings to create a compounding flywheel effect: greater inventory leads to more visibility, more transactions, and stronger monetization across services.</p>
 
         <div class="ir-subsection-title">What was reaffirmed</div>
-        <ul style="margin:0 0 20px 20px;font-size:14px;line-height:1.8;color:var(--c-ink-soft)">
+        <ul style="margin:0 0 20px 20px;font-size:var(--text-lg);line-height:1.8;color:var(--c-ink-soft)">
           <li><strong>AI-first product differentiation</strong> continues to resonate with sellers seeking control and savings.</li>
           <li><strong>Bundled services</strong> — including title, concierge, and buyer programs — significantly increase lifetime value per customer by expanding revenue per transaction and deepening service adoption.</li>
           <li><strong>Direct-to-consumer model</strong> has clear cost advantages versus agent-mediated alternatives.</li>
         </ul>
 
         <div class="ir-subsection-title">What was deprioritized</div>
-        <ul style="margin:0 0 20px 20px;font-size:14px;line-height:1.8;color:var(--c-ink-soft)">
+        <ul style="margin:0 0 20px 20px;font-size:var(--text-lg);line-height:1.8;color:var(--c-ink-soft)">
           <li>Following the cease and desist in North Carolina, we lost nearly 20% of revenue, materially impacting cash and near-term execution capacity.</li>
           <li>Reduced paid acquisition on Meta and social, as CAC was not aligned with sustainable unit economics given our current cash position.</li>
           <li>Slowed partner channel development due to high resource demand and unclear short-term ROI.</li>
@@ -383,27 +399,27 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
           <div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
               <span style="color:#43bb4d;font-size:18px">&#10003;</span>
-              <span style="font-size:15px;font-weight:700;color:var(--c-ink)">What We've Launched</span>
+              <span style="font-size:var(--text-lg);font-weight:700;color:var(--c-ink)">What We've Launched</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:12px">
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">AI-powered listing description generator with photo optimization</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Integrated title ordering and status tracking dashboard</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Buyer qualification flow with pre-approval routing</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Mobile-optimized showing scheduler with calendar sync</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Automated offer comparison tool with net proceeds calculator</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Document vault with e-signature integration</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">AI-powered listing description generator with photo optimization</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Integrated title ordering and status tracking dashboard</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Buyer qualification flow with pre-approval routing</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Mobile-optimized showing scheduler with calendar sync</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Automated offer comparison tool with net proceeds calculator</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Document vault with e-signature integration</div>
             </div>
           </div>
           <div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
               <span style="color:var(--c-accent);font-size:16px">&rarr;</span>
-              <span style="font-size:15px;font-weight:700;color:var(--c-ink)">What's Next</span>
+              <span style="font-size:var(--text-lg);font-weight:700;color:var(--c-ink)">What's Next</span>
             </div>
             <div style="display:flex;flex-direction:column;gap:12px">
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Concierge dashboard for buyer transaction management</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Mortgage rate comparison tool with lender integration</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">AI chatbot for seller FAQs and process guidance</div>
-              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:14px;color:var(--c-ink-soft);line-height:1.5">Enhanced analytics for pricing recommendations</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Concierge dashboard for buyer transaction management</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Mortgage rate comparison tool with lender integration</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">AI chatbot for seller FAQs and process guidance</div>
+              <div style="padding-left:14px;border-left:3px solid #e8eaff;font-size:var(--text-lg);color:var(--c-ink-soft);line-height:1.5">Enhanced analytics for pricing recommendations</div>
             </div>
           </div>
         </div>
@@ -416,9 +432,9 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
           <h2 class="ir-section-title">Execution Status vs Plan (2025)</h2>
         </div>
         <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap">
-          <span style="padding:4px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#43bb4d;background:rgba(67,187,77,0.1)">6 Done</span>
-          <span style="padding:4px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#d97706;background:rgba(217,119,6,0.1)">4 In progress</span>
-          <span style="padding:4px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#bb4b43;background:rgba(187,75,67,0.1)">1 At risk</span>
+          <span style="padding:4px 12px;border-radius:8px;font-size:var(--text-lg);font-weight:600;color:#43bb4d;background:rgba(67,187,77,0.1)">6 Done</span>
+          <span style="padding:4px 12px;border-radius:8px;font-size:var(--text-lg);font-weight:600;color:#d97706;background:rgba(217,119,6,0.1)">4 In progress</span>
+          <span style="padding:4px 12px;border-radius:8px;font-size:var(--text-lg);font-weight:600;color:#bb4b43;background:rgba(187,75,67,0.1)">1 At risk</span>
         </div>
 
         <div class="ir-table-wrap">
@@ -430,17 +446,17 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
               </tr>
             </thead>
             <tbody>
-              <tr><td>Seed raise</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">&#10003; Done</span></td></tr>
-              <tr><td>Hire: CMO</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#bb4b43;font-weight:600;font-size:13px">&#9651; At risk</span></td></tr>
-              <tr><td>Hire: Title Operations Lead</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#d97706;font-weight:600;font-size:13px">&#9684; In progress</span></td></tr>
-              <tr><td>Hire: Sales Manager</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">&#10003; Done</span></td></tr>
-              <tr><td>Hire: Tech Team</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">&#10003; Done</span></td></tr>
-              <tr><td>Marketing: Paid acquisition playbook</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#d97706;font-weight:600;font-size:13px">&#9684; In progress</span></td></tr>
-              <tr><td>Marketing: Content + SEO foundation</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">&#10003; Done</span></td></tr>
-              <tr><td>Title: Florida coverage expansion</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">&#10003; Done</span></td></tr>
-              <tr><td>Title: Texas entry</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#d97706;font-weight:600;font-size:13px">&#9684; In progress</span></td></tr>
-              <tr><td>Buyer/Concierge: Launch MVP</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:13px">&#10003; Done</span></td></tr>
-              <tr><td>Mortgage: Partner integration</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#d97706;font-weight:600;font-size:13px">&#9684; In progress</span></td></tr>
+              <tr><td>Seed raise</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">&#10003; Done</span></td></tr>
+              <tr><td>Hire: CMO</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#bb4b43;font-weight:600;font-size:var(--text-lg)">&#9651; At risk</span></td></tr>
+              <tr><td>Hire: Title Operations Lead</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#d97706;font-weight:600;font-size:var(--text-lg)">&#9684; In progress</span></td></tr>
+              <tr><td>Hire: Sales Manager</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">&#10003; Done</span></td></tr>
+              <tr><td>Hire: Tech Team</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">&#10003; Done</span></td></tr>
+              <tr><td>Marketing: Paid acquisition playbook</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#d97706;font-weight:600;font-size:var(--text-lg)">&#9684; In progress</span></td></tr>
+              <tr><td>Marketing: Content + SEO foundation</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">&#10003; Done</span></td></tr>
+              <tr><td>Title: Florida coverage expansion</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">&#10003; Done</span></td></tr>
+              <tr><td>Title: Texas entry</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#d97706;font-weight:600;font-size:var(--text-lg)">&#9684; In progress</span></td></tr>
+              <tr><td>Buyer/Concierge: Launch MVP</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#43bb4d;font-weight:600;font-size:var(--text-lg)">&#10003; Done</span></td></tr>
+              <tr><td>Mortgage: Partner integration</td><td style="text-align:right"><span style="display:inline-flex;align-items:center;gap:5px;color:#d97706;font-weight:600;font-size:var(--text-lg)">&#9684; In progress</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -456,27 +472,27 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
         <div class="ir-subsection-title">Jan 2026 Brief Outlook</div>
 
         <div style="margin-bottom:24px">
-          <div style="font-size:15px;font-weight:700;margin-bottom:10px;color:var(--c-accent)">1. Early 2026 Traction</div>
+          <div style="font-size:var(--text-lg);font-weight:700;margin-bottom:10px;color:var(--c-accent)">1. Early 2026 Traction</div>
           <p class="ir-text">In the first days of 2026, Beycome surpassed 100,000 engaged visitors on the platform, compared to 22,000 active users in the same period last year — nearly a 5&times; increase year over year driven by significant organic marketing and SEO performance improvements. Our gross revenue has progressed +55% vs January 2025, with $137K revenue (Beycome Real Estate) and $42K (Beycome Title) for a consolidated revenue of $179K gross revenue.</p>
         </div>
 
         <div style="margin-bottom:24px">
-          <div style="font-size:15px;font-weight:700;margin-bottom:10px;color:var(--c-accent)">2. Title Revenue per Customer &amp; LTV Impact</div>
+          <div style="font-size:var(--text-lg);font-weight:700;margin-bottom:10px;color:var(--c-accent)">2. Title Revenue per Customer &amp; LTV Impact</div>
           <p class="ir-text">Average revenue per Title client is nearly $3,000 (based on funded Title deals in early 2026). This significantly increases average revenue per customer and lifetime value for listing clients who also purchase Title services.</p>
         </div>
 
         <div style="margin-bottom:24px">
-          <div style="font-size:15px;font-weight:700;margin-bottom:10px;color:var(--c-accent)">3. Team</div>
+          <div style="font-size:var(--text-lg);font-weight:700;margin-bottom:10px;color:var(--c-accent)">3. Team</div>
           <p class="ir-text">We are currently a team of 24 (full-time, part-time, and contractor combined), 8 on payroll:</p>
-          <ul style="margin:0 0 20px 20px;font-size:14px;line-height:1.8;color:var(--c-ink-soft)">
+          <ul style="margin:0 0 20px 20px;font-size:var(--text-lg);line-height:1.8;color:var(--c-ink-soft)">
             <li>8 Customer Support and MLS Team (Miami-based manager + part-time, foreign contractors)</li>
             <li>6 Sales Team (Miami-based Manager + foreign contractors)</li>
             <li>6 Developers (Miami-based + 2 foreign contractors)</li>
             <li>4 Brokers (USA contractors)</li>
           </ul>
 
-          <div style="font-size:14px;font-weight:700;margin:16px 0 8px;color:var(--c-accent)">Recently Hired</div>
-          <ul style="margin:0 0 20px 20px;font-size:14px;line-height:1.8;color:var(--c-ink-soft)">
+          <div style="font-size:var(--text-lg);font-weight:700;margin:16px 0 8px;color:var(--c-accent)">Recently Hired</div>
+          <ul style="margin:0 0 20px 20px;font-size:var(--text-lg);line-height:1.8;color:var(--c-ink-soft)">
             <li>1 Sales Manager (Miami)</li>
             <li>5 Sales Representatives (foreign)</li>
             <li>3 Developers:
@@ -491,34 +507,34 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
         </div>
 
         <div style="margin-bottom:24px">
-          <div style="font-size:15px;font-weight:700;margin-bottom:10px;color:var(--c-accent)">4. Beycome Local Expansion</div>
+          <div style="font-size:var(--text-lg);font-weight:700;margin-bottom:10px;color:var(--c-accent)">4. Beycome Local Expansion</div>
           <p class="ir-text">Processing expansion into three new states: Virginia, Maryland, and Pennsylvania — expected to be completed before end of Q1. We are also finalizing the reopening of our California operation and Title expansion into Texas and California (Escrow services), targeted for end of Q1 as well.</p>
         </div>
 
         <div style="margin-top:32px;padding-top:28px;border-top:1px solid var(--c-border)">
-          <div style="display:inline-block;padding:6px 14px;border-radius:6px;background:var(--c-accent-soft);color:var(--c-accent);font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:20px">Directional First Semester Focus Areas</div>
+          <div style="display:inline-block;padding:6px 14px;border-radius:6px;background:var(--c-accent-soft);color:var(--c-accent);font-size:var(--text-lg);font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:20px">Directional First Semester Focus Areas</div>
 
-          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:15px;line-height:1.7;color:#2f2f5a">
+          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:var(--text-lg);line-height:1.7;color:var(--color-gray-600)">
             <span style="position:absolute;left:0;color:var(--c-accent);font-size:16px">&rarr;</span>
             <strong>Scale title services</strong> — expand coverage within existing markets and strengthen operational capacity to support 2&times; volume without a proportional increase in headcount.
           </div>
 
-          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:15px;line-height:1.7;color:#2f2f5a">
+          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:var(--text-lg);line-height:1.7;color:var(--color-gray-600)">
             <span style="position:absolute;left:0;color:var(--c-accent);font-size:16px">&rarr;</span>
             <strong>Reduce CAC through content and referral channels</strong> — gradually shifting the acquisition mix toward organic growth based on 2025 insights around paid performance efficiency.
           </div>
 
-          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:15px;line-height:1.7;color:#2f2f5a">
+          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:var(--text-lg);line-height:1.7;color:var(--color-gray-600)">
             <span style="position:absolute;left:0;color:var(--c-accent);font-size:16px">&rarr;</span>
             <strong>Revamp the Beycome platform</strong> — with a more intuitive, AI-guided UI/UX experience to simplify the journey and increase engagement and conversion.
           </div>
 
-          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:15px;line-height:1.7;color:#2f2f5a">
+          <div style="margin-bottom:18px;padding-left:28px;position:relative;font-size:var(--text-lg);line-height:1.7;color:var(--color-gray-600)">
             <span style="position:absolute;left:0;color:var(--c-accent);font-size:16px">&rarr;</span>
             <strong>Increase marketing efforts across multiple verticals</strong> — social media, blog, SEO, and strategic content — to diversify acquisition channels and strengthen organic growth.
           </div>
 
-          <div style="margin-bottom:0;padding-left:28px;position:relative;font-size:15px;line-height:1.7;color:#2f2f5a">
+          <div style="margin-bottom:0;padding-left:28px;position:relative;font-size:var(--text-lg);line-height:1.7;color:var(--color-gray-600)">
             <span style="position:absolute;left:0;color:var(--c-accent);font-size:16px">&rarr;</span>
             <strong>Improve conversion within the buyer program</strong> — by optimizing the funnel, clarifying the value proposition, and reducing friction across the user experience.
           </div>
@@ -550,7 +566,7 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b42318" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             </div>
             <div>
-              <div style="font-size:15px;font-weight:700"><?php echo htmlspecialchars($type_labels[$tkey] ?? $tkey); ?></div>
+              <div style="font-size:var(--text-lg);font-weight:700"><?php echo htmlspecialchars($type_labels[$tkey] ?? $tkey); ?></div>
               <div style="font-size:12px;color:var(--c-ink-soft)">PDF · <?php echo $size; ?></div>
             </div>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent)" stroke-width="2" style="margin-left:auto;flex-shrink:0"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -560,13 +576,28 @@ if (empty($_SESSION['ir_auth'])) { header('Location: /'); exit; }
       </div>
       <?php endif; ?>
 
-      <!-- SIGN-OFF -->
-      <div class="ir-signoff">
-        <p>As always — and more than ever — we're fully committed to building a best-in-class real estate platform for everyday people, operating with transparency, sharp focus, and strong financial discipline.<br><br>Questions and feedback are always welcome.</p>
-        <p class="ir-signoff-team">— The Beycome Team</p>
-        <p class="ir-signoff-names">Nico &amp; Jodin</p>
+    </div><!-- /.ir-page -->
+
+    <footer class="bc-legal-footer">
+      <div class="bc-legal-footer-inner">
+        <div class="bc-legal-footer-title">Confidentiality &amp; Legal Notice</div>
+        <p>This portal contains confidential and proprietary information of Beycome Corp. and is intended solely for the use of authorized investors and prospective investors of Beycome. Access to this portal is restricted and subject to applicable confidentiality obligations.</p>
+        <p>If you have accessed this portal in error, you are not authorized to review, use, copy, disclose, or distribute any of the information contained herein. Please exit immediately and notify us at <a href="mailto:policy@beycome.com">policy@beycome.com</a> so that we can take appropriate action.</p>
+        <p>All content, materials, data, financial information, projections, and communications available through this portal are provided for informational purposes only and do not constitute an offer to sell, a solicitation of an offer to buy, or a recommendation to invest in any securities. Any investment in Beycome is subject to formal documentation, applicable securities laws, and investor qualification requirements.</p>
+        <p>By continuing to access this portal, you acknowledge and agree to maintain the confidentiality of all information contained herein and to use such information solely for evaluation purposes related to a potential or existing investment in Beycome.</p>
+        <div class="bc-legal-footer-contact">Questions or feedback — <a href="mailto:nj@beycome.com">nj@beycome.com</a> &amp; <a href="mailto:cyril@beycome.com">cyril@beycome.com</a></div>
       </div>
-    </div>
+    </footer>
+
+    <style>
+      .bc-legal-footer { margin-top: 48px; padding: 28px 16px; border-top: 1px solid hsla(0, 0%, 88%, 1); background: #f9fafb; }
+      .bc-legal-footer-inner { max-width: 1152px; margin: 0 auto; font-family: Roboto, "Segoe UI", "Helvetica Neue", sans-serif; font-size: 12px; line-height: 1.55; color: hsla(210, 38.9%, 14.1%, 0.7); }
+      .bc-legal-footer-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: hsla(210, 39%, 14%, 1); margin-bottom: 10px; }
+      .bc-legal-footer p { margin: 0 0 8px; }
+      .bc-legal-footer a { color: var(--c-accent); text-decoration: none; }
+      .bc-legal-footer a:hover { text-decoration: underline; }
+      .bc-legal-footer-contact { margin-top: 12px; padding-top: 10px; border-top: 1px solid hsla(0, 0%, 88%, 1); font-size: 12px; }
+    </style>
   </div>
 </body>
 </html>
