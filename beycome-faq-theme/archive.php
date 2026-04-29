@@ -73,7 +73,7 @@ if (is_category()) {
         <?php endif; ?>
         <h1 style="font-size:40px;margin-top:24px"><?php echo esc_html($title); ?></h1>
         <?php if ($desc) : ?>
-            <p class="bc-archive-desc" style="-webkit-line-clamp:unset;overflow:visible"><?php echo esc_html($desc); ?></p>
+            <p class="bc-archive-desc"><?php echo esc_html($desc); ?></p>
         <?php endif; ?>
         <div class="bc-article-meta">
             <span class="bc-meta-item">
