@@ -202,6 +202,31 @@ $reading_time = max(1, ceil($word_count / 250));
     </div>
 </section>
 
+<!-- Common questions about Beycome -->
+<section class="bc-common-qs-section">
+    <div class="bc-container">
+        <h2 class="bc-common-qs-title">Common questions about Beycome</h2>
+        <div class="bc-common-qs-grid">
+            <div class="bc-common-q">
+                <h3>How much does it cost to list with Beycome?</h3>
+                <p>Beycome offers flat fee MLS listing plans starting at $99. You pay a one-time fee to get your home listed on the MLS — no listing agent commission, no percentage of your sale price. Optional add-ons like professional photography, yard signs, and 3D tours are available à la carte.</p>
+            </div>
+            <div class="bc-common-q">
+                <h3>How long does it take for my listing to go live?</h3>
+                <p>Most listings are reviewed and approved within 1–2 business days. Once verified, your home is submitted to the MLS and automatically syndicated to Zillow, Redfin, Realtor.com, and 100+ other portals. Zillow typically reflects new listings within 24–48 hours of MLS submission.</p>
+            </div>
+            <div class="bc-common-q">
+                <h3>Can buyers' agents still show my home?</h3>
+                <p>Yes. When you list on the MLS with Beycome, your home is fully visible to all licensed buyers' agents. You set the buyer's agent commission (typically 2–3%) in your listing. Agents can contact you directly or schedule showings through ShowingTime, which is included in most Beycome plans.</p>
+            </div>
+            <div class="bc-common-q">
+                <h3>What does Beycome's buyer program offer?</h3>
+                <p>When you buy a home through Beycome, you receive up to 2% of the purchase price back as a credit at closing. On a $400,000 home, that's up to $8,000 returned to you. You still get access to every MLS listing and full support throughout the transaction — without sacrificing the rebate.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- About Beycome -->
 <section class="bc-about-section">
     <div class="bc-container">

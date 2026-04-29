@@ -14,7 +14,40 @@ if (is_category()) {
 } elseif (is_tag()) {
     $title = single_tag_title('', false);
     $raw = strip_tags(tag_description());
-    if ($raw) $desc = $raw;
+    if ($raw) {
+        $desc = $raw;
+    } else {
+        // Fallback descriptions for known tags
+        $bc_tag_descs = [
+            'advertisement'        => 'Tips and guides on how to advertise your property listing for maximum exposure — from MLS syndication and social media sharing to Craigslist, Facebook Marketplace, and yard signs.',
+            'buyer'                => 'Articles covering everything buyers need to know — from finding a home and making an offer to navigating inspections, mortgage approval, and closing day with confidence.',
+            'closing'              => 'Guides to help you understand and prepare for closing — what documents you need, how to read a closing disclosure, who pays what, and what to expect on the day you sign.',
+            'compliance'           => 'Real estate compliance resources covering MLS rules, listing requirements, fair housing regulations, and what homeowners need to know to stay on the right side of the law.',
+            'contact'              => 'Resources on how to communicate effectively with agents, buyers, sellers, and title companies — including what information is allowed on MLS listings and how to handle inquiries.',
+            'copyright'            => 'Information about copyright in real estate — photo rights, MLS rules around image use, and how to handle flagged or disputed listing photos.',
+            'credit-esential'      => 'Essential guides on credit scores, FICO ratings, and how your credit history affects your ability to buy a home, qualify for a mortgage, and secure the best interest rate.',
+            'credit-essentials'    => 'Essential guides on credit scores, FICO ratings, and how your credit history affects your ability to buy a home, qualify for a mortgage, and secure the best interest rate.',
+            'marketing'            => 'Real estate marketing tools and strategies for FSBO sellers — yard signs, business cards, flyers, open houses, social media, and how to get maximum exposure for your listing.',
+            'mls-listing'          => 'Step-by-step guides to MLS listings — how to create, update, pause, and manage your flat fee MLS listing on Beycome, and what information is displayed to buyers and agents.',
+            'mortgage'             => 'Plain-language mortgage guides covering loan types, interest rates, pre-approval, monthly payments, insurance requirements, and how to compare mortgage offers.',
+            'not-showing'          => 'Troubleshooting guides for listings that are not showing on Zillow, Realtor.com, or other portals — causes, timelines, and how to resolve syndication issues.',
+            'photo'                => 'Photo requirements and best practices for MLS listings — size, resolution, copyright rules, and how to upload or update your listing photos on Beycome.',
+            'requirement'          => 'Overviews of key real estate requirements — from MLS listing rules and photo standards to mortgage qualification criteria and document checklists for buyers and sellers.',
+            'rules'                => 'Guides to MLS rules, fair housing regulations, and platform policies that govern how homes are listed, marketed, and sold on Beycome and the broader MLS network.',
+            'sheet'                => 'Information about MLS data sheets — how to find, read, and download your MLS listing sheet, and how to share it with buyers and agents.',
+            'showing'              => 'How to schedule, manage, and track property showings as a FSBO seller — setting availability, receiving requests, using ShowingTime, and following up after visits.',
+            'showingtime'          => 'How to enable and use ShowingTime for your Beycome listing — setting up appointment scheduling, managing showing requests, and syncing your availability calendar.',
+            'syndication'          => 'How real estate syndication works — how your Beycome listing is automatically distributed to Zillow, Redfin, Realtor.com, Trulia, and 100+ other home search portals.',
+            'title'                => 'Title insurance, title search, and closing guides — what title insurance covers, how long it lasts, what Beycome Title offers, and how to set up title services in Florida.',
+            'upgrade'              => 'How to upgrade your Beycome listing with add-ons — professional photography, 3D tours, social media promotion, yard signs, and other à la carte tools to sell faster.',
+            'verification-process' => 'What happens during the Beycome listing verification process — how long it takes, what is checked, and how to speed up approval so your home goes live on the MLS.',
+            'zillow'               => 'Why your listing may not appear on Zillow, how syndication timelines work, and what to do if your Beycome MLS listing is missing from Zillow or other search portals.',
+        ];
+        $bc_slug = get_queried_object()->slug;
+        if (isset($bc_tag_descs[$bc_slug])) {
+            $desc = $bc_tag_descs[$bc_slug];
+        }
+    }
 } else {
     $title = 'Archive';
 }
@@ -40,7 +73,7 @@ if (is_category()) {
         <?php endif; ?>
         <h1 style="font-size:40px;margin-top:24px"><?php echo esc_html($title); ?></h1>
         <?php if ($desc) : ?>
-            <p class="bc-archive-desc"><?php echo esc_html(wp_trim_words($desc, 25, '...')); ?></p>
+            <p class="bc-archive-desc" style="-webkit-line-clamp:unset;overflow:visible"><?php echo esc_html($desc); ?></p>
         <?php endif; ?>
         <div class="bc-article-meta">
             <span class="bc-meta-item">
