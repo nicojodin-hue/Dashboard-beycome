@@ -4,13 +4,17 @@
 $title = '';
 $desc = '';
 if (is_category()) {
-    $title = single_cat_title('', false);
-    $raw = category_description();
-    if ($raw) $desc = wp_trim_words(strip_tags($raw), 20, '...');
+    $term = get_queried_object();
+    $title = $term->name;
+    $raw = strip_tags(category_description());
+    if (!$raw && $term->parent) {
+        $raw = strip_tags(category_description($term->parent));
+    }
+    if ($raw) $desc = $raw;
 } elseif (is_tag()) {
     $title = single_tag_title('', false);
-    $raw = tag_description();
-    if ($raw) $desc = wp_trim_words(strip_tags($raw), 20, '...');
+    $raw = strip_tags(tag_description());
+    if ($raw) $desc = $raw;
 } else {
     $title = 'Archive';
 }
@@ -34,9 +38,9 @@ if (is_category()) {
         <?php elseif (is_tag()) : ?>
         <span class="bc-category-pill"><?php echo esc_html($title); ?></span>
         <?php endif; ?>
-        <h1 style="font-size:42px;margin-top:16px"><?php echo esc_html($title); ?></h1>
+        <h1 style="font-size:40px;margin-top:24px"><?php echo esc_html($title); ?></h1>
         <?php if ($desc) : ?>
-            <p><?php echo esc_html($desc); ?></p>
+            <p class="bc-archive-desc"><?php echo esc_html(wp_trim_words($desc, 25, '...')); ?></p>
         <?php endif; ?>
         <div class="bc-article-meta">
             <span class="bc-meta-item">
@@ -56,7 +60,7 @@ if (is_category()) {
                     $read_time = max(1, ceil($word_count / 250));
                 ?>
                 <a href="<?php the_permalink(); ?>" class="bc-archive-card">
-                    <h3 class="bc-archive-card-title"><?php the_title(); ?></h3>
+                    <h2 class="bc-archive-card-title"><?php the_title(); ?></h2>
                     <p class="bc-archive-card-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 18, '...'); ?></p>
                     <div class="bc-archive-card-meta">
                         <span>
@@ -80,6 +84,23 @@ if (is_category()) {
         <?php endif; ?>
     </div>
 </section>
+
+<!-- Category intro text -->
+<?php
+$bc_cat_intros = [
+    'faq' => 'Beycome is a flat fee real estate platform that lets you sell your home for a one-time $99 listing fee and buy with up to 2% back at closing. Our FAQ section answers the most common questions from homeowners and buyers about how Beycome works, what is included in each plan, how to update or manage your listing, and what to expect at every step of the process. Browse the questions below or use the search bar to find the answer you need.',
+    'knowledge-base' => 'Our knowledge base covers essential real estate topics to help you make smarter decisions when buying or selling a home. From understanding mortgage types and credit scores to learning how to read a closing disclosure or navigate an inspection, these guides are written in plain language so you can move forward with confidence — whether you are a first-time buyer or an experienced seller. Each article is reviewed regularly to reflect current market practices and regulations.',
+];
+if (is_category()) {
+    $bc_slug = get_queried_object()->slug;
+    if (isset($bc_cat_intros[$bc_slug])) :
+?>
+<section class="bc-cat-intro-section">
+    <div class="bc-container">
+        <p class="bc-cat-intro-text"><?php echo esc_html($bc_cat_intros[$bc_slug]); ?></p>
+    </div>
+</section>
+<?php endif; } ?>
 
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json">
@@ -138,5 +159,44 @@ $schemas = [
 echo json_encode($schemas, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 ?>
 </script>
+
+<!-- About Beycome -->
+<section class="bc-about-section">
+    <div class="bc-container">
+        <div class="bc-about-inner">
+            <h2 class="bc-about-title">Sell or buy your home without paying a fortune in commissions</h2>
+            <div class="bc-about-cols">
+                <div>
+                    <h3>List on the MLS for $99</h3>
+                    <p>Beycome lets you list your home directly on the MLS — the same database Realtors use — for a flat $99 fee. No listing agent commission, no percentage of your sale. You keep full control of your listing and negotiate directly with buyers. Thousands of homeowners across the US have already sold with Beycome and saved an average of $9,000 in commissions.</p>
+                    <p>Our platform walks you step by step through the process: upload your photos, set your price, schedule showings, and accept or counter offers — all from your dashboard. We handle the MLS syndication to Zillow, Redfin, Realtor.com, and 100+ other sites automatically.</p>
+                    <a href="https://www.beycome.com/flat-fee-mls/" class="bc-about-link">Learn about flat fee MLS &rarr;</a>
+                </div>
+                <div>
+                    <h3>Buy a home and get 2% back at closing</h3>
+                    <p>When you buy through Beycome, we rebate up to 2% of the purchase price back to you at closing. On a $400,000 home, that's up to $8,000 in your pocket. Our buyer program gives you access to every MLS listing, direct access to listing agents, and a dedicated support team — without tying you to a buyer's agent who charges a commission you ultimately pay for.</p>
+                    <p>Beycome also offers free real estate calculators, including a mortgage calculator, closing cost calculator, home equity calculator, and commission savings calculator. Use them to plan your purchase or sale before you commit to anything.</p>
+                    <a href="https://www.beycome.com/i-want-to-buy-a-home" class="bc-about-link">Explore the buyer program &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<?php
+$bc_faq_topics = get_categories(['hide_empty' => true, 'orderby' => 'name', 'order' => 'ASC']);
+if ($bc_faq_topics) :
+?>
+<section class="bc-footer-topics-section">
+    <div class="bc-container">
+        <div class="bc-footer-topics-label">Dive into more topics</div>
+        <div class="bc-footer-topics-pills">
+            <?php foreach ($bc_faq_topics as $bc_topic) : ?>
+            <a href="<?php echo esc_url(get_category_link($bc_topic->term_id)); ?>" class="bc-topic-sub bc-topic-grey"><?php echo esc_html($bc_topic->name); ?></a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <?php get_footer(); ?>

@@ -31,7 +31,7 @@ $reading_time = max(1, ceil($word_count / 250));
         <?php if ($cat) : ?>
         <a href="<?php echo esc_url(get_category_link($cat->term_id)); ?>" class="bc-category-pill"><?php echo esc_html($cat->name); ?></a>
         <?php endif; ?>
-        <h1 style="font-size:42px;margin-top:16px"><?php the_title(); ?></h1>
+        <h1 style="margin-top:24px"><?php the_title(); ?></h1>
         <div class="bc-article-meta">
             <span class="bc-meta-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
@@ -47,25 +47,34 @@ $reading_time = max(1, ceil($word_count / 250));
 </section>
 
 <?php $cat_ids = wp_get_post_categories(get_the_ID()); ?>
-<section style="padding:48px 0 64px;background:#f9fafb">
+<section style="padding:48px 0 24px;background:#f9fafb">
     <div class="bc-container">
         <div class="bc-article-layout">
             <!-- Main Content -->
             <div>
+                <!-- Share — top -->
+                <?php get_template_part('partials/share-bar'); ?>
+
                 <article class="bc-article-content" id="bc-article">
                     <?php the_content(); ?>
                 </article>
+
+                <!-- Share — bottom -->
+                <?php get_template_part('partials/share-bar'); ?>
 
                 <!-- Savings CTA -->
                 <div class="bc-savings-cta">
                     <div class="bc-savings-cta-inner">
                         <div class="bc-savings-cta-text">
-                            <h3>How much can you save with Beycome?</h3>
-                            <p>On a <strong>$400,000</strong> home, you save up to <strong class="bc-savings-amount">$20,000</strong> vs a traditional agent — plus buyers get <strong>2% back</strong> at closing.</p>
+                            <h2>How much can you save selling and buying with Beycome?</h2>
+                            <p>If you sell a <strong>$400,000</strong> home, you save up to <strong class="bc-savings-amount">$20,000</strong> compared to a traditional way. And if you buy your next place with us, you also get <strong>2% back</strong> at closing. Seriously.</p>
                         </div>
                         <div class="bc-savings-cta-actions">
-                            <a href="https://www.beycome.com/i-want-to-sell-my-home" class="bc-cta-btn">Sell for $99 &rarr;</a>
-                            <a href="https://www.beycome.com/calculators/commission-calculator" class="bc-savings-calc-link">Calculate your savings &rarr;</a>
+                            <div class="bc-savings-cta-btns">
+                                <a href="https://www.beycome.com/flat-fee-mls/" class="bc-cta-btn">Sell your home for $99 &rarr;</a>
+                                <a href="https://www.beycome.com/buy/" class="bc-cta-btn bc-cta-btn--blue">Buy with up to 2% back &rarr;</a>
+                                <a href="https://www.beycome.com/calculators/commission-calculator" class="bc-savings-calc-link">Calculate your savings &rarr;</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -104,7 +113,7 @@ $reading_time = max(1, ceil($word_count / 250));
         if ($explore->have_posts()) :
         ?>
                 <div class="bc-explore-section">
-                    <h2 class="bc-explore-title">Explore More Articles</h2>
+                    <h2 class="bc-explore-title">Explore more articles</h2>
                     <div class="bc-explore-grid">
                         <?php while ($explore->have_posts()) : $explore->the_post();
                             $ex_wc = str_word_count(strip_tags(get_the_content()));
@@ -126,7 +135,7 @@ $reading_time = max(1, ceil($word_count / 250));
                     <?php
                     $explore_cats = get_the_category(get_the_ID());
                     if ($explore_cats) {
-                        echo '<a href="' . esc_url(get_category_link($explore_cats[0]->term_id)) . '" style="font-size:15px;font-weight:700;color:var(--c-accent-orange);display:block;text-align:center;margin-top:24px">View all ' . esc_html($explore_cats[0]->name) . ' articles &rarr;</a>';
+                        echo '<a href="' . esc_url(get_category_link($explore_cats[0]->term_id)) . '" style="font-size:15px;font-weight:700;color:var(--c-accent-orange);display:block;text-align:center;margin-top:24px">Discover more ' . esc_html($explore_cats[0]->name) . ' articles &rarr;</a>';
                     }
                     ?>
                 </div>
@@ -135,19 +144,32 @@ $reading_time = max(1, ceil($word_count / 250));
 
             <!-- Sidebar -->
             <aside class="bc-article-sidebar">
+                <div class="bc-sidebar-sticky">
                 <nav class="bc-sidebar-card bc-toc bc-mobile-hide" id="bc-toc">
-                    <h3 class="bc-sidebar-title">In This Article</h3>
+                    <h3 class="bc-sidebar-title">In this article</h3>
                     <ul class="bc-toc-list" id="bc-toc-list"></ul>
                 </nav>
 
+                <div class="bc-sidebar-cta" style="margin-top:20px">
+                    <h3 style="font-family:var(--font-title);font-size:18px;font-weight:700;color:var(--c-primary);margin-bottom:8px">Ready to sell your home?</h3>
+                    <p style="font-size:14px;color:var(--c-secondary);margin-bottom:16px;line-height:1.5">List on the MLS for just $99 — no listing agent commission.</p>
+                    <a href="https://www.beycome.com/flat-fee-mls/" class="bc-cta-btn">Sell Your Home &rarr;</a>
+                </div>
+
+                <div class="bc-sidebar-cta" style="margin-top:20px">
+                    <h3 style="font-family:var(--font-title);font-size:18px;font-weight:700;color:var(--c-primary);margin-bottom:8px">Buying a home?</h3>
+                    <p style="font-size:14px;color:var(--c-secondary);margin-bottom:16px;line-height:1.5">Get 2% of the purchase price back at closing with Beycome's buyer program.</p>
+                    <a href="https://www.beycome.com/i-want-to-buy-a-home" class="bc-cta-btn" style="background:var(--c-accent)">Buy a Home &rarr;</a>
+                </div>
+
                 <div class="bc-sidebar-card bc-mobile-hide" style="margin-top:20px">
-                    <h3 class="bc-sidebar-title">Related Articles</h3>
+                    <h3 class="bc-sidebar-title">Related articles</h3>
                     <ul class="bc-resources-list">
                         <?php
                         $related = new WP_Query([
                             'category__in' => $cat_ids,
                             'post__not_in' => [get_the_ID()],
-                            'posts_per_page' => 6,
+                            'posts_per_page' => 5,
                             'orderby' => 'rand',
                         ]);
                         while ($related->have_posts()) : $related->the_post();
@@ -159,13 +181,13 @@ $reading_time = max(1, ceil($word_count / 250));
                     $cats_for_link = get_the_category(get_the_ID());
                     if ($cats_for_link) {
                         $cat_link = $cats_for_link[0];
-                        echo '<a href="' . esc_url(get_category_link($cat_link->term_id)) . '" style="font-size:13px;font-weight:700;color:var(--c-accent-orange);display:block;margin-top:12px">Browse all ' . esc_html($cat_link->name) . ' &rarr;</a>';
+                        echo '<a href="' . esc_url(get_category_link($cat_link->term_id)) . '" style="font-size:15px;font-weight:700;color:var(--c-accent-orange);display:block;margin-top:12px">Browse all ' . esc_html($cat_link->name) . ' &rarr;</a>';
                     }
                     ?>
                 </div>
 
                 <div class="bc-sidebar-card bc-mobile-hide" style="margin-top:20px">
-                    <h3 class="bc-sidebar-title">Real Estate Calculators</h3>
+                    <h3 class="bc-sidebar-title">Real estate calculators</h3>
                     <ul class="bc-resources-list">
                         <li><a href="https://www.beycome.com/calculators">All Calculators</a></li>
                         <li><a href="https://www.beycome.com/calculators/mortgage-calculator">Mortgage Calculator</a></li>
@@ -174,127 +196,51 @@ $reading_time = max(1, ceil($word_count / 250));
                     </ul>
                 </div>
 
-                <div class="bc-sidebar-cta" style="margin-top:20px">
-                    <h3 style="font-family:var(--font-title);font-size:18px;font-weight:700;color:var(--c-primary);margin-bottom:8px">Ready to sell your home?</h3>
-                    <p style="font-size:14px;color:var(--c-secondary);margin-bottom:16px;line-height:1.5">List on the MLS for just $99 — no listing agent commission.</p>
-                    <a href="https://www.beycome.com/i-want-to-sell-my-home" class="bc-cta-btn">Sell Your Home &rarr;</a>
-                </div>
-
-                <div class="bc-sidebar-cta" style="margin-top:20px">
-                    <h3 style="font-family:var(--font-title);font-size:18px;font-weight:700;color:var(--c-primary);margin-bottom:8px">Buying a home?</h3>
-                    <p style="font-size:14px;color:var(--c-secondary);margin-bottom:16px;line-height:1.5">Get 2% of the purchase price back at closing with Beycome's buyer program.</p>
-                    <a href="https://www.beycome.com/i-want-to-buy-a-home" class="bc-cta-btn" style="background:var(--c-accent)">Buy a Home &rarr;</a>
-                </div>
+                </div><!-- end bc-sidebar-sticky -->
             </aside>
         </div>
     </div>
 </section>
 
-<script>
-(function() {
-    // === TOC ===
-    var article = document.getElementById('bc-article');
-    var tocList = document.getElementById('bc-toc-list');
-    var tocNav = document.getElementById('bc-toc');
-    if (article && tocList) {
-        var headings = article.querySelectorAll('h2, h3');
-        if (headings.length < 2) { tocNav.style.display = 'none'; }
-        else {
-            headings.forEach(function(h, i) {
-                var id = 'section-' + i;
-                h.id = id;
-                var li = document.createElement('li');
-                li.className = 'bc-toc-item' + (h.tagName === 'H3' ? ' bc-toc-sub' : '');
-                var a = document.createElement('a');
-                a.href = '#' + id;
-                a.textContent = h.textContent;
-                a.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    var top = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - 100;
-                    window.scrollTo({ top: top, behavior: 'smooth' });
-                });
-                li.appendChild(a);
-                tocList.appendChild(li);
-            });
-            var tocLinks = tocList.querySelectorAll('a');
-            var obs = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                    if (entry.isIntersecting) {
-                        tocLinks.forEach(function(l) { l.classList.remove('active'); });
-                        var a = tocList.querySelector('a[href="#' + entry.target.id + '"]');
-                        if (a) a.classList.add('active');
-                    }
-                });
-            }, { rootMargin: '-100px 0px -60% 0px', threshold: 0 });
-            headings.forEach(function(h) { obs.observe(h); });
-        }
-    }
+<!-- About Beycome -->
+<section class="bc-about-section">
+    <div class="bc-container">
+        <div class="bc-about-inner">
+            <h2 class="bc-about-title">Sell or buy your home without paying a fortune in commissions</h2>
+            <div class="bc-about-cols">
+                <div>
+                    <h3>List on the MLS for $99</h3>
+                    <p>Beycome lets you list your home directly on the MLS — the same database Realtors use — for a flat $99 fee. No listing agent commission, no percentage of your sale. You keep full control of your listing and negotiate directly with buyers. Thousands of homeowners across the US have already sold with Beycome and saved an average of $9,000 in commissions.</p>
+                    <p>Our platform walks you step by step through the process: upload your photos, set your price, schedule showings, and accept or counter offers — all from your dashboard. We handle the MLS syndication to Zillow, Redfin, Realtor.com, and 100+ other sites automatically.</p>
+                    <a href="https://www.beycome.com/flat-fee-mls/" class="bc-about-link">Learn about flat fee MLS &rarr;</a>
+                </div>
+                <div>
+                    <h3>Buy a home and get 2% back at closing</h3>
+                    <p>When you buy through Beycome, we rebate up to 2% of the purchase price back to you at closing. On a $400,000 home, that's up to $8,000 in your pocket. Our buyer program gives you access to every MLS listing, direct access to listing agents, and a dedicated support team — without tying you to a buyer's agent who charges a commission you ultimately pay for.</p>
+                    <p>Beycome also offers free real estate calculators, including a mortgage calculator, closing cost calculator, home equity calculator, and commission savings calculator. Use them to plan your purchase or sale before you commit to anything.</p>
+                    <a href="https://www.beycome.com/i-want-to-buy-a-home" class="bc-about-link">Explore the buyer program &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-    // === 2. Reading progress bar ===
-    var bar = document.getElementById('bc-progress-bar');
-    if (article && bar) {
-        window.addEventListener('scroll', function() {
-            var rect = article.getBoundingClientRect();
-            var start = rect.top + window.pageYOffset - window.innerHeight;
-            var end = rect.bottom + window.pageYOffset - window.innerHeight;
-            var progress = Math.min(1, Math.max(0, (window.pageYOffset - start) / (end - start)));
-            bar.style.width = (progress * 100) + '%';
-        });
-    }
-
-    // === 1. Auto internal links ===
-    if (article) {
-        var linkMap = [
-            ['flat fee MLS', 'https://www.beycome.com/flat-fee-mls'],
-            ['flat-fee MLS', 'https://www.beycome.com/flat-fee-mls'],
-            ['closing costs', 'https://www.beycome.com/calculators/closing-cost-calculator'],
-            ['closing cost', 'https://www.beycome.com/calculators/closing-cost-calculator'],
-            ['mortgage calculator', 'https://www.beycome.com/calculators/mortgage-calculator'],
-            ['mortgage pre-approval', 'https://www.beycome.com/faq/knowledge-base/how-long-is-mortgage-preapproval-good-for/'],
-            ['pre-approval', 'https://www.beycome.com/faq/knowledge-base/how-long-is-mortgage-preapproval-good-for/'],
-            ['title insurance', 'https://www.beycome.com/faq/knowledge-base/what-is-title-insurance/'],
-            ['home equity', 'https://www.beycome.com/calculators/home-equity-calculator'],
-            ['HELOC', 'https://www.beycome.com/faq/knowledge-base/what-is-a-heloc/'],
-            ['FHA loan', 'https://www.beycome.com/faq/knowledge-base/what-is-an-fha-loan/'],
-            ['VA loan', 'https://www.beycome.com/faq/knowledge-base/what-is-a-va-loan/'],
-            ['USDA loan', 'https://www.beycome.com/faq/knowledge-base/what-is-a-usda-loan/'],
-            ['jumbo loan', 'https://www.beycome.com/faq/knowledge-base/what-is-a-jumbo-loan/'],
-            ['conventional loan', 'https://www.beycome.com/faq/knowledge-base/what-is-a-conventional-loan/'],
-            ['loan-to-value', 'https://www.beycome.com/faq/knowledge-base/what-is-ltv/'],
-            ['LTV', 'https://www.beycome.com/faq/knowledge-base/what-is-ltv/'],
-            ['down payment', 'https://www.beycome.com/calculators/down-payment-calculator'],
-            ['commission calculator', 'https://www.beycome.com/calculators/commission-calculator'],
-            ['home sale calculator', 'https://www.beycome.com/calculators/home-sale-calculator'],
-            ['amortization', 'https://www.beycome.com/calculators/amortization-calculator'],
-            ['rent vs buy', 'https://www.beycome.com/calculators/rent-vs-buy-calculator'],
-            ['property tax', 'https://www.beycome.com/calculators/property-tax-calculator'],
-            ['capital gains', 'https://www.beycome.com/calculators/capital-gains-tax-calculator'],
-            ['Beycome Title', 'https://www.beycometitle.com/'],
-            ['FSBO', 'https://www.beycome.com/faq/knowledge-base/how-to-sell-your-home-without-an-agent/'],
-            ['for sale by owner', 'https://www.beycome.com/faq/knowledge-base/how-to-sell-your-home-without-an-agent/'],
-        ];
-
-        var paragraphs = article.querySelectorAll('p');
-        var linked = {};
-        paragraphs.forEach(function(p) {
-            if (p.querySelector('a')) return;
-            var html = p.innerHTML;
-            for (var i = 0; i < linkMap.length; i++) {
-                var kw = linkMap[i][0];
-                var url = linkMap[i][1];
-                if (linked[kw]) continue;
-                var regex = new RegExp('\\b(' + kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')\\b', 'i');
-                if (regex.test(html) && !html.match(new RegExp('<a[^>]*>' + kw, 'i'))) {
-                    html = html.replace(regex, '<a href="' + url + '" class="bc-auto-link">$1</a>');
-                    linked[kw] = true;
-                    p.innerHTML = html;
-                    break;
-                }
-            }
-        });
-    }
-})();
-</script>
+<!-- Dive into more topics -->
+<?php
+$bc_faq_topics = get_categories(['hide_empty' => true, 'orderby' => 'name', 'order' => 'ASC']);
+if ($bc_faq_topics) :
+?>
+<section class="bc-footer-topics-section">
+    <div class="bc-container">
+        <div class="bc-footer-topics-label">Dive into more topics</div>
+        <div class="bc-footer-topics-pills">
+            <?php foreach ($bc_faq_topics as $bc_topic) : ?>
+            <a href="<?php echo esc_url(get_category_link($bc_topic->term_id)); ?>" class="bc-topic-sub bc-topic-grey"><?php echo esc_html($bc_topic->name); ?></a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json">

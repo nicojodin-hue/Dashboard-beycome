@@ -4,7 +4,10 @@
  */
 
 function beycome_faq_enqueue() {
-    wp_enqueue_style('beycome-faq-main', get_template_directory_uri() . '/assets/main.css', [], '2.5.3');
+    wp_enqueue_style('beycome-faq-main', get_template_directory_uri() . '/assets/main.css', [], '3.1.1');
+    if (is_single()) {
+        wp_enqueue_script('beycome-faq-js', get_template_directory_uri() . '/assets/faq.js', [], '1.0.0', true);
+    }
 }
 add_action('wp_enqueue_scripts', 'beycome_faq_enqueue');
 
