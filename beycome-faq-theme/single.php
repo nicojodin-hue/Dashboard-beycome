@@ -227,31 +227,6 @@ $reading_time = max(1, ceil($word_count / 250));
     </div>
 </section>
 
-<!-- About Beycome -->
-<section class="bc-about-section">
-    <div class="bc-container">
-        <div class="bc-about-inner">
-            <h2 class="bc-about-title">Sell or buy your home without paying a fortune in commissions</h2>
-            <div class="bc-about-cols">
-                <div>
-                    <h3>List on the MLS for $99</h3>
-                    <p>Beycome lists your home on the MLS for a flat $99 fee — no listing agent, no commission percentage.</p>
-                    <p>You keep full control and negotiate directly with buyers. Homeowners save an average of $9,000 in commissions.</p>
-                    <p>Upload photos, set your price, manage showings and offers from your dashboard. Beycome syndicates to Zillow, Redfin, Realtor.com, and 100+ portals automatically.</p>
-                    <a href="https://www.beycome.com/flat-fee-mls/" class="bc-about-link">Learn about flat fee MLS &rarr;</a>
-                </div>
-                <div>
-                    <h3>Buy a home and get 2% back at closing</h3>
-                    <p>Buy through Beycome and receive up to 2% of the purchase price back as a credit at closing.</p>
-                    <p>On a $400,000 home, that's up to $8,000 returned to you. You still get access to every MLS listing and full transaction support.</p>
-                    <p>Beycome also offers free calculators — mortgage, closing cost, home equity, and commission savings — to plan your next move.</p>
-                    <a href="https://www.beycome.com/i-want-to-buy-a-home" class="bc-about-link">Explore the buyer program &rarr;</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- Dive into more topics -->
 <?php
 $bc_faq_topics = get_categories(['hide_empty' => true, 'orderby' => 'name', 'order' => 'ASC']);
