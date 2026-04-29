@@ -1694,3 +1694,52 @@ body.home .bc-hero h1 {
     margin: 0;
 }
 /* ===== END ABOUT BEYCOME SECTION ===== */
+
+/* ===== BROWSE BY FAQ TAG SECTION ===== */
+.bc-faq-tags-section {
+    background: hsla(0, 0%, 97%, 1);
+    border-top: 1px solid var(--c-border);
+    padding: 40px 0;
+}
+
+.bc-faq-tags-title {
+    font-family: var(--font-title);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-primary);
+    margin: 0 0 16px;
+}
+
+.bc-faq-tags-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.bc-faq-tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-secondary);
+    background: hsla(0, 0%, 100%, 1);
+    border: 1px solid var(--c-border);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+}
+
+.bc-faq-tag-pill:hover {
+    color: var(--c-accent-orange);
+    border-color: var(--c-accent-orange);
+}
+
+.bc-faq-tag-count {
+    font-size: 11px;
+    color: var(--c-secondary);
+    opacity: 0.6;
+}
+/* ===== END BROWSE BY FAQ TAG SECTION ===== */

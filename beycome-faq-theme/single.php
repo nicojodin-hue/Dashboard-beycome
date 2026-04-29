@@ -280,4 +280,27 @@ echo json_encode($schemas, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 ?>
 </script>
 
+<!-- Browse by FAQ Tag -->
+<?php
+$bc_faq_tags = get_tags(['hide_empty' => true, 'orderby' => 'count', 'order' => 'DESC']);
+$bc_post_tag_slugs = array_map(fn($t) => $t->slug, get_the_tags() ?: []);
+if ($bc_faq_tags) :
+?>
+<section class="bc-faq-tags-section">
+    <div class="bc-container">
+        <h2 class="bc-faq-tags-title">Browse all FAQ topics</h2>
+        <div class="bc-faq-tags-grid">
+            <?php foreach ($bc_faq_tags as $bc_tag) :
+                if (in_array($bc_tag->slug, $bc_post_tag_slugs)) continue;
+            ?>
+            <a href="<?php echo esc_url(get_tag_link($bc_tag->term_id)); ?>" class="bc-faq-tag-pill">
+                <?php echo esc_html($bc_tag->name); ?>
+                <span class="bc-faq-tag-count"><?php echo (int) $bc_tag->count; ?></span>
+            </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
 <?php get_footer(); ?>
