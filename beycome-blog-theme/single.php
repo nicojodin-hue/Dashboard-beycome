@@ -284,40 +284,54 @@ if ($cat) {
 </script>
 
 <?php
-// ── Browse by Location ──────────────────────────────────────────────────────
-$bc_location_tags = [
-    'Albany' => 'albany', 'Alexandria' => 'alexandria', 'Alpharetta' => 'alpharetta',
-    'Atlanta' => 'atlanta', 'Austin' => 'austin', 'Cary' => 'cary',
-    'Chapel Hill' => 'chapel-hill', 'Charleston' => 'charleston', 'Charlotte' => 'charlotte',
-    'Chicago' => 'chicago', 'Cleveland' => 'cleveland', 'Columbia' => 'columbia',
-    'Columbus' => 'columbus', 'Dallas' => 'dallas', 'Dayton' => 'dayton',
-    'Detroit' => 'detroit', 'Durham' => 'durham', 'Fort Lauderdale' => 'fort-lauderdale',
-    'Fort Myers' => 'fort-myers', 'Fort Worth' => 'fort-worth', 'Franklin' => 'franklin',
-    'Frisco' => 'frisco', 'Greenville' => 'greenville', 'Houston' => 'houston',
-    'Jacksonville' => 'jacksonville', 'Knoxville' => 'knoxville', 'Los Angeles' => 'los-angeles',
-    'Marietta' => 'marietta', 'McKinney' => 'mckinney', 'Miami' => 'miami',
-    'Naples' => 'naples', 'Nashville' => 'nashville', 'New York City' => 'new-york-city',
-    'Naperville' => 'naperville', 'Orlando' => 'orlando', 'Philadelphia' => 'philadelphia',
-    'Plano' => 'plano', 'Raleigh' => 'raleigh', 'Roswell' => 'roswell',
-    'Sacramento' => 'sacramento', 'San Antonio' => 'san-antonio', 'San Diego' => 'san-diego',
-    'San Francisco' => 'san-francisco', 'San Jose' => 'san-jose', 'Sandy Springs' => 'sandy-springs',
-    'Savannah' => 'savannah', 'Tampa' => 'tampa', 'West Palm Beach' => 'west-palm-beach',
-];
+// ── Browse by Location ───────────────────────────────────────────────────────
+$bc_all_tags       = get_tags(['hide_empty' => true, 'orderby' => 'name', 'order' => 'ASC']);
+$bc_posts_per_page = min((int) get_option('posts_per_page') ?: 10, 8);
+if ($bc_all_tags) :
 ?>
 <section class="bc-location-tags-section">
     <div class="bc-container">
-        <h2 class="bc-location-tags-title">Browse Real Estate by City</h2>
+        <h2 class="bc-location-tags-title">Browse Real Estate by Location</h2>
         <div class="bc-location-tags-grid">
-            <?php foreach ($bc_location_tags as $label => $slug) :
-                $term = get_term_by('slug', $slug, 'post_tag');
-                if (!$term || !$term->count) continue;
+            <?php foreach ($bc_all_tags as $bc_tag) :
+                $bc_tag_url   = get_tag_link($bc_tag->term_id);
+                $bc_total_pgs = (int) ceil($bc_tag->count / $bc_posts_per_page);
             ?>
-            <a href="<?php echo esc_url(get_tag_link($term->term_id)); ?>" class="bc-location-tag-pill">
-                <?php echo esc_html($label); ?>
-            </a>
-            <?php endforeach; ?>
+            <a href="<?php echo esc_url($bc_tag_url); ?>" class="bc-location-tag-pill"><?php echo esc_html($bc_tag->name); ?></a>
+            <?php for ($bc_p = 2; $bc_p <= $bc_total_pgs; $bc_p++) :
+                $bc_paged_url = trailingslashit($bc_tag_url) . 'page/' . $bc_p . '/';
+            ?>
+            <a href="<?php echo esc_url($bc_paged_url); ?>" class="bc-location-tag-pill bc-location-tag-pill--paged"><?php echo esc_html($bc_tag->name); ?> <span class="bc-tag-paged-num">&rsaquo; p.<?php echo $bc_p; ?></span></a>
+            <?php endfor;
+            endforeach; ?>
         </div>
     </div>
 </section>
+<?php endif; ?>
+
+<?php
+// ── Browse by Category (with paginated links) ────────────────────────────────
+$bc_all_cats = get_categories(['hide_empty' => true, 'orderby' => 'name', 'order' => 'ASC']);
+if ($bc_all_cats) :
+?>
+<section class="bc-location-tags-section" style="padding-top:0;border-top:none">
+    <div class="bc-container">
+        <h2 class="bc-location-tags-title">Browse by Category</h2>
+        <div class="bc-location-tags-grid">
+            <?php foreach ($bc_all_cats as $bc_cat) :
+                $bc_cat_url   = get_category_link($bc_cat->term_id);
+                $bc_total_pgs = (int) ceil($bc_cat->count / $bc_posts_per_page);
+            ?>
+            <a href="<?php echo esc_url($bc_cat_url); ?>" class="bc-location-tag-pill"><?php echo esc_html($bc_cat->name); ?></a>
+            <?php for ($bc_p = 2; $bc_p <= $bc_total_pgs; $bc_p++) :
+                $bc_paged_url = trailingslashit($bc_cat_url) . 'page/' . $bc_p . '/';
+            ?>
+            <a href="<?php echo esc_url($bc_paged_url); ?>" class="bc-location-tag-pill bc-location-tag-pill--paged"><?php echo esc_html($bc_cat->name); ?> <span class="bc-tag-paged-num">&rsaquo; p.<?php echo $bc_p; ?></span></a>
+            <?php endfor;
+            endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <?php get_footer(); ?>
