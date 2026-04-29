@@ -235,14 +235,16 @@ $reading_time = max(1, ceil($word_count / 250));
             <div class="bc-about-cols">
                 <div>
                     <h3>List on the MLS for $99</h3>
-                    <p>Beycome lets you list your home directly on the MLS — the same database Realtors use — for a flat $99 fee. No listing agent commission, no percentage of your sale. You keep full control of your listing and negotiate directly with buyers. Thousands of homeowners across the US have already sold with Beycome and saved an average of $9,000 in commissions.</p>
-                    <p>Our platform walks you step by step through the process: upload your photos, set your price, schedule showings, and accept or counter offers — all from your dashboard. We handle the MLS syndication to Zillow, Redfin, Realtor.com, and 100+ other sites automatically.</p>
+                    <p>Beycome lists your home on the MLS for a flat $99 fee — no listing agent, no commission percentage.</p>
+                    <p>You keep full control and negotiate directly with buyers. Homeowners save an average of $9,000 in commissions.</p>
+                    <p>Upload photos, set your price, manage showings and offers from your dashboard. Beycome syndicates to Zillow, Redfin, Realtor.com, and 100+ portals automatically.</p>
                     <a href="https://www.beycome.com/flat-fee-mls/" class="bc-about-link">Learn about flat fee MLS &rarr;</a>
                 </div>
                 <div>
                     <h3>Buy a home and get 2% back at closing</h3>
-                    <p>When you buy through Beycome, we rebate up to 2% of the purchase price back to you at closing. On a $400,000 home, that's up to $8,000 in your pocket. Our buyer program gives you access to every MLS listing, direct access to listing agents, and a dedicated support team — without tying you to a buyer's agent who charges a commission you ultimately pay for.</p>
-                    <p>Beycome also offers free real estate calculators, including a mortgage calculator, closing cost calculator, home equity calculator, and commission savings calculator. Use them to plan your purchase or sale before you commit to anything.</p>
+                    <p>Buy through Beycome and receive up to 2% of the purchase price back as a credit at closing.</p>
+                    <p>On a $400,000 home, that's up to $8,000 returned to you. You still get access to every MLS listing and full transaction support.</p>
+                    <p>Beycome also offers free calculators — mortgage, closing cost, home equity, and commission savings — to plan your next move.</p>
                     <a href="https://www.beycome.com/i-want-to-buy-a-home" class="bc-about-link">Explore the buyer program &rarr;</a>
                 </div>
             </div>
@@ -309,7 +311,7 @@ echo json_encode($schemas, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 <?php
 $bc_faq_tags       = get_tags(['hide_empty' => true, 'orderby' => 'count', 'order' => 'DESC']);
 $bc_post_tag_slugs = array_map(fn($t) => $t->slug, get_the_tags() ?: []);
-$bc_posts_per_page = (int) get_option('posts_per_page') ?: 10;
+$bc_posts_per_page = min((int) get_option('posts_per_page') ?: 10, 8);
 if ($bc_faq_tags) :
 ?>
 <section class="bc-faq-tags-section">
