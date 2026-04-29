@@ -4,14 +4,14 @@
             <div>
                 <h4>Features</h4>
                 <ul>
-                    <li><a href="https://www.beycome.com/i-want-to-sell-my-home">Sell My Home</a></li>
+                    <li><a href="https://www.beycome.com/flat-fee-mls/">Sell My Home</a></li>
                     <li><a href="https://www.beycome.com/i-want-to-buy-a-home">Buy a Home</a></li>
                     <li><a href="https://www.beycometitle.com/">Title</a></li>
-                    <li><a href="https://www.beycome.com/home-estimate">Property Price Estimator</a></li>
+                    <li><a href="https://www.beycome.com/how-much-is-my-home-worth">Property Price Estimator</a></li>
                     <li><a href="https://www.beycome.com/calculators">Real Estate Calculators</a></li>
                     <li><a href="https://www.beycome.com/yard-sign">Yard Sign</a></li>
-                    <li><a href="https://www.beycome.com/military-fsbo">Military FSBO</a></li>
-                    <li><a href="https://www.beycome.com/closed-homes">Closed Homes</a></li>
+                    <li><a href="https://www.beycome.com/for-sale/military">Military FSBO</a></li>
+                    <li><a href="https://www.beycome.com/properties-closed/all">Closed Homes</a></li>
                 </ul>
             </div>
             <div>
@@ -19,7 +19,7 @@
                 <ul>
                     <li><a href="https://www.beycome.com/contact">Contact</a></li>
                     <li><a href="https://www.beycome.com/how-it-works">How It Works</a></li>
-                    <li><a href="https://www.beycome.com/glossary">Real Estate Glossary</a></li>
+                    <li><a href="https://www.beycome.com/real-estate-glossary">Real Estate Glossary</a></li>
                     <li><a href="https://www.beycome.com/blog">Blog</a></li>
                     <li><a href="<?php echo esc_url(home_url('/')); ?>">FAQ</a></li>
                 </ul>
@@ -27,7 +27,7 @@
             <div>
                 <h4>Company</h4>
                 <ul>
-                    <li><a href="https://www.beycome.com/about">About Us</a></li>
+                    <li><a href="https://www.beycome.com/about-us">About Us</a></li>
                     <li><a href="https://www.beycome.com/reviews">Reviews</a></li>
                     <li><a href="https://www.beycome.com/press">Press</a></li>
                     <li><a href="https://www.beycome.com/terms-and-conditions">Terms &amp; Conditions</a></li>
