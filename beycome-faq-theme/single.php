@@ -282,8 +282,9 @@ echo json_encode($schemas, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 
 <!-- Browse by FAQ Tag -->
 <?php
-$bc_faq_tags = get_tags(['hide_empty' => true, 'orderby' => 'count', 'order' => 'DESC']);
+$bc_faq_tags       = get_tags(['hide_empty' => true, 'orderby' => 'count', 'order' => 'DESC']);
 $bc_post_tag_slugs = array_map(fn($t) => $t->slug, get_the_tags() ?: []);
+$bc_posts_per_page = (int) get_option('posts_per_page') ?: 10;
 if ($bc_faq_tags) :
 ?>
 <section class="bc-faq-tags-section">
@@ -291,12 +292,24 @@ if ($bc_faq_tags) :
         <h2 class="bc-faq-tags-title">Browse all FAQ topics</h2>
         <div class="bc-faq-tags-grid">
             <?php foreach ($bc_faq_tags as $bc_tag) :
-                if (in_array($bc_tag->slug, $bc_post_tag_slugs)) continue;
+                $bc_tag_url     = get_tag_link($bc_tag->term_id);
+                $bc_is_own_tag  = in_array($bc_tag->slug, $bc_post_tag_slugs);
+                $bc_total_pages = (int) ceil($bc_tag->count / $bc_posts_per_page);
+                if (!$bc_is_own_tag) :
             ?>
-            <a href="<?php echo esc_url(get_tag_link($bc_tag->term_id)); ?>" class="bc-faq-tag-pill">
+            <a href="<?php echo esc_url($bc_tag_url); ?>" class="bc-faq-tag-pill">
                 <?php echo esc_html($bc_tag->name); ?>
                 <span class="bc-faq-tag-count"><?php echo (int) $bc_tag->count; ?></span>
             </a>
+            <?php endif;
+                // Always emit paginated pills so page/2+/ get incoming links from every post
+                for ($bc_p = 2; $bc_p <= $bc_total_pages; $bc_p++) :
+                    $bc_paged_url = trailingslashit($bc_tag_url) . 'page/' . $bc_p . '/';
+            ?>
+            <a href="<?php echo esc_url($bc_paged_url); ?>" class="bc-faq-tag-pill bc-faq-tag-pill--paged">
+                <?php echo esc_html($bc_tag->name); ?> <span class="bc-faq-tag-paged-num">&rsaquo; p.<?php echo $bc_p; ?></span>
+            </a>
+            <?php endfor; ?>
             <?php endforeach; ?>
         </div>
     </div>
