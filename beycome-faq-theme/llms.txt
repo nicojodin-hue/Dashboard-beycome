@@ -1,0 +1,72 @@
+# Beycome FAQ
+
+> Beycome is a flat-fee real estate platform for buying and selling homes without
+> traditional agent commissions. Sellers list on the MLS for a $99 flat fee. Buyers
+> receive 2% of the purchase price back at closing. Beycome Title handles fully
+> remote closings. This FAQ is Beycome's help center and real estate knowledge base.
+
+Operated by Beycome Corp., 7900 SW 57th Ave. Unit 23, South Miami, FL 33143.
+Beycome Corp. is a technology platform, not a brokerage, and is not a licensed real
+estate broker, mortgage lender or title insurer. Real estate brokerage, mortgage and
+title services are provided by separate affiliated licensed entities.
+Contact: contact@beycome.com · +1-804-656-5007
+
+## Key facts
+
+- Flat fee MLS listing: $99, one time, no listing agent commission.
+- Listings syndicate to the local MLS, Zillow, Realtor.com, Redfin, Trulia and others.
+- Buyer program: 2% of the purchase price returned at closing, subject to lender approval.
+- Beycome Title provides remote online closings with electronic signing.
+
+## Knowledge base
+
+- [What Is Flat Fee MLS? How to List Your Home Without a Traditional Agent](https://www.beycome.com/faq/knowledge-base/what-is-flat-fee-mls/)
+- [How to Sell Your Home Without an Agent: FSBO Guide (2026)](https://www.beycome.com/faq/knowledge-base/how-to-sell-your-home-without-an-agent/)
+- [What Happens at Closing? A Step-by-Step Guide for Buyers and Sellers](https://www.beycome.com/faq/knowledge-base/what-happens-at-closing/)
+- [What Is Title Insurance? Why You Need It When Buying a Home](https://www.beycome.com/faq/knowledge-base/what-is-title-insurance/)
+- [How the Beycome buyer program works](https://www.beycome.com/faq/knowledge-base/beycome-buyer-program/)
+- [How to Get a Mortgage: Step-by-Step Guide (2026)](https://www.beycome.com/faq/knowledge-base/how-to-get-a-mortgage/)
+- [How Long Is Mortgage Pre-Approval Good For? (2026)](https://www.beycome.com/faq/knowledge-base/how-long-is-mortgage-preapproval-good-for/)
+- [How Long Does Mortgage Underwriting Take? (2026)](https://www.beycome.com/faq/knowledge-base/how-long-does-underwriting-take/)
+- [Documents Needed for Mortgage Pre-Approval: Complete Checklist (2026)](https://www.beycome.com/faq/knowledge-base/documents-needed-for-mortgage-preapproval/)
+- [What Is a Conventional Loan? Requirements, Rates, and How to Qualify](https://www.beycome.com/faq/knowledge-base/what-is-a-conventional-loan/)
+- [What Is an FHA Loan? Requirements, Rates, and How to Qualify](https://www.beycome.com/faq/knowledge-base/what-is-an-fha-loan/)
+- [What Is a VA Loan? Eligibility, Benefits, and How It Works](https://www.beycome.com/faq/knowledge-base/what-is-a-va-loan/)
+- [What Is a USDA Loan? Zero-Down Mortgages for Rural Buyers](https://www.beycome.com/faq/knowledge-base/what-is-a-usda-loan/)
+- [What Is a Jumbo Loan? Requirements and Rates for High-Value Homes](https://www.beycome.com/faq/knowledge-base/what-is-a-jumbo-loan/)
+- [When Does an ARM Make Sense? Adjustable-Rate Mortgages Explained](https://www.beycome.com/faq/knowledge-base/adjustable-rate-mortgages-2/)
+- [What Is Amortization? How Mortgage Payments Actually Work](https://www.beycome.com/faq/knowledge-base/what-is-amortization/)
+- [What Is LTV? Loan-to-Value Ratio Explained](https://www.beycome.com/faq/knowledge-base/what-is-ltv/)
+- [What Is a HELOC? Home Equity Line of Credit Explained](https://www.beycome.com/faq/knowledge-base/what-is-a-heloc/)
+- [Top Tips and Advice for First-Time Home Buyers (2026)](https://www.beycome.com/faq/knowledge-base/tips-first-time-home-buyers-2/)
+- [How Zillow Works and Makes Money](https://www.beycome.com/faq/knowledge-base/how-zillow-works/)
+- [How Realtor.com works and makes money](https://www.beycome.com/faq/knowledge-base/how-realtor-com-works/)
+- [Why beycome can't add your commission, credit, or bonus offer to the MLS](https://www.beycome.com/faq/knowledge-base/why-commission-not-allowed-on-mls/)
+- [Why Are My Photos Invalid?](https://www.beycome.com/faq/knowledge-base/why-are-my-photos-invalid/)
+
+## How to use Beycome
+
+- [Your Listing is Live! Now What?](https://www.beycome.com/faq/how-to/your-listing-is-live-now-what/)
+- [Where is my listing advertised?](https://www.beycome.com/faq/how-to/where-is-my-listing-advertised-with-beycome/)
+- [Is beycome a Licensed Broker?](https://www.beycome.com/faq/how-to/are-you-a-licensed-broker/)
+- [Buyer's Guide — Buying a Home by yourself from a beycome seller](https://www.beycome.com/faq/how-to/buyers-guide-buying-a-hhome-by-yourself-from-a-beycome-seller/)
+- [How do I enable ShowingTime?](https://www.beycome.com/faq/how-to/how-do-i-enable-showingtime/)
+- [Under Contract: How to Update Your Property Listing](https://www.beycome.com/faq/how-to/under-contract-update-listing/)
+- [How to set up an Open House Schedule](https://www.beycome.com/faq/how-to/open-house-schedule/)
+- [Update your Property Price](https://www.beycome.com/faq/how-to/update-property-price/)
+- [Update Beds, Baths, Sqft and Lot Size](https://www.beycome.com/faq/how-to/update-your-property-on-beycome/)
+- [How to reactivate your listing](https://www.beycome.com/faq/how-to/how-to-reactivate-your-listing/)
+- [How to modify closing date](https://www.beycome.com/faq/how-to/how-to-modify-closing-date/)
+- [How to add a document on your dashboard](https://www.beycome.com/faq/how-to/how-to-add-a-documents-on-your-dashboard-beycome/)
+- [How to Add Beycome Title Info to Your Contract](https://www.beycome.com/faq/how-to/how-to-properly-set-beycome-title-information-in-florida/)
+- [Upgrading your listing with "A La Carte" Add-ons](https://www.beycome.com/faq/how-to/upgrading-your-listing-with-a-la-carte-add-ons/)
+- [How do I compare loans between lenders?](https://www.beycome.com/faq/how-to/how-compare-mortgage-loans/)
+- [Why Was My Property Description Flagged?](https://www.beycome.com/faq/how-to/why-was-my-property-description-flagged/)
+- [beycome's Hours of Operations](https://www.beycome.com/faq/how-to/hours-of-operations/)
+
+## Optional
+
+- [Beycome FAQ home](https://www.beycome.com/faq/)
+- [Knowledge base index](https://www.beycome.com/faq/category/knowledge-base/)
+- [How-to index](https://www.beycome.com/faq/category/how-to/)
+- [Sitemap index](https://www.beycome.com/faq/sitemap_index.xml)
