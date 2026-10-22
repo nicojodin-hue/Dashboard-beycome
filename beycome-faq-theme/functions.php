@@ -4,7 +4,7 @@
  */
 
 function beycome_faq_enqueue() {
-    wp_enqueue_style('beycome-faq-main', get_template_directory_uri() . '/assets/main.css', [], '3.1.17');
+    wp_enqueue_style('beycome-faq-main', get_template_directory_uri() . '/assets/main.css', [], '3.1.18');
 
     // Footer bar + header search. External so the browser caches them across pages.
     wp_enqueue_script('beycome-faq-footer', get_template_directory_uri() . '/assets/footer.js', [], '3.1.17', true);
@@ -129,7 +129,7 @@ function beycome_faq_extract_qa($content) {
         $answer = trim(preg_replace('/\s+/', ' ', $answer));
 
         if ($answer !== '') {
-            $qa[] = ['q' => $question, 'a' => wp_trim_words($answer, 60, '...')];
+            $qa[] = ['q' => $question, 'a' => $answer]; // full text: FAQPage markup must match the visible answer
         }
     }
 

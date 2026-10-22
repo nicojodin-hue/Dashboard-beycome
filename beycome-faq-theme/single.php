@@ -72,7 +72,7 @@ $reading_time = max(1, ceil($word_count / 250));
                         <div class="bc-savings-cta-actions">
                             <div class="bc-savings-cta-btns">
                                 <a href="https://www.beycome.com/flat-fee-mls/" class="bc-cta-btn">Sell your home for $99 &rarr;</a>
-                                <a href="https://www.beycome.com/buy/" class="bc-cta-btn bc-cta-btn--blue">Buy with up to 2% back &rarr;</a>
+                                <a href="https://www.beycome.com/i-want-to-buy-a-home" class="bc-cta-btn bc-cta-btn--blue">Buy with up to 2% back &rarr;</a>
                                 <a href="https://www.beycome.com/calculators/commission-calculator" class="bc-savings-calc-link">Calculate your savings &rarr;</a>
                             </div>
                         </div>
