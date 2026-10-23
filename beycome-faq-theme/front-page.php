@@ -3,7 +3,7 @@
 <!-- HERO -->
 <section class="bc-hero">
     <div class="bc-hero-inner">
-        <h1>How can we<br>help?</h1>
+        <h1>Beycome FAQ:<br>how can we help?</h1>
         <p>Learn how to use Beycome—from listing to closing—<br>plus guidance on showings, open houses, mortgages,<br>and answers to common questions.</p>
         <div class="bc-search-bar">
             <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">

@@ -4,7 +4,7 @@
  */
 
 function beycome_faq_enqueue() {
-    wp_enqueue_style('beycome-faq-main', get_template_directory_uri() . '/assets/main.css', [], '3.1.18');
+    wp_enqueue_style('beycome-faq-main', get_template_directory_uri() . '/assets/main.css', [], '3.1.19');
 
     // Footer bar + header search. External so the browser caches them across pages.
     wp_enqueue_script('beycome-faq-footer', get_template_directory_uri() . '/assets/footer.js', [], '3.1.17', true);
@@ -282,3 +282,43 @@ remove_action('wp_head', 'wp_generator');
 remove_action('wp_head', 'wlwmanifest_link');
 remove_action('wp_head', 'rsd_link');
 remove_action('wp_head', 'wp_shortlink_wp_head');
+
+// ===== SEO: titles and descriptions for the FAQ home and category pages (FAQ audit, Oct 2026) ===== //
+// Yoast's own settings for these pages had typos and vague text; these filters win over them.
+function beycome_faq_archive_seo() {
+    if (is_front_page()) {
+        return [
+            'title' => 'Beycome FAQ: Flat Fee MLS, Selling, Buying & Closing',
+            'desc'  => 'Answers on listing your home on the MLS from $99, showings and offers, the buyer program (up to 2% back) and closing with Beycome Title.',
+        ];
+    }
+    if (is_category('how-to')) {
+        return [
+            'title' => 'How to Use Beycome: Step-by-Step Guides for Sellers',
+            'desc'  => 'Step-by-step guides for your Beycome listing: log in, edit photos and price, schedule open houses, pause, go under contract or cancel.',
+        ];
+    }
+    if (is_category('knowledge-base')) {
+        return [
+            'title' => 'Real Estate Knowledge Base: Selling, Buying & Closing',
+            'desc'  => 'Plain-English answers on selling by owner, the MLS, offers, closing costs, title insurance and mortgages, from Beycome.',
+        ];
+    }
+    return null;
+}
+add_filter('wpseo_title', function ($title) {
+    $seo = beycome_faq_archive_seo();
+    return $seo ? $seo['title'] : $title;
+}, 20);
+add_filter('wpseo_opengraph_title', function ($title) {
+    $seo = beycome_faq_archive_seo();
+    return $seo ? $seo['title'] : $title;
+}, 20);
+add_filter('wpseo_metadesc', function ($desc) {
+    $seo = beycome_faq_archive_seo();
+    return $seo ? $seo['desc'] : $desc;
+}, 20);
+add_filter('wpseo_opengraph_desc', function ($desc) {
+    $seo = beycome_faq_archive_seo();
+    return $seo ? $seo['desc'] : $desc;
+}, 20);
