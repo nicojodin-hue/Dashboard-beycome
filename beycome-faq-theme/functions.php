@@ -118,14 +118,17 @@ function beycome_faq_extract_qa($content) {
 
     $qa = [];
     foreach ($m[0] as $i => $heading) {
-        $question = trim(wp_strip_all_tags($m[1][$i][0]));
+        $question = trim(html_entity_decode(wp_strip_all_tags($m[1][$i][0]), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
         if (substr($question, -1) !== '?') {
             continue;
         }
 
         $start = $heading[1] + strlen($heading[0]);
         $end = isset($m[0][$i + 1]) ? $m[0][$i + 1][1] : strlen($content);
-        $answer = wp_strip_all_tags(substr($content, $start, $end - $start));
+        // Space before tags so stripped words don't run together; decode entities so the JSON-LD carries plain text.
+        $answer = wp_strip_all_tags(str_replace('<', ' <', substr($content, $start, $end - $start)));
+        $answer = html_entity_decode($answer, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $answer = str_replace("\xC2\xA0", ' ', $answer);
         $answer = trim(preg_replace('/\s+/', ' ', $answer));
 
         if ($answer !== '') {
