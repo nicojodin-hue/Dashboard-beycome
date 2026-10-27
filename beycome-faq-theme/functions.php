@@ -4,7 +4,7 @@
  */
 
 function beycome_faq_enqueue() {
-    wp_enqueue_style('beycome-faq-main', get_template_directory_uri() . '/assets/main.css', [], '3.1.19');
+    wp_enqueue_style('beycome-faq-main', get_template_directory_uri() . '/assets/main.css', [], '3.1.20');
 
     // Footer bar + header search. External so the browser caches them across pages.
     wp_enqueue_script('beycome-faq-footer', get_template_directory_uri() . '/assets/footer.js', [], '3.1.17', true);

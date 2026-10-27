@@ -115,19 +115,19 @@
             <div class="bc-faq-col">
                 <div class="bc-faq-item open">
                     <button class="bc-faq-question" onclick="this.parentElement.classList.toggle('open')"><span>What is Beycome?</span><span class="bc-faq-icon">&#xFF0B;</span></button>
-                    <div class="bc-faq-answer">Beycome is a real estate platform that lets you sell, buy, and close your home without traditional agent commissions. Sellers list on the MLS for a $99 flat fee. Buyers get 2% back at closing. <a href="https://www.beycometitle.com/">Beycome Title</a> handles fully remote closings.</div>
+                    <div class="bc-faq-answer">Beycome is a real estate platform that lets you sell, buy, and close your home without traditional agent commissions. Sellers list on the MLS for a $99 flat fee. Buyers can get up to 2% back at closing. <a href="https://www.beycometitle.com/">Beycome Title</a> handles fully remote closings.</div>
                 </div>
                 <div class="bc-faq-item">
                     <button class="bc-faq-question" onclick="this.parentElement.classList.toggle('open')"><span>How much does it cost to list with Beycome?</span><span class="bc-faq-icon">&#xFF0B;</span></button>
-                    <div class="bc-faq-answer">Beycome's <a href="https://www.beycome.com/flat-fee-mls">flat fee MLS listing</a> is just $99. Your home gets listed on the local MLS and syndicates to Zillow, Realtor.com, Redfin, and hundreds of other websites. No listing agent commission — ever.</div>
+                    <div class="bc-faq-answer">Beycome's <a href="https://www.beycome.com/flat-fee-mls">flat fee MLS listing</a> is just $99. Your home gets listed on the local MLS and syndicates to Zillow, Realtor.com, Redfin, and 1,000+ other websites. No listing agent commission — ever.</div>
                 </div>
                 <div class="bc-faq-item">
                     <button class="bc-faq-question" onclick="this.parentElement.classList.toggle('open')"><span>What is flat fee MLS?</span><span class="bc-faq-icon">&#xFF0B;</span></button>
-                    <div class="bc-faq-answer">Flat fee MLS lets you list your home on the MLS for a one-time fixed price ($99 with Beycome) instead of paying a 2-3% listing agent commission. <a href="<?php echo esc_url(home_url('/knowledge-base/what-is-flat-fee-mls/')); ?>">What is flat fee MLS? Full guide &rarr;</a></div>
+                    <div class="bc-faq-answer">Flat fee MLS lets you list your home on the MLS for a one-time fixed price ($99 with Beycome) instead of paying a percentage commission. <a href="<?php echo esc_url(home_url('/knowledge-base/what-is-flat-fee-mls/')); ?>">What is flat fee MLS? Full guide &rarr;</a></div>
                 </div>
                 <div class="bc-faq-item">
                     <button class="bc-faq-question" onclick="this.parentElement.classList.toggle('open')"><span>Where is my listing advertised?</span><span class="bc-faq-icon">&#xFF0B;</span></button>
-                    <div class="bc-faq-answer">Your Beycome listing syndicates to the local MLS and automatically appears on Zillow, Realtor.com, Redfin, Trulia, and hundreds of other real estate websites.</div>
+                    <div class="bc-faq-answer">Your Beycome listing syndicates to the local MLS and automatically appears on Zillow, Realtor.com, Redfin, Trulia, and 1,000+ real estate websites.</div>
                 </div>
                 <div class="bc-faq-item">
                     <button class="bc-faq-question" onclick="this.parentElement.classList.toggle('open')"><span>How does Beycome Title work?</span><span class="bc-faq-icon">&#xFF0B;</span></button>
@@ -149,15 +149,15 @@
             <div class="bc-faq-col">
                 <div class="bc-faq-item">
                     <button class="bc-faq-question" onclick="this.parentElement.classList.toggle('open')"><span>Do buyers save with Beycome?</span><span class="bc-faq-icon">&#xFF0B;</span></button>
-                    <div class="bc-faq-answer">Yes. Beycome buyers get <strong>2% of the purchase price back at closing</strong>. On a $400,000 home, that's $8,000. <a href="https://www.beycome.com/i-want-to-buy-a-home">Beycome buyer program: get 2% back &rarr;</a></div>
+                    <div class="bc-faq-answer">Yes. With the Beycome buyer program, you can get <strong>up to 2% of the purchase price back at closing</strong>: on a $400,000 home with 3% offered, that's $8,000. Example only; commissions are negotiable and not set by law. <a href="https://www.beycome.com/i-want-to-buy-a-home">Beycome buyer program: get up to 2% back &rarr;</a></div>
                 </div>
                 <div class="bc-faq-item">
                     <button class="bc-faq-question" onclick="this.parentElement.classList.toggle('open')"><span>How much money do I need to buy a house?</span><span class="bc-faq-icon">&#xFF0B;</span></button>
-                    <div class="bc-faq-answer">It depends on the loan type. Conventional requires 3-5% down, FHA 3.5%, VA/USDA 0%. With Beycome's 2% rebate, your costs are significantly lower. <a href="https://www.beycome.com/calculators/down-payment-calculator">Down payment calculator &rarr;</a></div>
+                    <div class="bc-faq-answer">It depends on the loan type. Conventional requires 3-5% down, FHA 3.5%, VA/USDA 0%. With up to 2% back from Beycome's buyer program, your costs are significantly lower. <a href="https://www.beycome.com/calculators/down-payment-calculator">Down payment calculator &rarr;</a></div>
                 </div>
                 <div class="bc-faq-item">
                     <button class="bc-faq-question" onclick="this.parentElement.classList.toggle('open')"><span>Can I use the rebate toward my down payment?</span><span class="bc-faq-icon">&#xFF0B;</span></button>
-                    <div class="bc-faq-answer">In many cases, yes — subject to lender approval. The 2% rebate can be applied toward your down payment, closing costs, or returned as cash.</div>
+                    <div class="bc-faq-answer">In many cases, yes — subject to lender approval. The rebate (up to 2%) can be applied toward your down payment, closing costs, or returned as cash.</div>
                 </div>
                 <div class="bc-faq-item">
                     <button class="bc-faq-question" onclick="this.parentElement.classList.toggle('open')"><span>Can I switch my listing from sale to rent?</span><span class="bc-faq-icon">&#xFF0B;</span></button>
@@ -216,14 +216,14 @@ $schemas[] = [
         'name' => 'Beycome FAQ — Frequently Asked Questions',
         'url' => home_url('/'),
         'mainEntity' => [
-            ['@type' => 'Question', 'name' => 'What is Beycome?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Beycome is a real estate platform that lets you sell, buy, and close your home without traditional agent commissions. Sellers list on the MLS for a $99 flat fee. Buyers get 2% back at closing. Beycome Title handles fully remote closings.']],
-            ['@type' => 'Question', 'name' => 'How much does it cost to list with Beycome?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Beycome\'s flat fee MLS listing is just $99. Your home gets listed on the local MLS and syndicates to Zillow, Realtor.com, Redfin, and hundreds of other websites. No listing agent commission.']],
+            ['@type' => 'Question', 'name' => 'What is Beycome?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Beycome is a real estate platform that lets you sell, buy, and close your home without traditional agent commissions. Sellers list on the MLS for a $99 flat fee. Buyers can get up to 2% back at closing. Beycome Title handles fully remote closings.']],
+            ['@type' => 'Question', 'name' => 'How much does it cost to list with Beycome?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Beycome\'s flat fee MLS listing is just $99. Your home gets listed on the local MLS and syndicates to Zillow, Realtor.com, Redfin, and 1,000+ other websites. No listing agent commission.']],
             ['@type' => 'Question', 'name' => 'How does Beycome Title work?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Beycome Title offers fully remote closings. All documents are available through an online portal, you sign electronically via secure video conference, and a dedicated closing coordinator manages every detail.']],
-            ['@type' => 'Question', 'name' => 'Where is my listing advertised?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Your Beycome listing syndicates to the local MLS and automatically appears on Zillow, Realtor.com, Redfin, Trulia, and hundreds of other real estate websites.']],
+            ['@type' => 'Question', 'name' => 'Where is my listing advertised?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Your Beycome listing syndicates to the local MLS and automatically appears on Zillow, Realtor.com, Redfin, Trulia, and 1,000+ real estate websites.']],
             ['@type' => 'Question', 'name' => 'Where can I find Beycome\'s calculators?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Beycome offers 20 free real estate calculators at beycome.com/calculators — including mortgage, closing cost, commission, rent vs buy, and more.']],
-            ['@type' => 'Question', 'name' => 'What is flat fee MLS?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Flat fee MLS lets you list your home on the MLS for a one-time fixed price ($99 with Beycome) instead of paying a 2-3% listing agent commission.']],
-            ['@type' => 'Question', 'name' => 'Do buyers save with Beycome?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Yes. Beycome buyers get 2% of the purchase price back at closing. On a $400,000 home, that\'s $8,000.']],
-            ['@type' => 'Question', 'name' => 'How much money do I need to buy a house?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'It depends on the loan type. Conventional requires 3-5% down, FHA 3.5%, VA/USDA 0%. With Beycome\'s 2% rebate, your costs are significantly lower.']],
+            ['@type' => 'Question', 'name' => 'What is flat fee MLS?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Flat fee MLS lets you list your home on the MLS for a one-time fixed price ($99 with Beycome) instead of paying a percentage commission.']],
+            ['@type' => 'Question', 'name' => 'Do buyers save with Beycome?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Yes. With the Beycome buyer program, you can get up to 2% of the purchase price back at closing: on a $400,000 home with 3% offered, that\'s $8,000. Example only; commissions are negotiable and not set by law.']],
+            ['@type' => 'Question', 'name' => 'How much money do I need to buy a house?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'It depends on the loan type. Conventional requires 3-5% down, FHA 3.5%, VA/USDA 0%. With up to 2% back from Beycome\'s buyer program, your costs are significantly lower.']],
             ['@type' => 'Question', 'name' => 'How does Beycome help me with Federal & State disclosures?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'We provide access to the required disclosures, contracts, and addenda based on your state — available to download directly from your dashboard at no cost. We surface only the ones relevant to your transaction. You can complete them digitally, sign electronically, and keep everything organized in one place.']],
             ['@type' => 'Question', 'name' => 'How do I choose between offers?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'You can use Artur, our in-house AI, to help guide you through the process. Look beyond just price. Compare financing, contingencies, closing timeline, and the overall strength of the buyer. The highest offer isn\'t always the best one.']],
             ['@type' => 'Question', 'name' => 'How can I reach out for support or technical help?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'You can reach us by phone, email, or directly through your dashboard. We also recommend chatting with Artur, our in-house AI, which can answer most questions instantly and guide you through the process.']],
@@ -241,7 +241,7 @@ echo json_encode($schemas, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
     "@type": "Product",
     "name": "beycome",
     "image": "https://www.beycome.com/logos/logo-beycome-512x512.png",
-    "description": "beycome is considered as the top and true Flat Fee MLS service in 2026. List your home on the MLS for just $99 — no listing agent commission. Buyers get 2% back at closing.",
+    "description": "Beycome is a flat fee MLS service: list your home on the MLS for $99 with no listing agent commission. Buyers can get up to 2% back at closing.",
     "brand": {
         "@type": "Brand",
         "name": "Beycome"

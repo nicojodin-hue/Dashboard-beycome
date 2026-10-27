@@ -67,7 +67,8 @@ $reading_time = max(1, ceil($word_count / 250));
                     <div class="bc-savings-cta-inner">
                         <div class="bc-savings-cta-text">
                             <h2>How much can you save selling and buying with Beycome?</h2>
-                            <p>If you sell a <strong>$400,000</strong> home, you save up to <strong class="bc-savings-amount">$20,000</strong> compared to a traditional way. And if you buy your next place with us, you also get <strong>2% back</strong> at closing. Seriously.</p>
+                            <p>On a <strong>$400,000</strong> home, a 5% commission would be <strong class="bc-savings-amount">$20,000</strong>; with Beycome you pay a flat fee instead. And if you buy your next place with us, you can get <strong>up to 2% back</strong> at closing.</p>
+                            <p style="font-size:12px;opacity:.8">Example only. Commissions aren't set by law and are always negotiable.</p>
                         </div>
                         <div class="bc-savings-cta-actions">
                             <div class="bc-savings-cta-btns">
@@ -158,7 +159,7 @@ $reading_time = max(1, ceil($word_count / 250));
 
                 <div class="bc-sidebar-cta" style="margin-top:20px">
                     <h3 style="font-family:var(--font-title);font-size:18px;font-weight:700;color:var(--c-primary);margin-bottom:8px">Buying a home?</h3>
-                    <p style="font-size:14px;color:var(--c-secondary);margin-bottom:16px;line-height:1.5">Get 2% of the purchase price back at closing with Beycome's buyer program.</p>
+                    <p style="font-size:14px;color:var(--c-secondary);margin-bottom:16px;line-height:1.5">Get up to 2% of the purchase price back at closing with Beycome's buyer program.</p>
                     <a href="https://www.beycome.com/i-want-to-buy-a-home" class="bc-cta-btn" style="background:var(--c-accent)">Buy a Home &rarr;</a>
                 </div>
 
