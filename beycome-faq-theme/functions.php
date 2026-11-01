@@ -4,7 +4,7 @@
  */
 
 function beycome_faq_enqueue() {
-    wp_enqueue_style('beycome-faq-main', get_template_directory_uri() . '/assets/main.css', [], '3.1.21');
+    wp_enqueue_style('beycome-faq-main', get_template_directory_uri() . '/assets/main.css', [], '3.1.22');
 
     // Footer bar + header search. External so the browser caches them across pages.
     wp_enqueue_script('beycome-faq-footer', get_template_directory_uri() . '/assets/footer.js', [], '3.1.17', true);
@@ -157,11 +157,17 @@ function beycome_faq_org_schema() {
             'https://www.instagram.com/beycome/',
             'https://linkedin.com/company/beycome',
             'https://x.com/beycome',
+            'https://www.zillow.com/profile/gobeycome/',
+        ],
+        'foundingDate' => '2020',
+        'founder' => [
+            '@type' => 'Person',
+            'name' => 'Nicolas Jodin',
         ],
         'address' => [
             '@type' => 'PostalAddress',
-            'streetAddress' => '7900 SW 57th Ave. Unit 23',
-            'addressLocality' => 'South Miami',
+            'streetAddress' => '7900 SW 57th Avenue, Suite 23',
+            'addressLocality' => 'Miami',
             'addressRegion' => 'FL',
             'postalCode' => '33143',
             'addressCountry' => 'US',

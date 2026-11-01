@@ -110,7 +110,7 @@
     <hr class="bc-footer-divider">
 
     <div class="bc-footer-bottom-row">
-        <span class="bc-footer-bottom-row-address">Beycome Corp., 7900 SW 57th Ave. Unit 23, South Miami, FL 33143</span>
+        <span class="bc-footer-bottom-row-address">Beycome Corp., 7900 SW 57th Avenue, Suite 23, Miami, FL 33143</span>
         <span class="bc-footer-bottom-row-sep">|</span>
         <div class="bc-footer-bottom-row-links">
             <a href="https://www.beycome.com/terms-and-conditions/">Terms &amp; Conditions</a>

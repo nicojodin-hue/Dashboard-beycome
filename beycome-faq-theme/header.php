@@ -46,7 +46,7 @@
 
     <!-- GEO -->
     <meta name="geo.region" content="US-FL">
-    <meta name="geo.placename" content="South Miami, Florida">
+    <meta name="geo.placename" content="Miami, Florida">
     <meta name="geo.position" content="25.7078;-80.2918">
     <meta name="ICBM" content="25.7078, -80.2918">
 
