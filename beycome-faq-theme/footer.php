@@ -1,3 +1,4 @@
+</main>
 <footer class="bc-footer">
 <div class="bc-footer-inner">
     <div class="bc-footer-grid">

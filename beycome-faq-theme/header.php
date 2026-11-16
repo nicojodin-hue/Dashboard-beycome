@@ -69,9 +69,9 @@
             <?php if (has_custom_logo()) :
                 $logo_id  = get_theme_mod('custom_logo');
                 $logo_url = wp_get_attachment_image_url($logo_id, 'full');
-                echo '<img src="' . esc_url($logo_url) . '" alt="' . esc_attr(get_bloginfo('name') ?: 'Beycome FAQ') . '" height="27" loading="eager">';
+                echo '<img src="' . esc_url($logo_url) . '" alt="' . esc_attr(get_bloginfo('name') ?: 'Beycome FAQ') . '" width="213" height="27" loading="eager">';
             else : ?>
-            <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/logo-faq.png'); ?>" alt="Beycome FAQ" height="27" loading="eager">
+            <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/logo-faq.png'); ?>" alt="Beycome FAQ" width="213" height="27" loading="eager">
             <?php endif; ?>
         </a>
 
@@ -109,3 +109,4 @@
         </button>
     </form>
 </div>
+<main id="main">

@@ -46,7 +46,7 @@
                     <?php if ($cat_name) : ?>
                     <span class="bc-archive-card-cat"><?php echo esc_html($cat_name); ?></span>
                     <?php endif; ?>
-                    <h3 class="bc-archive-card-title"><?php the_title(); ?></h3>
+                    <h2 class="bc-archive-card-title"><?php the_title(); ?></h2>
                     <p class="bc-archive-card-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 18, '...'); ?></p>
                     <div class="bc-archive-card-meta">
                         <span>

@@ -45,7 +45,7 @@
                 <div class="bc-card-icon" style="background:<?php echo $card['bg']; ?>">
                     <svg viewBox="0 0 24 24" fill="none" stroke="<?php echo $card['color']; ?>" stroke-width="1.5" width="24" height="24"><?php echo $card['icon']; ?></svg>
                 </div>
-                <h3><?php echo esc_html($card['name']); ?></h3>
+                <h2 class="bc-card-title"><?php echo esc_html($card['name']); ?></h2>
                 <p><?php echo esc_html($card['desc']); ?></p>
                 <span class="bc-card-arrow"><?php echo esc_html($card['cta']); ?> &rarr;</span>
             </a>
@@ -55,7 +55,7 @@
                 <div class="bc-card-icon" style="background:hsla(230,86.1%,72%,0.1)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="hsla(230,86.1%,72%,1)" stroke-width="1.5" width="24" height="24"><path d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25v-.008ZM10.5 6h3m-6.75 0h.008v.008H6.75v-.008Zm0 2.25h.008v.008H6.75v-.008ZM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 0 0 2.25 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0 0 12 2.25Z"/></svg>
                 </div>
-                <h3>Real Estate Calculators</h3>
+                <h2 class="bc-card-title">Real Estate Calculators</h2>
                 <p>20 free calculators — mortgage, closing costs, commission, rental ROI, and more.</p>
                 <span class="bc-card-arrow">All calculators &rarr;</span>
             </a>

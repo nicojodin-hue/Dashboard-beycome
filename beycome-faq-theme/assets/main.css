@@ -360,7 +360,8 @@ body.home .bc-hero h1 {
     margin-bottom: 16px;
 }
 
-.bc-category-card h3 {
+.bc-category-card h3,
+.bc-category-card .bc-card-title {
     font-family: var(--font-title);
     font-size: var(--text-md);
     font-weight: 700;
@@ -378,7 +379,7 @@ body.home .bc-hero h1 {
 .bc-card-arrow {
     font-size: var(--text-sm);
     font-weight: 700;
-    color: var(--c-accent-orange);
+    color: oklch(56% 0.17 38); /* orange-beycome-120: 5:1 on white (accent orange was 2:1) */
     display: inline-flex;
     align-items: center;
     gap: 4px;
