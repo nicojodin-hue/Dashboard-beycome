@@ -98,7 +98,7 @@
         <div class="bc-footer-bar-sep"></div>
 
         <div class="bc-footer-bar-ctas">
-            <a href="https://beycome.zohobookings.com/#/customer/beycome" target="_blank" rel="noopener noreferrer" class="bc-footer-btn">
+            <a href="https://www.beycome.com/book" class="bc-footer-btn">
                 <span class="bc-footer-btn-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M7 2h2v2h6V2h2v2h3a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3V2zm13 8H4v10h16V10z" fill="currentColor"/></svg></span>
                 <span class="bc-footer-btn-text">
                     <span class="bc-footer-btn-name">Schedule a call</span>
