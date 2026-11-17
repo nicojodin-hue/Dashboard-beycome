@@ -32,7 +32,7 @@ a.querySelectorAll('.bc-table-wrap table').forEach(function(table){
   var dataRows=Array.prototype.filter.call(allRows,function(r){return r.querySelectorAll('td').length>0;});
   dataRows.forEach(function(row,i){
     var bg=i%2===0?'#ffffff':'#f6f6f7';
-    row.querySelectorAll('td,th').forEach(function(td){td.style.backgroundColor=bg;});
+    row.querySelectorAll('td,th').forEach(function(td){if(table.classList.contains('bc-cmp-table')&&td===row.lastElementChild)return;td.style.backgroundColor=bg;});
   });
 });
 // Highlight specific Houzeo pricing values in red
@@ -54,3 +54,16 @@ a.querySelectorAll('td:not(:first-child),th:not(:first-child)').forEach(function
 // In tables, clear cells that contain only pricing noise like '$349 +1.25%'
 a.querySelectorAll('td').forEach(function(td){var t=td.textContent.trim();if(t.indexOf('349')!==-1&&t.indexOf('1.25')!==-1){td.innerHTML='';}});
 }();
+
+/* Book a call: push a dataLayer event like the main site (www2 PR #1128). */
+document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('[data-book-call]');
+    if (!a) return;
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: 'book_call_click',
+        book_call_placement: a.getAttribute('data-book-call'),
+        book_call_position: a.getAttribute('data-book-call-position') || '',
+        page_path: location.pathname
+    });
+});

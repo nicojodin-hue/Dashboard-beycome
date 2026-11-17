@@ -81,7 +81,7 @@ $arc_count = (int) $wp_query->found_posts;
 <div class="bc-breadcrumb-bar">
     <div class="bc-container">
         <nav class="bc-breadcrumb" aria-label="Breadcrumb">
-            <a href="<?php echo esc_url(home_url('/')); ?>"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>Blog</a>
+            <a href="<?php echo esc_url(untrailingslashit(home_url('/'))); ?>"><?php echo beycome_blog_icon('arrow-left', 16); ?>Blog</a>
             <span aria-hidden="true">&rsaquo;</span>
             <?php if ($arc_parent_term) : ?>
             <a href="<?php echo esc_url(get_category_link($arc_parent_term->term_id)); ?>"><?php echo esc_html($arc_parent_term->name); ?></a>
@@ -105,7 +105,7 @@ $arc_count = (int) $wp_query->found_posts;
             <?php endif; ?>
             <div class="bc-blog-archive-count">
                 <span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+                    <?php echo beycome_blog_icon('file-text', 15); ?>
                     <?php echo $arc_count; ?> article<?php echo $arc_count !== 1 ? 's' : ''; ?>
                 </span>
             </div>
@@ -221,7 +221,7 @@ if ($arc_has_subs) :
 
         <?php else : ?>
         <div class="bc-blog-no-posts">
-            <p>No articles found. <a href="<?php echo esc_url(home_url('/')); ?>">Return to blog home &rarr;</a></p>
+            <p>No articles found. <a href="<?php echo esc_url(untrailingslashit(home_url('/'))); ?>">Return to blog home &rarr;</a></p>
         </div>
         <?php endif; ?>
     </div>

@@ -103,7 +103,7 @@ wp_reset_postdata();
             $feat_cat       = $feat_cats ? $feat_cats[0] : null;
             $feat_time      = beycome_blog_reading_time($featured->ID);
             $feat_has_thumb = has_post_thumbnail($featured->ID);
-            $feat_excerpt   = wp_trim_words(get_the_excerpt($featured->ID) ?: strip_tags(get_post_field('post_content', $featured->ID)), 32, '…');
+            $feat_excerpt   = beycome_blog_excerpt(get_the_excerpt($featured->ID) ?: get_post_field('post_content', $featured->ID), 32);
             $feat_pill_map  = ['selling-a-home' => 'bc-pill--selling', 'buying-a-home' => 'bc-pill--buying', 'homeowner-guides' => 'bc-pill--homeowner', 'local-insights' => 'bc-pill--local'];
             $feat_root_slug = $feat_cat ? $feat_cat->slug : '';
             if ($feat_cat && $feat_cat->parent) { $p = get_term($feat_cat->parent, 'category'); if ($p && !is_wp_error($p)) $feat_root_slug = $p->slug; }

@@ -15,9 +15,8 @@
     <!-- Favicon -->
     <link rel="icon" href="https://www.beycome.com/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="https://www.beycome.com/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://www.beycome.com/public/assets/images/apple-touch-icon.png">
-    <link rel="apple-touch-icon" href="https://www.beycome.com/public/assets/images/apple-touch-icon.png">
-    <link rel="mask-icon" color="#000000" href="https://www.beycome.com/public/assets/images/safari-pinned-tab.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://www.beycome.com/apple-touch-icon.png">
+    <link rel="apple-touch-icon" href="https://www.beycome.com/apple-touch-icon.png">
 
     <!-- Canonical — skipped if Yoast handles it -->
     <?php if (!defined('WPSEO_VERSION')) : ?>
@@ -55,7 +54,7 @@
 
     <!-- GEO -->
     <meta name="geo.region" content="US-FL">
-    <meta name="geo.placename" content="South Miami, Florida">
+    <meta name="geo.placename" content="Miami, Florida">
     <meta name="geo.position" content="25.6977;-80.2855">
     <meta name="ICBM" content="25.6977, -80.2855">
 
@@ -87,7 +86,7 @@
                 $_subs = $hdr_subcats[$_slug] ?? [];
             ?>
             <div class="bc-nav-item">
-                <a href="<?php echo esc_url($_u); ?>"><?php echo esc_html($_lbl); ?><svg class="bc-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="11" height="11" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></a>
+                <a href="<?php echo esc_url($_u); ?>"><?php echo esc_html($_lbl); ?><?php echo beycome_blog_icon('chevron-down', 11, 11, 'bc-nav-chevron'); ?></a>
                 <?php if (!empty($_subs)) : ?>
                 <div class="bc-nav-dropdown">
                     <div class="bc-nav-dropdown-inner">
@@ -107,8 +106,8 @@
         </nav>
 
         <!-- Logo center (mobile: left-aligned) -->
-        <a href="<?php echo esc_url(home_url('/')); ?>" class="bc-header-logo">
-            <img src="https://www.beycome.com/blog/wp-content/uploads/2026/04/cropped-logo-orange-blog.png" alt="Beycome Blog" height="27" loading="eager">
+        <a href="<?php echo esc_url(untrailingslashit(home_url('/'))); ?>" class="bc-header-logo">
+            <img src="https://www.beycome.com/blog/wp-content/uploads/2026/04/cropped-logo-orange-blog.png" alt="Beycome Blog" width="213" height="27" loading="eager">
         </a>
 
         <!-- Desktop search right (hidden on mobile) -->
@@ -116,15 +115,15 @@
             <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>" class="bc-hsearch" id="bc-hsearch">
                 <input type="search" name="s" class="bc-hsearch-input" id="bc-hsearch-input" placeholder="FSBO, mortgage, closing costs..." autocomplete="off">
                 <button type="button" class="bc-hsearch-btn" id="bc-hsearch-btn" aria-label="Search">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <?php echo beycome_blog_icon('search', 20); ?>
                 </button>
             </form>
         </div>
 
         <!-- Mobile hamburger (hidden on desktop) -->
         <button type="button" class="bc-mobile-menu-btn" id="bc-mobile-menu-btn" aria-label="Open menu" aria-expanded="false" style="display:none">
-            <svg class="bc-menu-icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-            <svg class="bc-menu-icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" style="display:none"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            <?php echo beycome_blog_icon('menu', 24, 24, 'bc-menu-icon-open'); ?>
+            <?php echo beycome_blog_icon('close', 24, 24, 'bc-menu-icon-close'); ?>
         </button>
     </div>
 </header>
@@ -150,7 +149,8 @@
     <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>" class="bc-mobile-menu-search">
         <input type="search" name="s" placeholder="Search articles..." autocomplete="off">
         <button type="submit" aria-label="Search">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <?php echo beycome_blog_icon('search', 18); ?>
         </button>
     </form>
 </div>
+<main id="main">

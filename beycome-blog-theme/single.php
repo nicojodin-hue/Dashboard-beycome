@@ -28,7 +28,7 @@ if ($cat) {
 <div class="bc-breadcrumb-bar">
     <div class="bc-container">
         <nav class="bc-breadcrumb" aria-label="Breadcrumb">
-            <a href="<?php echo esc_url(home_url('/')); ?>"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>Blog</a>
+            <a href="<?php echo esc_url(untrailingslashit(home_url('/'))); ?>"><?php echo beycome_blog_icon('arrow-left', 16); ?>Blog</a>
             <span aria-hidden="true">&rsaquo;</span>
             <?php if ($cat) : ?>
             <a href="<?php echo esc_url(get_category_link($cat->term_id)); ?>"><?php echo esc_html($cat->name); ?></a>
@@ -48,17 +48,17 @@ if ($cat) {
         <h1><?php the_title(); ?></h1>
         <div class="bc-article-meta">
             <span class="bc-meta-item bc-meta-author">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                By <a href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))); ?>" rel="author"><?php the_author(); ?></a>
+                <?php echo beycome_blog_icon('user', 16); ?>
+                By <span class="bc-author-name"><?php the_author(); ?></span>
             </span>
             <span class="bc-meta-dot">&middot;</span>
             <span class="bc-meta-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                <?php echo beycome_blog_icon('calendar', 16); ?>
                 Updated <?php echo get_the_modified_date('F j, Y'); ?>
             </span>
             <span class="bc-meta-dot">&middot;</span>
             <span class="bc-meta-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                <?php echo beycome_blog_icon('clock', 16); ?>
                 <?php echo (int)$reading_time; ?> min read
             </span>
         </div>
@@ -101,10 +101,10 @@ if ($cat) {
                 <!-- Author — shown only when there is a real bio to show -->
                 <?php $bc_bio = get_the_author_meta('description'); if ($bc_bio) : ?>
                 <div class="bc-author-box">
-                    <?php $bc_avatar = get_avatar(get_the_author_meta('ID'), 64, '', '', ['class' => 'bc-author-box-avatar']); echo $bc_avatar; ?>
+                    <?php $bc_avatar = get_avatar(get_the_author_meta('ID'), 64, '', get_the_author(), ['class' => 'bc-author-box-avatar']); echo $bc_avatar; ?>
                     <div class="bc-author-box-text">
                         <p class="bc-author-box-name">
-                            <a href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))); ?>" rel="author"><?php the_author(); ?></a>
+                            <span class="bc-author-name"><?php the_author(); ?></span>
                         </p>
                         <p class="bc-author-box-bio"><?php echo esc_html($bc_bio); ?></p>
                     </div>
@@ -119,14 +119,15 @@ if ($cat) {
                     <div class="bc-savings-cta-inner">
                         <div class="bc-savings-cta-text">
                             <h2>How much can you save selling and buying with Beycome?</h2>
-                            <p>If you sell a <strong>$400,000</strong> home, you save up to <strong class="bc-savings-amount">$20,000</strong> compared to a traditional way. And if you buy your next place with us, you also get <strong>2% back</strong> at closing. Seriously.</p>
+                            <p>If you sell a <strong>$400,000</strong> home, you save up to <strong class="bc-savings-amount">$20,000</strong> compared to a traditional way. And if you buy your next place with us, you also get <strong>up to 2% back</strong> at closing. Seriously.</p>
                         </div>
                         <div class="bc-savings-cta-actions">
                             <div class="bc-savings-cta-btns">
-                                <a href="https://www.beycome.com/flat-fee-mls/" class="bc-cta-btn">Sell your home for $99 &rarr;</a>
-                                <a href="https://www.beycome.com/i-want-to-buy-a-home/" class="bc-cta-btn bc-cta-btn--blue">Buy with up to 2% back &rarr;</a>
+                                <a href="https://www.beycome.com/flat-fee-mls" class="bc-cta-btn">Sell your home for $99 &rarr;</a>
+                                <a href="https://www.beycome.com/i-want-to-buy-a-home" class="bc-cta-btn bc-cta-btn--blue">Buy with up to 2% back &rarr;</a>
                                 <a href="https://www.beycome.com/calculators/commission-calculator" class="bc-savings-calc-link">Calculate your savings &rarr;</a>
                             </div>
+                            <p class="bc-book-call-line">Not ready yet? <a href="https://www.beycome.com/book/free-call" data-book-call="blog" data-book-call-position="bottom">Book a free call with our team</a></p>
                         </div>
                     </div>
                 </div>
@@ -192,14 +193,21 @@ if ($cat) {
                     <div class="bc-sidebar-cta" style="margin-top:20px">
                         <h2 style="font-family:var(--font-title);font-size:18px;font-weight:700;color:var(--c-primary);margin-bottom:8px">Ready to sell your home?</h2>
                         <p style="font-size:14px;color:var(--c-secondary);margin-bottom:16px;line-height:1.5">List on the MLS for just $99 — no listing agent commission.</p>
-                        <a href="https://www.beycome.com/flat-fee-mls/" class="bc-cta-btn">Sell Your Home &rarr;</a>
+                        <a href="https://www.beycome.com/flat-fee-mls" class="bc-cta-btn">Sell Your Home &rarr;</a>
                     </div>
 
                     <!-- Sidebar CTA: Buy -->
                     <div class="bc-sidebar-cta" style="margin-top:20px">
                         <h2 style="font-family:var(--font-title);font-size:18px;font-weight:700;color:var(--c-primary);margin-bottom:8px">Buying a home?</h2>
-                        <p style="font-size:14px;color:var(--c-secondary);margin-bottom:16px;line-height:1.5">Get 2% of the purchase price back at closing with Beycome's buyer program.</p>
+                        <p style="font-size:14px;color:var(--c-secondary);margin-bottom:16px;line-height:1.5">Get up to 2% of the purchase price back at closing with Beycome's buyer program.</p>
                         <a href="https://www.beycome.com/i-want-to-buy-a-home" class="bc-cta-btn bc-cta-btn--blue">Buy a Home &rarr;</a>
+                    </div>
+
+                    <!-- Sidebar CTA: Book a call (Zoho Bookings, free 15-minute call with the sales team) -->
+                    <div class="bc-sidebar-cta bc-book-call" style="margin-top:20px">
+                        <h2 style="font-family:var(--font-title);font-size:18px;font-weight:700;color:var(--c-primary);margin-bottom:8px">Have questions about our solutions?</h2>
+                        <p style="font-size:14px;color:var(--c-secondary);margin-bottom:16px;line-height:1.5">Talk it through with our team on a free 15-minute call.</p>
+                        <a href="https://www.beycome.com/book/free-call" class="bc-cta-btn bc-cta-btn--green" data-book-call="blog" data-book-call-position="sidebar">Book a free call with our team &rarr;</a>
                     </div>
 
                     <!-- Related Articles -->
@@ -245,59 +253,9 @@ if ($cat) {
 
 <script>
 (function() {
-    // Reading progress bar
-    var bar = document.getElementById('bc-progress-bar');
-    var article = document.getElementById('bc-article');
-    if (bar && article) {
-        function updateProgress() {
-            var rect = article.getBoundingClientRect();
-            var articleTop = rect.top + window.scrollY;
-            var scrolled = window.scrollY - articleTop + window.innerHeight * 0.2;
-            var pct = Math.min(100, Math.max(0, (scrolled / article.offsetHeight) * 100));
-            bar.style.width = pct + '%';
-        }
-        window.addEventListener('scroll', updateProgress, { passive: true });
-        updateProgress();
-    }
-
-    // Table of contents builder
-    var tocNav = document.getElementById('bc-toc-nav');
-    if (tocNav && article) {
-        var headings = article.querySelectorAll('h2, h3');
-        if (headings.length < 2) {
-            var tocEl = document.getElementById('bc-toc');
-            if (tocEl) tocEl.style.display = 'none';
-        } else {
-            headings.forEach(function(h, i) {
-                if (!h.id) h.id = 'section-' + i;
-                var a = document.createElement('a');
-                a.href = '#' + h.id;
-                a.textContent = h.textContent;
-                var div = document.createElement('div');
-                div.className = h.tagName === 'H3' ? 'bc-toc-item bc-toc-item-sub' : 'bc-toc-item';
-                div.appendChild(a);
-                tocNav.appendChild(div);
-            });
-            var tocLinks = tocNav.querySelectorAll('a');
-            function onScrollToc() {
-                var scrollY = window.scrollY + 160;
-                var active = null;
-                headings.forEach(function(h) { if (h.offsetTop <= scrollY) active = h.id; });
-                tocLinks.forEach(function(l) { l.classList.toggle('active', l.hash === '#' + active); });
-            }
-            window.addEventListener('scroll', onScrollToc, { passive: true });
-            onScrollToc();
-            tocNav.addEventListener('click', function(e) {
-                var link = e.target.closest('a');
-                if (!link || !link.hash) return;
-                var target = document.querySelector(link.hash);
-                if (!target) return;
-                e.preventDefault();
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-        }
-    }
-
+    // The reading progress bar and the table of contents are built in
+    // assets/blog.js. They used to be duplicated here as well, which ran the
+    // TOC builder twice and listed every heading twice.
     // Copy link buttons (sidebar + inline bars)
     document.querySelectorAll('.bc-share-copy').forEach(function(copyBtn) {
         copyBtn.addEventListener('click', function() {

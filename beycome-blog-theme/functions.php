@@ -9,6 +9,85 @@ function beycome_blog_enqueue() {
 }
 add_action('wp_enqueue_scripts', 'beycome_blog_enqueue');
 
+/**
+ * Archive pages are lists of post cards. They never render block content, and
+ * assets/main.css uses none of WordPress's preset custom properties, so every
+ * byte of the Gutenberg stylesheet is dead weight there.
+ *
+ * Dropping it removes 24 KB from a typical tag archive and 39 KB from a busy
+ * one, all of it render-blocking CSS in <head>.
+ *
+ * single.php is the only template that calls the_content(), so a single post is
+ * the only place block styles are needed. The blog home is a static Page, and
+ * this theme has no page.php, so Pages fall through to index.php, which renders
+ * card grids from its own queries and never outputs page content either.
+ */
+function beycome_blog_trim_block_css($handles) {
+    if (is_admin() || is_singular('post')) return $handles;
+
+    $drop = [
+        'wp-block-library',
+        'wp-block-library-theme',
+        'wp-block-heading',
+        'wp-block-paragraph',
+        'wp-block-quote',
+        'wp-block-table',
+        'wp-block-list',
+        'wp-block-image',
+        'classic-theme-styles',
+        'global-styles',
+        'core-block-supports',
+    ];
+
+    return array_values(array_diff($handles, $drop));
+}
+add_filter('print_styles_array', 'beycome_blog_trim_block_css');
+
+/**
+ * Icons are served from one cached sprite instead of being inlined 29 times a
+ * page. That keeps ~15 KB of path data out of every HTML response, and the
+ * sprite itself is fetched once and reused across the whole site.
+ *
+ * Edit an icon in assets/icons.svg and it changes everywhere.
+ */
+function beycome_blog_icon_sprite() {
+    static $uri = null;
+    if ($uri === null) {
+        $path = get_template_directory() . '/assets/icons.svg';
+        // root-relative: drops the scheme and host, which is ~25 bytes x 29 icons a page
+        $uri  = wp_make_link_relative(get_template_directory_uri() . '/assets/icons.svg');
+        if (file_exists($path)) {
+            $uri .= '?v=' . filemtime($path);
+        }
+    }
+    return $uri;
+}
+
+/**
+ * $w / $h of 0 leaves the dimensions off, for icons that CSS sizes itself.
+ */
+function beycome_blog_icon($name, $w = 0, $h = null, $class = '') {
+    $h = ($h === null) ? $w : $h;
+
+    $attr = '';
+    if ($class !== '') $attr .= ' class="' . esc_attr($class) . '"';
+    if ($w) $attr .= ' width="' . (int) $w . '"';
+    if ($h) $attr .= ' height="' . (int) $h . '"';
+
+    return '<svg' . $attr . ' aria-hidden="true"><use href="'
+         . esc_attr(beycome_blog_icon_sprite()) . '#i-' . esc_attr($name) . '"/></svg>';
+}
+
+/**
+ * The sprite is needed by the header icons, so fetch it in parallel with the
+ * stylesheet rather than waiting for the parser to reach the first <use>.
+ */
+function beycome_blog_preload_sprite() {
+    echo '<link rel="preload" as="image" type="image/svg+xml" href="'
+       . esc_attr(beycome_blog_icon_sprite()) . '">' . "\n";
+}
+add_action('wp_head', 'beycome_blog_preload_sprite', 1);
+
 function beycome_blog_setup() {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
@@ -182,18 +261,44 @@ function beycome_blog_org_schema() {
             'https://www.instagram.com/beycome/',
             'https://linkedin.com/company/beycome',
             'https://x.com/beycome',
+            'https://www.zillow.com/profile/gobeycome/',
+            'https://www.youtube.com/@beycome',
+            'https://www.wikidata.org/wiki/Q141973923',
+        ],
+        'foundingDate' => '2020',
+        'founder' => [
+            '@type' => 'Person',
+            'name' => 'Nicolas Jodin',
         ],
         'address' => [
             '@type' => 'PostalAddress',
-            'streetAddress' => '7900 SW 57th Ave. Unit 23',
-            'addressLocality' => 'South Miami',
+            'streetAddress' => '7900 SW 57th Avenue, Suite 23',
+            'addressLocality' => 'Miami',
             'addressRegion' => 'FL',
             'postalCode' => '33143',
             'addressCountry' => 'US',
         ],
         'telephone' => '+1-804-656-5007',
         'email' => 'contact@beycome.com',
+        'areaServed' => beycome_blog_area_served(),
     ];
+}
+
+/**
+ * The 18 states plus D.C. where beycome holds a brokerage licence (license sheet, Active rows, 2026-10-21), as schema.org
+ * States. Keep this list in step with the footer — search engines read it as the
+ * service area, and a state listed here that we are not licensed in is a problem.
+ */
+function beycome_blog_area_served() {
+    $states = [
+        'Alabama', 'California', 'Connecticut', 'Florida', 'Georgia', 'Illinois',
+        'Indiana', 'Maryland', 'Michigan', 'Minnesota', 'New York', 'North Carolina',
+        'Ohio', 'Pennsylvania', 'South Carolina', 'Tennessee', 'Texas', 'Virginia',
+        'District of Columbia',
+    ];
+    return array_map(function ($name) {
+        return ['@type' => 'State', 'name' => $name];
+    }, $states);
 }
 
 // ===== SEO: feed the postal address into Yoast's Organization ===== //
@@ -203,6 +308,9 @@ function beycome_blog_yoast_org($data) {
     $org = beycome_blog_org_schema();
     if (empty($data['address'])) $data['address'] = $org['address'];
     if (empty($data['telephone'])) $data['telephone'] = $org['telephone'];
+    if (empty($data['areaServed'])) $data['areaServed'] = $org['areaServed'];
+    if (empty($data['founder'])) $data['founder'] = $org['founder'];
+    $data['sameAs'] = array_values(array_unique(array_merge($data['sameAs'] ?? [], $org['sameAs'])));
     return $data;
 }
 add_filter('wpseo_schema_organization', 'beycome_blog_yoast_org');
@@ -240,7 +348,7 @@ function beycome_blog_article_schema() {
             [
                 '@type' => 'BreadcrumbList',
                 'itemListElement' => array_filter([
-                    ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => home_url('/')],
+                    ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => untrailingslashit(home_url('/'))],
                     $cats ? ['@type' => 'ListItem', 'position' => 2, 'name' => $cats[0]->name, 'item' => get_category_link($cats[0]->term_id)] : null,
                     ['@type' => 'ListItem', 'position' => $cats ? 3 : 2, 'name' => get_the_title()],
                 ]),
@@ -256,6 +364,9 @@ function beycome_blog_article_schema() {
             'mainEntity' => $faq,
         ];
     }
+
+    $review = beycome_blog_review_schema();
+    if ($review) $schema['@graph'][] = $review;
 
     echo '<script type="application/ld+json">' . beycome_blog_schema_json($schema) . '</script>' . "\n";
 }
@@ -274,7 +385,7 @@ function beycome_blog_home_schema() {
                 '@id' => home_url('/') . '#blog',
                 'name' => 'Beycome Blog',
                 'description' => 'Real estate guides, market reads, and how-tos for buyers and sellers.',
-                'url' => home_url('/'),
+                'url' => untrailingslashit(home_url('/')),
                 'publisher' => ['@type' => 'Organization', '@id' => 'https://www.beycome.com/#organization'],
                 'inLanguage' => 'en-US',
             ],
@@ -335,11 +446,11 @@ add_action('template_redirect', 'beycome_blog_legacy_redirects', 1);
 function beycome_blog_llms_facts() {
     return [
         'beycome is a technology platform for buying and selling homes without paying a traditional agent commission.',
-        'Sellers list on the MLS for a $99 flat fee instead of paying a listing agent around 3%.',
-        'Buyers who use a beycome agent get a rebate of up to 2% of the purchase price, paid at closing.',
-        'Real estate brokerage is provided by licensed affiliates in FL, CA, CT, AL, DC, GA, IL, IN, MD, MI, MN, NC, NJ, NY, OH, PA, SC, TN, TX and VA.',
-        'Title insurance is provided by Beycome Title of Florida LLC in Florida and Beycome Title of Texas LLC in Texas. Mortgage origination in Florida is provided by Beycome Mortgage LLC.',
-        'beycome Corp. is at 7900 SW 57th Ave. Unit 23, South Miami, FL 33143, reachable at +1-804-656-5007 and contact@beycome.com.',
+        'Sellers list on the MLS for a flat fee from $99, with nothing owed to beycome at closing. Homes are listed in 17 states and Washington, D.C.',
+        'Buyers get up to 2% of the price back at closing on homes listed by other agents: beycome keeps 1% (minimum $1,499) of the buyer-agent commission offered and credits the rest. There is no credit on FSBO homes or homes listed by beycome sellers.',
+        'Real estate brokerage is provided by licensed affiliates in 18 states and DC: AL, CA, CT, DC, FL, GA, IL, IN, MD, MI, MN, NC, NY, OH, PA, SC, TN, TX and VA.',
+        'Title insurance is provided by Beycome Title of Florida LLC in Florida, Beycome Title of Texas LLC in Texas, and Beycome Title LLC in Michigan, Ohio, Illinois and Indiana. Mortgage origination in Florida is provided by Beycome Mortgage LLC.',
+        'beycome Corp. is at 7900 SW 57th Avenue, Suite 23, Miami, FL 33143, reachable at +1-804-656-5007 and contact@beycome.com.',
         'Customers rate beycome 4.7 out of 5 across 1,004 reviews.',
     ];
 }
@@ -391,7 +502,7 @@ function beycome_blog_llms_txt() {
     }
 
     $out .= "\n## Optional\n\n";
-    $out .= '- [All articles](' . home_url('/') . ")\n";
+    $out .= '- [All articles](' . untrailingslashit(home_url('/')) . ")\n";
     $out .= '- [Sitemap](' . home_url('/sitemap_index.xml') . ")\n";
     $out .= "- [Flat fee MLS listing](https://www.beycome.com/flat-fee-mls/)\n";
     $out .= "- [Buy with a rebate](https://www.beycome.com/i-want-to-buy-a-home/)\n";
@@ -605,10 +716,90 @@ add_filter('the_content', 'beycome_blog_heading_anchors', 9);
 // ===== FAQ: questions already written in the post body ===== //
 // Any h2/h3 ending in a question mark becomes a Question, with the markup that
 // follows it as the answer. Two or more are needed before anything is emitted.
+/**
+ * A competitor review post carries a .bc-review-box with the verdict in data
+ * attributes. Turn that into a schema.org Review so the rating travels with the
+ * page instead of living only in the markup.
+ *
+ * This is a critic review of a third party, authored by beycome. It is never
+ * emitted for a post about beycome itself — a self-review is both against
+ * Google's guidelines and dishonest.
+ */
+function beycome_blog_review_schema($post_id = null) {
+    if (!$post_id) $post_id = get_the_ID();
+    $content = get_post_field('post_content', $post_id);
+    if (!$content || strpos($content, 'bc-review-box') === false) return null;
+
+    if (!preg_match('#<div class="bc-review-box"([^>]*)>#i', $content, $m)) return null;
+    $attrs = $m[1];
+
+    $get = function ($name) use ($attrs) {
+        if (preg_match('#data-review-' . $name . '="([^"]*)"#i', $attrs, $hit)) {
+            return trim(html_entity_decode($hit[1], ENT_QUOTES, 'UTF-8'));
+        }
+        return '';
+    };
+
+    $subject = $get('subject');
+    $rating  = $get('rating');
+    if ($subject === '' || $rating === '' || !is_numeric($rating)) return null;
+
+    // Never review ourselves.
+    if (stripos($subject, 'beycome') !== false) return null;
+
+    $reviewed = ['@type' => 'Organization', 'name' => $subject];
+    $url = $get('url');
+    if ($url !== '') $reviewed['url'] = $url;
+
+    return [
+        '@type' => 'Review',
+        '@id' => get_permalink($post_id) . '#review',
+        'itemReviewed' => $reviewed,
+        'reviewRating' => [
+            '@type' => 'Rating',
+            'ratingValue' => (float) $rating,
+            'bestRating' => (float) ($get('best') ?: 5),
+            'worstRating' => (float) ($get('worst') ?: 1),
+        ],
+        'author' => ['@id' => 'https://www.beycome.com/#organization'],
+        'publisher' => ['@id' => 'https://www.beycome.com/#organization'],
+        'datePublished' => get_the_date('c', $post_id),
+        'url' => get_permalink($post_id),
+    ];
+}
+
 function beycome_blog_faq_items($post_id = null) {
     if (!$post_id) $post_id = get_the_ID();
-    $content = strip_shortcodes(get_post_field('post_content', $post_id));
+    $content = get_post_field('post_content', $post_id);
+    // [bey_stat] carries the proof-point numbers: expand it so the schema keeps
+    // "22,000+ homeowners" instead of "helped  homeowners". Other shortcodes are stripped.
+    if (shortcode_exists('bey_stat')) {
+        $content = preg_replace_callback('/\[bey_stat\b[^\]]*\]/', fn($m) => do_shortcode($m[0]), $content);
+    }
+    $content = strip_shortcodes($content);
     if (!$content) return [];
+
+    // Accordion FAQs are authored as <details><summary>Q</summary>...</details>.
+    // Prefer those: they are an explicit FAQ block, where a heading ending in "?"
+    // is only a guess and picks up rhetorical section headings too.
+    // Only .bc-faq-item blocks are questions. Other <details> on the page —
+    // an editor's-take or methodology dropdown — are not FAQ entries and must
+    // not end up in FAQPage schema.
+    if (preg_match_all('#<details[^>]*class="[^"]*bc-faq-item[^"]*"[^>]*>\s*<summary[^>]*>(.*?)</summary>(.*?)</details>#is', $content, $m, PREG_SET_ORDER)) {
+        $items = [];
+        foreach ($m as $hit) {
+            $question = trim(wp_strip_all_tags($hit[1]));
+            $answer   = trim(wp_strip_all_tags($hit[2]));
+            if ($question === '' || $answer === '') continue;
+            if (mb_strlen($answer) > 1000) $answer = mb_substr($answer, 0, 997) . '...';
+            $items[] = [
+                '@type' => 'Question',
+                'name' => $question,
+                'acceptedAnswer' => ['@type' => 'Answer', 'text' => $answer],
+            ];
+        }
+        if (count($items) >= 2) return $items;
+    }
 
     $parts = preg_split('#<h([23])[^>]*>(.*?)</h\1>#is', $content, -1, PREG_SPLIT_DELIM_CAPTURE);
     $items = [];
@@ -688,11 +879,38 @@ function beycome_blog_yoast_graph($graph) {
             'mainEntity' => $faq,
         ];
     }
+
+    $review = beycome_blog_review_schema();
+    if ($review) $graph[] = $review;
+
     return $graph;
 }
 add_filter('wpseo_schema_graph', 'beycome_blog_yoast_graph');
 
 // ===== Helper: render a blog card (image + meta + title) ===== //
+/**
+ * wp_trim_words() closes an excerpt with an ellipsis, which is not sentence-ending
+ * punctuation. On an archive listing 24 cards that reads as one unbroken "sentence"
+ * of several hundred words, and readability tools score the page near zero because
+ * of it. Cutting back to the last full stop fixes the score, and the card reads
+ * better for ending on a complete thought.
+ */
+function beycome_blog_excerpt($text, $words = 18) {
+    $text = trim(wp_strip_all_tags($text));
+    if ($text === '') return '';
+
+    $trimmed = trim(wp_trim_words($text, $words, ''));
+
+    // keep up to the last sentence ending, when that leaves enough to read
+    if (preg_match('/^.*[.!?]/u', $trimmed, $m)) {
+        $whole = trim($m[0]);
+        if (str_word_count($whole) >= 6) return $whole;
+    }
+
+    // no usable sentence break: close the fragment so it still ends a sentence
+    return rtrim($trimmed, " .,;:\xE2\x80\xA6") . '.';
+}
+
 function beycome_blog_card($post_id, $size = 'beycome-blog-card', $show_excerpt = false) {
     $title = get_the_title($post_id);
     $url = get_permalink($post_id);
@@ -701,8 +919,8 @@ function beycome_blog_card($post_id, $size = 'beycome-blog-card', $show_excerpt 
     $date = get_the_date('M j, Y', $post_id);
     $reading_time = beycome_blog_reading_time($post_id);
     $has_thumb = has_post_thumbnail($post_id);
-    $thumb = $has_thumb ? get_the_post_thumbnail($post_id, $size, ['alt' => esc_attr($title), 'loading' => 'lazy']) : '';
-    $excerpt = $show_excerpt ? wp_trim_words(get_the_excerpt($post_id) ?: strip_tags(get_post_field('post_content', $post_id)), 18, '…') : '';
+    $thumb = $has_thumb ? get_the_post_thumbnail($post_id, $size, ['alt' => esc_attr($title), 'loading' => 'lazy', 'sizes' => '(max-width: 767px) 100vw, 400px']) : '';
+    $excerpt = $show_excerpt ? beycome_blog_excerpt(get_the_excerpt($post_id) ?: get_post_field('post_content', $post_id), 18) : '';
 
     $cat_colors = ['selling-a-home' => 'selling', 'buying-a-home' => 'buying', 'homeowner-guides' => 'homeowner', 'local-insights' => 'local'];
     $card_modifier = '';
@@ -732,7 +950,7 @@ function beycome_blog_card($post_id, $size = 'beycome-blog-card', $show_excerpt 
             <p class="bc-blog-card-excerpt"><?php echo esc_html($excerpt); ?></p>
             <?php endif; ?>
             <div class="bc-blog-card-footer">
-                <span class="bc-blog-card-time"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><?php echo (int)$reading_time; ?> min</span>
+                <span class="bc-blog-card-time"><?php echo beycome_blog_icon('clock-alt', 13); ?><?php echo (int)$reading_time; ?> min</span>
                 <span class="bc-blog-card-date"><?php echo esc_html($date); ?></span>
             </div>
         </div>
@@ -761,15 +979,15 @@ function beycome_blog_mid_cta($content) {
     $cta = '<div class="bc-mid-cta" aria-label="Beycome — Buy or Sell Without the Commission">'
          . '<div class="bc-mid-cta-card bc-mid-cta-card--sell">'
          . '<p class="bc-mid-cta-label">Sell smarter</p>'
-         . '<p class="bc-mid-cta-title">List your home on the MLS for $99</p>'
-         . '<p class="bc-mid-cta-desc">No listing agent, no 3% commission. Beycome handles your MLS listing so you keep more of what your home is worth.</p>'
-         . '<a href="https://www.beycome.com/flat-fee-mls/" class="bc-mid-cta-btn bc-mid-cta-btn--sell">Sell your home &rarr;</a>'
+         . '<p class="bc-mid-cta-title">List your home on the MLS from $99</p>'
+         . '<p class="bc-mid-cta-desc">A flat fee instead of a percentage, and $0 to Beycome at closing. You stay in control of your sale.</p>'
+         . '<a href="https://www.beycome.com/flat-fee-mls" class="bc-mid-cta-btn bc-mid-cta-btn--sell">Sell your home &rarr;</a>'
          . '</div>'
          . '<div class="bc-mid-cta-card bc-mid-cta-card--buy">'
          . '<p class="bc-mid-cta-label">Buy smarter</p>'
          . '<p class="bc-mid-cta-title">Get up to 2% back at closing</p>'
-         . '<p class="bc-mid-cta-desc">Buy any home with a Beycome agent and receive a rebate of up to 2% of the purchase price — paid to you at closing.</p>'
-         . '<a href="https://www.beycome.com/i-want-to-buy-a-home/" class="bc-mid-cta-btn bc-mid-cta-btn--buy">Buy a home &rarr;</a>'
+         . '<p class="bc-mid-cta-desc">On homes listed by other agents, Beycome credits you up to 2% of the price at closing (1% kept, $1,499 minimum; not on FSBO homes or homes listed by Beycome sellers).</p>'
+         . '<a href="https://www.beycome.com/i-want-to-buy-a-home" class="bc-mid-cta-btn bc-mid-cta-btn--buy">Buy a home &rarr;</a>'
          . '</div>'
          . '</div>';
 
@@ -783,6 +1001,34 @@ function beycome_blog_mid_cta($content) {
     }, $content);
 }
 add_filter('the_content', 'beycome_blog_mid_cta');
+
+/**
+ * Every article carries the same disclosure. It is appended here rather than
+ * pasted into 1,300 posts, so the wording can be changed in one place and it
+ * can never drift between articles.
+ *
+ * Styling lives in assets/main.css. A post that already contains its own
+ * .bc-disclosure block is left alone, so a bespoke one is never duplicated.
+ */
+function beycome_blog_disclosure_html() {
+    return '<div class="bc-disclosure">'
+        . '<p class="bc-disclosure-title">Disclosure &amp; Disclaimer</p>'
+        . '<p>Beycome provides real estate services through affiliated licensed brokerages and has a commercial interest in the services and business models discussed on this blog. Content reflects Beycome&rsquo;s perspective and may promote our services; it should not be treated as independent or neutral reporting.</p>'
+        . '<p>Articles are provided for general informational and educational purposes only, not as financial, tax, legal, or investment advice or a recommendation for your particular situation. Reading this blog does not create a brokerage, advisory, or other professional relationship.</p>'
+        . '<p>Information, opinions, pricing, service descriptions, and comparisons reflect the sources and information available when an article was published or last updated and may change. Although we aim for accuracy, we do not guarantee that all content is complete, current, or applicable to your circumstances. Laws, market conditions, and service availability vary by location. Examples and estimated savings are illustrative, depend on stated assumptions, and do not guarantee individual results.</p>'
+        . '<p>Verify relevant information directly and consult qualified professionals before making decisions. Beycome services are subject to applicable agreements, eligibility requirements, and state-specific terms.</p>'
+        . '</div>';
+}
+
+function beycome_blog_disclosure($content) {
+    // single.php calls the_content() outside a have_posts() loop, so in_the_loop()
+    // is false here. is_singular() alone is the right guard, as the mid-article CTA does.
+    if (!is_singular('post')) return $content;
+    if (strpos($content, 'bc-disclosure') !== false) return $content;   // post has its own
+
+    return $content . beycome_blog_disclosure_html();
+}
+add_filter('the_content', 'beycome_blog_disclosure', 30);
 
 // ===== Helper: render a compact aside card (small thumb + title) ===== //
 function beycome_blog_aside_card($post_id) {

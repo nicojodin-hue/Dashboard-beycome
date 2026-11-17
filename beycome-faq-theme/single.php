@@ -72,7 +72,7 @@ $reading_time = max(1, ceil($word_count / 250));
                         </div>
                         <div class="bc-savings-cta-actions">
                             <div class="bc-savings-cta-btns">
-                                <a href="https://www.beycome.com/flat-fee-mls/" class="bc-cta-btn">Sell your home for $99 &rarr;</a>
+                                <a href="https://www.beycome.com/flat-fee-mls" class="bc-cta-btn">Sell your home for $99 &rarr;</a>
                                 <a href="https://www.beycome.com/i-want-to-buy-a-home" class="bc-cta-btn bc-cta-btn--blue">Buy with up to 2% back &rarr;</a>
                                 <a href="https://www.beycome.com/calculators/commission-calculator" class="bc-savings-calc-link">Calculate your savings &rarr;</a>
                             </div>
@@ -154,7 +154,7 @@ $reading_time = max(1, ceil($word_count / 250));
                 <div class="bc-sidebar-cta" style="margin-top:20px">
                     <h3 style="font-family:var(--font-title);font-size:18px;font-weight:700;color:var(--c-primary);margin-bottom:8px">Ready to sell your home?</h3>
                     <p style="font-size:14px;color:var(--c-secondary);margin-bottom:16px;line-height:1.5">List on the MLS for just $99 — no listing agent commission.</p>
-                    <a href="https://www.beycome.com/flat-fee-mls/" class="bc-cta-btn">Sell Your Home &rarr;</a>
+                    <a href="https://www.beycome.com/flat-fee-mls" class="bc-cta-btn">Sell Your Home &rarr;</a>
                 </div>
 
                 <div class="bc-sidebar-cta" style="margin-top:20px">

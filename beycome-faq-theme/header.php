@@ -15,9 +15,8 @@
     <!-- Favicon -->
     <link rel="icon" href="https://www.beycome.com/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="https://www.beycome.com/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://www.beycome.com/public/assets/images/apple-touch-icon.png">
-    <link rel="apple-touch-icon" href="https://www.beycome.com/public/assets/images/apple-touch-icon.png">
-    <link rel="mask-icon" color="#000000" href="https://www.beycome.com/public/assets/images/safari-pinned-tab.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://www.beycome.com/apple-touch-icon.png">
+    <link rel="apple-touch-icon" href="https://www.beycome.com/apple-touch-icon.png">
 
     <!-- SEO Meta (description, canonical, robots handled by Yoast when active) -->
     <?php if (!defined('WPSEO_VERSION')) : ?>

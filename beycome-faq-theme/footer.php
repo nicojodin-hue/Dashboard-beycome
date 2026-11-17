@@ -5,39 +5,39 @@
         <div class="bc-footer-col">
             <div class="bc-footer-col-title">Features</div>
             <ul>
-                <li><a href="https://www.beycome.com/flat-fee-mls/">Sell My Home</a></li>
-                <li><a href="https://www.beycome.com/i-want-to-buy-a-home/">Buy a Home</a></li>
+                <li><a href="https://www.beycome.com/flat-fee-mls">Sell My Home</a></li>
+                <li><a href="https://www.beycome.com/i-want-to-buy-a-home">Buy a Home</a></li>
                 <li><a href="https://www.beycometitle.com/" target="_blank" rel="noopener noreferrer">Title</a></li>
-                <li><a href="https://www.beycome.com/yard-sign/">Yard Sign</a></li>
-                <li><a href="https://www.beycome.com/military-fsbo/">Military</a></li>
-                <li><a href="https://www.beycome.com/closed-homes/">Closed Homes</a></li>
+                <li><a href="https://www.beycome.com/yard-sign">Yard Sign</a></li>
+                <li><a href="https://www.beycome.com/military-fsbo">Military</a></li>
+                <li><a href="https://www.beycome.com/properties-closed">Closed Homes</a></li>
             </ul>
         </div>
 		<div class="bc-footer-col">
             <div class="bc-footer-col-title">Company</div>
             <ul>
-                <li><a href="https://www.beycome.com/about/">About Us</a></li>
-                <li><a href="https://www.beycome.com/reviews/">Reviews</a></li>
-                <li><a href="https://www.beycome.com/press/">Press</a></li>
-                <li><a href="https://www.beycome.com/technology/">Technology</a></li>
+                <li><a href="https://www.beycome.com/about-us">About Us</a></li>
+                <li><a href="https://www.beycome.com/reviews">Reviews</a></li>
+                <li><a href="https://www.beycome.com/media-press-inquiries">Press</a></li>
+                <li><a href="https://www.beycome.com/technology">Technology</a></li>
                 <li><a href="https://investor.beycome.com/" target="_blank" rel="noopener noreferrer">Investors</a></li>
             </ul>
         </div>
         <div class="bc-footer-col">
             <div class="bc-footer-col-title">Resources</div>
             <ul>
-                <li><a href="<?php echo esc_url(home_url('/')); ?>">Blog</a></li>
+                <li><a href="https://www.beycome.com/blog">Blog</a></li>
                 <li><a href="https://www.beycome.com/faq/">FAQ</a></li>
-                <li><a href="https://www.beycome.com/how-it-works/">How It Works</a></li>
-                <li><a href="https://www.beycome.com/real-estate-glossary/">Real Estate Glossary</a></li>
+                <li><a href="https://www.beycome.com/how-it-works">How It Works</a></li>
+                <li><a href="https://www.beycome.com/real-estate-glossary">Real Estate Glossary</a></li>
             </ul>
         </div>
         <div class="bc-footer-col">
             <div class="bc-footer-col-title">Tools</div>
             <ul>
-                <li><a href="https://www.beycome.com/how-much-is-my-home-worth/">Property Price Estimator</a></li>
-                <li><a href="https://www.beycome.com/market-trends/">Market Trends</a></li>
-                <li><a href="https://www.beycome.com/calculators/">Real Estate Calculators</a></li>
+                <li><a href="https://www.beycome.com/how-much-is-my-home-worth">Property Price Estimator</a></li>
+                <li><a href="https://www.beycome.com/market-trends">Market Trends</a></li>
+                <li><a href="https://www.beycome.com/calculators">Real Estate Calculators</a></li>
             </ul>
         </div>
     </div>
@@ -114,15 +114,15 @@
         <span class="bc-footer-bottom-row-address">Beycome Corp., 7900 SW 57th Avenue, Suite 23, Miami, FL 33143</span>
         <span class="bc-footer-bottom-row-sep">|</span>
         <div class="bc-footer-bottom-row-links">
-            <a href="https://www.beycome.com/terms-and-conditions/">Terms &amp; Conditions</a>
-            <a href="https://www.beycome.com/privacy-policy/">Privacy Policy</a>
-            <a href="https://www.beycome.com/dmca/">DMCA</a>
-            <a href="https://www.beycome.com/accessibility/">Accessibility</a>
+            <a href="https://www.beycome.com/terms-and-conditions">Terms &amp; Conditions</a>
+            <a href="https://www.beycome.com/privacy-policy">Privacy Policy</a>
+            <a href="https://www.beycome.com/dmca">DMCA</a>
+            <a href="https://www.beycome.com/accessibility">Accessibility</a>
         </div>
     </div>
 
     <div class="bc-footer-legal">
-        <p><strong>Agreement to terms and privacy policy:</strong> By using beycome.com, you agree to our <a href="https://www.beycome.com/terms-and-conditions/">terms and conditions</a> and our <a href="https://www.beycome.com/privacy-policy/">privacy policy</a>.</p>
+        <p><strong>Agreement to terms and privacy policy:</strong> By using beycome.com, you agree to our <a href="https://www.beycome.com/terms-and-conditions">terms and conditions</a> and our <a href="https://www.beycome.com/privacy-policy">privacy policy</a>.</p>
         <p><strong>Technology platform — not a brokerage:</strong> Beycome Corp. is a software technology company and does not provide real estate brokerage, mortgage lending, or title insurance services. Beycome Corp. is not a licensed real estate broker, mortgage lender, or title insurer, and nothing on this platform constitutes real estate, legal, financial, or investment advice. The beycome.com platform connects consumers with independently operated licensed entities and third-party service providers. Beycome Corp. expressly disclaims any liability arising from real estate transactions, brokerage activities, loan origination, or title services conducted by any affiliated or third-party company.</p>
         <p><strong>Affiliated licensed entities (separate legal entities):</strong> Beycome Corp.&rsquo;s affiliated companies share common ownership but are separate legal entities. Each operates under its own licensed management, as required by applicable law, and is solely responsible for its licensed activities. Real estate brokerage services are provided by Beycome of Florida LLC in FL; Beycome Brokerage Realty Inc. in CA (CalDRE #02247733); Beycome of Connecticut (broker name) in CT; and Beycome Brokerage Realty LLC in AL, DC, GA, IL, IN, MD, MI, MN, NC, NY, OH, PA, SC, TN, TX, and VA (Virginia license #225277955). Mortgage loan origination services in Florida are provided by Beycome Mortgage LLC. Title insurance services are provided by Beycome Title of Florida LLC in Florida and Beycome Title of Texas LLC in Texas, and, starting November 2, 2026, by Beycome Title LLC in Michigan, Ohio, Illinois and Indiana. TREC: <a href="https://www.beycome.com/legal/IABS-12.pdf" rel="noreferrer noopener" target="_blank">Information About Brokerage Services</a> | <a href="https://www.trec.texas.gov/forms/consumer-protection-notice" rel="noreferrer noopener" target="_blank">Consumer Protection Notice</a>.</p>
         <p><strong>Legal Disclaimer:</strong> Information is current as of October 27, 2026. Beycome Corp. may modify or discontinue products and benefits without notice. No guarantee, warranty, or representation of any kind is made regarding the completeness or accuracy of descriptions or measurements (including square footage and property condition); such should be independently verified, and Beycome Corp. expressly disclaims any liability in connection therewith.</p>
